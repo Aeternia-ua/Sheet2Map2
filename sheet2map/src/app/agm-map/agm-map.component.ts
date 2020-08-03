@@ -1,5 +1,7 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { MarkerService } from '../_services/marker.service';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import { Globals } from '../globals';
+import { AGMMarkerService } from '../_services/agm-marker.service';
+import {MapsAPILoader} from '@agm/core';
 
 @Component({
   selector: 'app-agm-map',
@@ -7,15 +9,34 @@ import { MarkerService } from '../_services/marker.service';
   styleUrls: ['./agm-map.component.css']
 })
 export class AgmMapComponent implements AfterViewInit {
+  @ViewChild('mapContainer', { static: false }) gMap: ElementRef;
+  agmMap: google.maps.Map;
+  title = 'Sheet2Map Google map';
+  lat = Globals.mapCenter[0];
+  lng = Globals.mapCenter[1];
+  // Coordinates to set the center of the map
+  coordinates: google.maps.LatLng;
+  mapOptions: google.maps.MapOptions;
 
-  private agmMap;
-  // title = 'My first AGM project';
-  lat = 21.678418;
-  lng = 7.809007;
-  constructor(private markerService: MarkerService) {
+  constructor(public mapsApiLoader: MapsAPILoader,
+              private agmMarkerService: AGMMarkerService) {
+     this.mapsApiLoader = mapsApiLoader;
+
+     this.mapsApiLoader.load().then(() => {
+       this.initMap();
+    });
   }
+
   ngAfterViewInit(): void {
-    this.markerService.createMarkers(this.agmMap);
+  }
+
+  private initMap(): void {
+    this.coordinates = new google.maps.LatLng(this.lat, this.lng);
+    this.mapOptions = {
+      center: this.coordinates,
+      zoom: Globals.mapZoom
+    };
+    this.agmMap = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
+    this.agmMarkerService.createMarkers(this.agmMap);
   }
 }
-
