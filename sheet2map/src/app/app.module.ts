@@ -7,6 +7,7 @@ import { MapComponent } from './map/map.component';
 import { MarkerService } from './_services/marker.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AgmMapComponent } from './agm-map/agm-map.component';
+import {AGMMarkerService} from './_services/agm-marker.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AgmMapComponent } from './agm-map/agm-map.component';
     HttpClientModule
   ],
   providers: [
-    MarkerService
+    MarkerService,
+    AGMMarkerService
   ],
   bootstrap: [AppComponent]
 })

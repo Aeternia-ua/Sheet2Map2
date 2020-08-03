@@ -32,6 +32,7 @@ export class AgmMapComponent implements AfterViewInit {
 
   private initMap(): void {
     this.coordinates = new google.maps.LatLng(this.lat, this.lng);
+    // Google Map options
     this.mapOptions = {
       center: this.coordinates,
       zoom: Globals.mapZoom
