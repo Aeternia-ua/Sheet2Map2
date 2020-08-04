@@ -26,7 +26,6 @@ export class AgmMapComponent implements AfterViewInit {
        this.initMap();
     });
   }
-
   ngAfterViewInit(): void {
   }
 

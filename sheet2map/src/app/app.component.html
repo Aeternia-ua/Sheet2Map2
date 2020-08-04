@@ -1,2 +1,32 @@
-<app-map></app-map>
-<!--<app-agm-map></app-agm-map>-->
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>Sheet2Map Data Visualization Solution</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  </head>
+
+  <body>
+<!--    <app-map id="leaflet-map"></app-map>-->
+<!--    <app-agm-map id="agm-map"></app-agm-map>-->
+
+    <button (click)='toggleAppTemplate()'>
+        {{ appTemplate === 'agm-template' ? 'leaflet-template':'agm-template'}}
+    </button>
+
+    <ng-container *ngIf='appTemplate === "leaflet-template" then leafletTemplate else agmTemplate'>
+    </ng-container>
+
+    <ng-template #leafletTemplate>
+        <app-map class="map" id="leaflet-map"></app-map>
+    </ng-template>
+
+    <ng-template #agmTemplate>
+        <app-agm-map class="map" id="agm-map"></app-agm-map>
+    </ng-template>
+
+  </body>
+</html>
