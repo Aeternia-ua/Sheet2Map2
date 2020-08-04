@@ -19,6 +19,7 @@ export class MapComponent implements AfterViewInit {
   }
   private initMap(): void {
     this.map = L.map('map', {
+      // Leaflet map options
       center: Globals.mapCenter,
       zoom: Globals.mapZoom
     });
