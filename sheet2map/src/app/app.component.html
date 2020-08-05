@@ -2,6 +2,7 @@
 <html>
 
   <head>
+<!--    <app-data-parser></app-data-parser>-->
 
     <title>Sheet2Map Data Visualization Solution</title>
     <meta charset="utf-8">
@@ -10,8 +11,8 @@
   </head>
 
   <body>
-<!--    <app-map id="leaflet-map"></app-map>-->
-<!--    <app-agm-map id="agm-map"></app-agm-map>-->
+<!--temp for testing infowindow component-->
+<div style="position: fixed; top: 25px">
 
     <button (click)='toggleAppTemplate()'>
         {{ appTemplate === 'agm-template' ? 'leaflet-template':'agm-template'}}
@@ -27,6 +28,11 @@
     <ng-template #agmTemplate>
         <app-agm-map class="map" id="agm-map"></app-agm-map>
     </ng-template>
+</div>
+
+  <div>
+  <app-infowindow></app-infowindow>
+</div>
 
   </body>
 </html>

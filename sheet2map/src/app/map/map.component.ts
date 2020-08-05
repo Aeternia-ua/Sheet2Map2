@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import * as L from 'leaflet';
 import { MarkerService } from '../_services/marker.service';
 import { Globals } from '../globals';
+import { DataModelService } from '../_services/data-model.service';
 
 @Component({
   selector: 'app-map',
@@ -11,11 +12,13 @@ import { Globals } from '../globals';
 
 export class MapComponent implements AfterViewInit {
   private map;
-  constructor(private markerService: MarkerService) {
+  constructor(private markerService: MarkerService,
+              private dataModelService: DataModelService) {
   }
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.createMarkers(this.map);
+    this.dataModelService.createDataModel();
   }
   private initMap(): void {
     this.map = L.map('map', {
