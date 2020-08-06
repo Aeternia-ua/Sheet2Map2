@@ -14,7 +14,7 @@ export class InfowindowComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log("test " + this.test);
+    console.log('test ' + this.test);
   }
 
 }

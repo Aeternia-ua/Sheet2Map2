@@ -27,7 +27,6 @@ export class AGMMarkerService {
             this.createMarkerIcon(marker, 'blue');
             gMarkers.push(marker);
           }
-          console.log(gMarkers[0]);
           const markerClusterer = new MarkerClusterer(map, gMarkers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     });

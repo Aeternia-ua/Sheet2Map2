@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Globals } from '../globals';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +8,22 @@ import { Globals } from '../globals';
 export class DataModelService {
 
   constructor(private http: HttpClient) { }
-  public source = Globals.dataURL;
-  private jsonDataModel = Globals.dataModel;
 
-// TODO Implement actual json parser
-  createDataModel(): void {
-    this.http.get(this.source).subscribe((data: any) => {
-      for (const feature of data.features) {
-        this.jsonDataModel.push(feature);
-      }
-    });
-    // console.log(this.dataModel);
+  createJson(src) {
+    return this.http.get<Response>(src)
+    .pipe(map(response => response));
   }
+
+  createDataTemplate(data): [] {
+    let keys;
+    let template;
+    const features = data.features;
+    features.forEach(feature => {
+      keys = Object.keys(feature.properties);
+    }
+    );
+    template = [...new Set(keys)];
+    return template;
+  }
+
 }
