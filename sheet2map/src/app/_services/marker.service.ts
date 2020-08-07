@@ -27,6 +27,8 @@ export class MarkerService {
         marker = L.marker([lon, lat]);
         this.createMarkerIcon(marker);
 
+        // marker.on('click', (e)=> populateInfoSidebar(e, sidebar));
+
         markerClusterGroup.addLayer(marker);
       }
       map.addLayer(markerClusterGroup);
