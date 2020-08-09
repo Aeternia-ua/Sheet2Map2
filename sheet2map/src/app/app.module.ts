@@ -10,11 +10,14 @@ import { AgmMapComponent } from './agm-map/agm-map.component';
 import {AGMMarkerService} from './_services/agm-marker.service';
 import { DataParserComponent } from './data-parser/data-parser.component';
 import { LayersComponent } from './layers/layers.component';
-import { InfowindowComponent } from './infowindow/infowindow.component';
+// import { InfowindowComponent } from './infowindow/infowindow.component';
 import {MatListModule} from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
+import { InfoSidebarDirective } from './directives/info-sidebar.directive';
+import { MarkerInfoComponent } from './marker-info/marker-info.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     // SpreadsheetComponent,
     DataParserComponent,
     LayersComponent,
-    InfowindowComponent
+    // InfowindowComponent,
+    InfoSidebarComponent,
+    InfoSidebarDirective,
+    MarkerInfoComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +47,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MarkerService,
     AGMMarkerService
   ],
-  entryComponents: [ InfowindowComponent ],
+  // entryComponents: [ InfowindowComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

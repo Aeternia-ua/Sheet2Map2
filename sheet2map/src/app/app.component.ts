@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MarkerInfo } from './info-sidebar/ad-item';
+import { InfoSidebarService } from './_services/info-sidebar.service';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +10,12 @@ import {Component, OnInit} from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'sheet2map';
   public appTemplate = 'leaflet-template';
+  markersData: MarkerInfo[];
 
-  constructor() { }
+  constructor(private infoSidebarService: InfoSidebarService) { }
 
   ngOnInit(): void {
+    this.markersData = this.infoSidebarService.getMarkerInfo();
   }
 
   toggleAppTemplate(): void {

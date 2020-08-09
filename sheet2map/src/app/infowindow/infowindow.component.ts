@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { Globals } from '../globals';
 import { DataModelService } from '../_services/data-model.service';
 
@@ -9,7 +9,6 @@ import { DataModelService } from '../_services/data-model.service';
 })
 export class InfowindowComponent implements AfterViewInit {
 
-  public testTitle = 'test official name success!!';
   public test = Globals.dataModel;
   public source = Globals.dataURL;
   private dataModel = [];
@@ -28,27 +27,25 @@ export class InfowindowComponent implements AfterViewInit {
           this.dataModel = this.dataModelService.createDataTemplate(jsonData);
           Globals.dataModel.fill(this.dataModel);
           console.log('resulting dataModel: ' + this.dataModel);
-          this.buildInfoWindowTemplate(this.dataModel, this.infoWindowContainer);
+          this.buildInfoWindowTemplate(this.dataModel);
         }
     );
   }
-  buildInfoWindowTemplate(template, parent) {
-    console.log('parent: ' + parent);
+  buildInfoWindowTemplate(template): void {
     const list = document.createElement('mat-list');
+
     template.forEach(el => {
       const label = el;
       // create DOM elements
       const listItem = document.createElement('mat-list-item');
       const listItemContent = document.createElement('h3');
       listItemContent.innerHTML = label;
-      parent[0].appendChild(list);
-      // parent.appendChild(list);
       list.appendChild(listItem);
       listItem.appendChild(listItemContent);
       }
     );
-    
-    console.log(list);
+    return list;
+    console.log("infowindow component list" + list);
   }
 }
 
