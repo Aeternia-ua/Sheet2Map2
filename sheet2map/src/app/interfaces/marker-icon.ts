@@ -1,13 +1,15 @@
+// export interface NewMarkerIcon {
+//   getIcon(): string;
+//   setIcon(icon: string): void;
+//   getPrefix(): string;
+//   setPrefix(prefix: string): void;
+//   getMarkerColor(): string;
+//   setMarkerColor(color: string): void;
+// }
 export interface MarkerIcon {
   icon: string;
   prefix: string;
   markerColor: string;
-  // defaultMarkerColor: string;
-  // customMarker: boolean;
-  // customMarkerColor?: string;
-  // defaultIconURL: string;
-  // customIcon: boolean;
-  // customIconURL?: string;
 }
 
 export interface AgmMarkerIcon {

@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
-import { MarkerInfo } from '../info-sidebar/ad-item';
+import { MarkerInfo } from '../info-sidebar/info-item';
 import { MarkerInfoComponent } from '../marker-info/marker-info.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InfoSidebarService {
-    getMarkerInfo(): MarkerInfo[] {
+
+    getMarkerInfo2(el): MarkerInfo[] {
+      const props = el.properties;
+      console.log('getMarkerInfo2 el : ', el);
+      return [
+         new MarkerInfo(MarkerInfoComponent, {props})
+      ];
+  }
+      getMarkerInfo(): MarkerInfo[] {
     return [
 
       new MarkerInfo(MarkerInfoComponent,   {headline: 'Successfully get MarkerInfo headline',
@@ -16,5 +24,13 @@ export class InfoSidebarService {
                                         body: '22 Successfully get MarkerInfo body'})
     ];
   }
+
+// TODO On click - get getMarkerInfo2() of the marker
+  populateInfoSidebar(marker): void {
+    throw new Error('Method not implemented.');
+  }
+
   constructor() { }
+
 }
+

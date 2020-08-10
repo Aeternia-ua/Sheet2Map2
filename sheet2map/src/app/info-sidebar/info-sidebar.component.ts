@@ -1,27 +1,33 @@
 import {Component, ComponentFactoryResolver, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
 import {InfoComponent} from '../interfaces/info.component';
-import {MarkerInfo} from './ad-item';
+import {MarkerInfo} from './info-item';
 import {DataModelService} from '../_services/data-model.service';
-import {Globals} from '../globals';
+import { Globals } from '../globals';
+import { InfoSidebarService } from '../_services/info-sidebar.service';
 
 @Component({
   selector: 'app-info-sidebar',
   templateUrl: './info-sidebar.component.html',
-  styleUrls: ['./info-sidebar.component.css']
+  styleUrls: ['./info-sidebar.component.css'],
 })
 export class InfoSidebarComponent implements OnInit, OnDestroy {
   @Input() markersData: MarkerInfo[];
+  @Input() markerInfo: MarkerInfo[];
   currentMarkerInfoIndex = -1;
   @ViewChild(InfoSidebarDirective, {static: true}) appInfoSidebar: InfoSidebarDirective;
   // TODO remove test marker data displaying
   interval: any;
 
   public source = Globals.dataURL;
-  private infoTemplate = [];
+  public json: Response = Globals.markersJson;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
-              private dataModelService: DataModelService) { }
+              private dataModelService: DataModelService,
+              private infoSidebarService: InfoSidebarService,
+              ) {
+
+  }
 
   ngOnInit(): void {
     this.buildInfoTemplate();
@@ -43,7 +49,7 @@ export class InfoSidebarComponent implements OnInit, OnDestroy {
     componentRef.instance.data = markerInfo.data;
   }
 
-  // TODO rewrite method
+  // TODO remove method
   getMarkerInfo(): void {
     this.interval = setInterval(() => {
       this.loadComponent();
@@ -54,8 +60,11 @@ export class InfoSidebarComponent implements OnInit, OnDestroy {
     this.dataModelService.createJson(this.source)
       .subscribe(
         (jsonData) => {
-          console.log('JSON data  ', jsonData);
-          Globals.dataModel.fill(jsonData);
+          // Assigning the JSON data to the json global variable
+          this.json = jsonData;
+          console.log('Globals.json ', this.json);
+          // const test = this.infoSidebarService.getMarkerInfo2(jsonData);
+          // console.log('infoSidebarService result ', test);
           this.loadComponent();
         }
     );
