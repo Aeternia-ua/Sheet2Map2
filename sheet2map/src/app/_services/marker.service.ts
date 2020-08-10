@@ -31,10 +31,11 @@ export class MarkerService {
         const props = c.properties;
         let marker: any;
         // TODO Use json feature property lat and lon
-        marker = new L.marker([lon, lat])
-
+        marker = new L.marker([lon, lat]);
+        marker.properties = props;
+        marker
           .on('click', (e) => {
-            return this.infoSidebarService.getMarkerInfo2(e);
+            console.log(this.infoSidebarService.getMarkerInfo2(e));
           });
 
         this.createMarkerIcon(marker);

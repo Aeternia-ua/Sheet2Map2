@@ -7,12 +7,10 @@ import { MarkerInfoComponent } from '../marker-info/marker-info.component';
 })
 export class InfoSidebarService {
 
-    getMarkerInfo2(el): MarkerInfo[] {
-      const props = el.properties;
+    getMarkerInfo2(el): MarkerInfo {
+      const props = el.target.properties;
       console.log('getMarkerInfo2 el : ', el);
-      return [
-         new MarkerInfo(MarkerInfoComponent, {props})
-      ];
+      return new MarkerInfo(MarkerInfo, props);
   }
       getMarkerInfo(): MarkerInfo[] {
     return [

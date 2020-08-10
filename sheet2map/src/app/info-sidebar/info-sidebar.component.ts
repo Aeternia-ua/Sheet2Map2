@@ -20,7 +20,7 @@ export class InfoSidebarComponent implements OnInit, OnDestroy {
   interval: any;
 
   public source = Globals.dataURL;
-  public json: Response = Globals.markersJson;
+  public features: any[] = Globals.markersJson;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private dataModelService: DataModelService,
@@ -61,8 +61,8 @@ export class InfoSidebarComponent implements OnInit, OnDestroy {
       .subscribe(
         (jsonData) => {
           // Assigning the JSON data to the json global variable
-          this.json = jsonData;
-          console.log('Globals.json ', this.json);
+          this.features = jsonData['features'];
+          console.log('Globals.json ', this.features);
           // const test = this.infoSidebarService.getMarkerInfo2(jsonData);
           // console.log('infoSidebarService result ', test);
           this.loadComponent();
