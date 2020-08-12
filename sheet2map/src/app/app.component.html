@@ -3,11 +3,8 @@
         {{ appTemplate === 'agm-template' ? 'leaflet-template':'agm-template'}}
     </button>
 </div>
-<!--<h1>Message from Service : {{message}}<h1>-->
 <!-- Creates a layout with a left and right sidenav and implicit content. -->
 <mat-sidenav-container>
-<!--  <mat-sidenav mode="side" opened>NavBar</mat-sidenav>-->
-
   <mat-sidenav id="infowindow" position="end" mode="side" opened>
 
     <div>
@@ -15,14 +12,6 @@
 
       </app-info-sidebar>
     </div>
-
-
-
-<!--    <div>-->
-<!--      <app-info-sidebar [markerInfo]="markerInfo"></app-info-sidebar>-->
-<!--    </div>-->
-
-<!--    <app-infowindow></app-infowindow>-->
   </mat-sidenav>
 
   <mat-sidenav-content>

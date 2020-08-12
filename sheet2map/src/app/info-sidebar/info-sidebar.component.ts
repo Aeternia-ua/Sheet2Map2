@@ -1,13 +1,15 @@
 import {
   AfterViewInit,
   Component,
-  ComponentFactoryResolver, ElementRef,
+  ComponentFactoryResolver, DoCheck, ElementRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   ViewChild,
-  ViewContainerRef
+  SimpleChanges,
+  ViewContainerRef,
+  KeyValueChanges
 } from '@angular/core';
 import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
 import {InfoComponent} from '../interfaces/info.component';
@@ -22,36 +24,36 @@ import {SharedService} from '../_services/shared.service';
   templateUrl: './info-sidebar.component.html',
   styleUrls: ['./info-sidebar.component.css'],
 })
-export class InfoSidebarComponent implements AfterViewInit {
-  // @ViewChild('appInfoSidebar', { static: false }) iSidebar: ViewContainerRef;
+export class InfoSidebarComponent implements OnInit, OnChanges {
   @ViewChild(InfoSidebarDirective, {static: true}) appInfoSidebar: InfoSidebarDirective;
+  @Input() parentMInfo: MarkerInfo;
+  mInfo: MarkerInfo;
 
   public source = Globals.dataURL;
   public features: any[] = Globals.markersJson;
-  markerInfo: MarkerInfo;
-  private message: string;
+  private markerInfo: MarkerInfo;
+
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private dataModelService: DataModelService,
               private sharedService: SharedService,
-              // public viewContainerRef: ViewContainerRef,
+              public viewContainerRef: ViewContainerRef,
               private infoSidebarService: InfoSidebarService
               ) {
   }
 
-  ngAfterViewInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    this.loadComponent();
+  }
+
+  ngOnInit(): void {
     this.buildInfoTemplate();
-    this.sharedService.sharedMarkerInfo.subscribe(message => this.message = message);
-    console.log(this.message);
-    console.log("InfoSidebarComponent infosidebar: ", this.appInfoSidebar);
-    // this.loadComponent();
+    this.sharedService.sharedMarkerInfo.subscribe(mInfo => this.mInfo = mInfo);
+    console.log("InfoSidebar comp data ", this.mInfo);
+    this.loadComponent();
+
   }
-
-  newMarkerInfo(): void {
-    this.sharedService.nextMarkerInfo("Message from InfoSidebarComponent");
-  }
-
-
   setMarkerInfo(markerInfo: MarkerInfo): void {
     this.markerInfo = markerInfo;
   }
@@ -59,16 +61,15 @@ export class InfoSidebarComponent implements AfterViewInit {
   loadComponent(): void {
 
     // TODO implement sharing current markerInfo via shared service
-    const markerInfo = this.markerInfo;
-    console.log("loadComponent this.markerInfo", markerInfo.data);
+    const markerInfo = this.mInfo;
+    console.log("loadComponent this.markerInfo", markerInfo);
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(markerInfo.component);
-    console.log('componentFactory ', componentFactory);
-    // const ref = this.appInfoSidebar.createComponent(componentFactory);
     console.log('this.infoSidebar  ', this.appInfoSidebar);
-    // const viewContainerRef = this.appInfoSidebar.viewContainerRef;
-    // viewContainerRef.clear();
-    // const componentRef = viewContainerRef.createComponent<InfoComponent>(componentFactory);
-    // componentRef.instance.data = markerInfo.data;
+    const viewContainerRef = this.appInfoSidebar.viewContainerRef;
+    viewContainerRef.clear();
+    const componentRef = viewContainerRef.createComponent<InfoComponent>(componentFactory);
+    componentRef.instance.data = markerInfo.data;
+    console.log("Comp instance data ", componentRef.instance.data);
   }
 
     private buildInfoTemplate(): void {
@@ -80,5 +81,4 @@ export class InfoSidebarComponent implements AfterViewInit {
         }
     );
   }
-
 }

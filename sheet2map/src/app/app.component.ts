@@ -12,8 +12,8 @@ import {SharedService} from './_services/shared.service';
 export class AppComponent implements OnInit {
   title = 'sheet2map';
   public appTemplate = 'leaflet-template';
-  markerInfo: MarkerInfo;
-  message: string;
+  markerInfo: typeof MarkerInfo;
+  mInfo: MarkerInfo;
 
   constructor(private sharedService: SharedService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -21,7 +21,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sharedService.sharedMarkerInfo.subscribe(message => this.message = message);
+    this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
+      this.mInfo = mInfo;
+      console.log('New data arrived');
+      console.log("App component mInfo is ", mInfo);
+    });
 
   }
 
@@ -29,7 +33,5 @@ export class AppComponent implements OnInit {
     this.appTemplate = this.appTemplate === 'agm-template' ? 'leaflet-template' : 'agm-template';
   }
 }
-
-
 
 

@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {MarkerInfo} from '../info-sidebar/info-item';
+import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
 
-  private message = new BehaviorSubject('First Message');
-  sharedMarkerInfo = this.message.asObservable();
+  private data = new BehaviorSubject<MarkerInfo>(
+    new MarkerInfo(MarkerInfoComponent, {Facultet: 'Nothing selected'}));
+  sharedMarkerInfo = this.data.asObservable();
 
   constructor() { }
 
-  nextMarkerInfo(message: string) {
-    this.message.next(message);
+  nextMarkerInfo(mInfo: MarkerInfo): void {
+    this.data.next(mInfo);
   }
 }

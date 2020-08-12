@@ -44,13 +44,10 @@ export class MarkerService {
         marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
         marker
           .on('click', (e) => {
-            //this.infoSidebarService.getMarkerInfo2(e);
-            // const markerInfo = this.infoSidebarService.getMarkerInfo2(e);
-            //this.markerInfo = this.infoSidebarService.getMarkerInfo2(e);
-            // console.log("markerServise marker info is ", e.target.markerInfo);
             this.infoSidebarComponent.setMarkerInfo(e.target.markerInfo);
-            this.newMarkerInfo();
-            this.infoSidebarComponent.loadComponent();
+            this.newMarkerInfo(e.target.markerInfo);
+            // this.newMarkerInfo();
+            // this.infoSidebarComponent.loadComponent();
           });
 
         this.createMarkerIcon(marker);
@@ -61,9 +58,13 @@ export class MarkerService {
     });
   }
 
-  newMarkerInfo(): void {
-    this.sharedService.nextMarkerInfo("Message from marker service");
+  newMarkerInfo(mInfo): void {
+    this.sharedService.nextMarkerInfo(mInfo);
   }
+
+  // newMarkerInfo(mInfo): void {
+  //   this.sharedService.nextMarkerInfo(mInfo);
+  // }
 
   private createMarkerIcon(marker): void {
     // Using MarkerIcon interface
