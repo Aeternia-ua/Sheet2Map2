@@ -3,6 +3,7 @@
         {{ appTemplate === 'agm-template' ? 'leaflet-template':'agm-template'}}
     </button>
 </div>
+<!--<h1>Message from Service : {{message}}<h1>-->
 <!-- Creates a layout with a left and right sidenav and implicit content. -->
 <mat-sidenav-container>
 <!--  <mat-sidenav mode="side" opened>NavBar</mat-sidenav>-->
@@ -10,19 +11,23 @@
   <mat-sidenav id="infowindow" position="end" mode="side" opened>
 
     <div>
-      <app-info-sidebar [markersData]="markersData"></app-info-sidebar>
+      <app-info-sidebar>
+
+      </app-info-sidebar>
     </div>
 
-    <div>
+
+
+<!--    <div>-->
 <!--      <app-info-sidebar [markerInfo]="markerInfo"></app-info-sidebar>-->
-    </div>
+<!--    </div>-->
 
 <!--    <app-infowindow></app-infowindow>-->
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div>
-      <ng-container *ngIf='appTemplate === "leaflet-template" then leafletTemplate else agmTemplate'>
+      <ng-container *ngIf= 'appTemplate === "leaflet-template" then leafletTemplate else agmTemplate'>
       </ng-container>
 
       <ng-template #leafletTemplate>
@@ -35,4 +40,5 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 

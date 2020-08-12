@@ -1,31 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { MarkerInfo } from './info-sidebar/info-item';
+import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { InfoSidebarService } from './_services/info-sidebar.service';
-import { Globals } from './globals';
+import {MarkerInfo} from './info-sidebar/info-item';
+import {SharedService} from './_services/shared.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
   title = 'sheet2map';
   public appTemplate = 'leaflet-template';
-  markersData: MarkerInfo[];
-  markerInfo: MarkerInfo[];
+  markerInfo: MarkerInfo;
+  message: string;
 
-  constructor(private infoSidebarService: InfoSidebarService) { }
+  constructor(private sharedService: SharedService,
+              private componentFactoryResolver: ComponentFactoryResolver,
+              public viewContainerRef: ViewContainerRef) {
+  }
 
   ngOnInit(): void {
-    this.markersData = this.infoSidebarService.getMarkerInfo();
-    // console.log("this json ", this.json);
-    // this.markerInfo = this.infoSidebarService.getMarkerInfo2(this.json);
+    this.sharedService.sharedMarkerInfo.subscribe(message => this.message = message);
+
   }
 
   toggleAppTemplate(): void {
     this.appTemplate = this.appTemplate === 'agm-template' ? 'leaflet-template' : 'agm-template';
   }
-
 }
+
+
 
 

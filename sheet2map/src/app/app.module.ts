@@ -18,6 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { InfoSidebarDirective } from './directives/info-sidebar.directive';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
+import {MarkerInfo} from './info-sidebar/info-item';
+import {SharedService} from './_services/shared.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,7 @@ import { MarkerInfoComponent } from './marker-info/marker-info.component';
     // InfowindowComponent,
     InfoSidebarComponent,
     InfoSidebarDirective,
-    MarkerInfoComponent
+    MarkerInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,11 +45,14 @@ import { MarkerInfoComponent } from './marker-info/marker-info.component';
     MatCardModule,
     MatSidenavModule
   ],
+  // exports: [MarkerInfoComponent],
   providers: [
     MarkerService,
-    AGMMarkerService
+    AGMMarkerService,
+    InfoSidebarComponent,
+    SharedService
   ],
-  // entryComponents: [ InfowindowComponent ],
+  entryComponents: [ MarkerInfoComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

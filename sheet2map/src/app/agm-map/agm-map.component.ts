@@ -37,6 +37,7 @@ export class AgmMapComponent implements AfterViewInit {
       zoom: Globals.mapZoom
     };
     this.agmMap = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
+    console.log("this.gMap ", this.gMap);
     this.agmMarkerService.createMarkers(this.agmMap);
   }
 }

@@ -1,7 +1,9 @@
-import { AfterViewInit, Component } from '@angular/core';
+import {AfterViewInit, Component, Input, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
 import { MarkerService } from '../_services/marker.service';
 import { Globals } from '../globals';
+import {MarkerInfo} from '../info-sidebar/info-item';
+import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
 
 @Component({
   selector: 'app-map',
@@ -17,7 +19,6 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.markerService.createMarkers(this.map);
-
 
   }
   private initMap(): void {

@@ -9,18 +9,8 @@ export class InfoSidebarService {
 
     getMarkerInfo2(el): MarkerInfo {
       const props = el.target.properties;
-      console.log('getMarkerInfo2 el : ', el);
-      return new MarkerInfo(MarkerInfo, props);
-  }
-      getMarkerInfo(): MarkerInfo[] {
-    return [
+      return new MarkerInfo(MarkerInfoComponent, { ...props });
 
-      new MarkerInfo(MarkerInfoComponent,   {headline: 'Successfully get MarkerInfo headline',
-                                        body: 'Successfully get MarkerInfo body'}),
-
-      new MarkerInfo(MarkerInfoComponent,   {headline: '22 Successfully get MarkerInfo headline',
-                                        body: '22 Successfully get MarkerInfo body'})
-    ];
   }
 
 // TODO On click - get getMarkerInfo2() of the marker

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Input} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
@@ -6,19 +6,27 @@ import 'leaflet.awesome-markers';
 import { Globals } from '../globals';
 import { MarkerIcon } from '../interfaces/marker-icon';
 import {InfoSidebarService} from './info-sidebar.service';
+import {MarkerInfo} from '../info-sidebar/info-item';
+import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
+import {MarkerInfoComponent} from '../marker-info/marker-info.component';
+import {SharedService} from './shared.service';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class MarkerService {
 
   constructor(private http: HttpClient,
-              private infoSidebarService: InfoSidebarService
+              private infoSidebarService: InfoSidebarService,
+              private infoSidebarComponent: InfoSidebarComponent,
+              private sharedService: SharedService,
               ) { }
 
   public markersData = Globals.dataURL;
   markerClusterGroup: L.markerClusterGroup;
   markerIcon: MarkerIcon;
+  public markerInfo: MarkerInfo;
 
   createMarkers(map: L.map): void {
     const markerClusterGroup = new L.markerClusterGroup();
@@ -33,9 +41,16 @@ export class MarkerService {
         // TODO Use json feature property lat and lon
         marker = new L.marker([lon, lat]);
         marker.properties = props;
+        marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
         marker
           .on('click', (e) => {
-            console.log(this.infoSidebarService.getMarkerInfo2(e));
+            //this.infoSidebarService.getMarkerInfo2(e);
+            // const markerInfo = this.infoSidebarService.getMarkerInfo2(e);
+            //this.markerInfo = this.infoSidebarService.getMarkerInfo2(e);
+            // console.log("markerServise marker info is ", e.target.markerInfo);
+            this.infoSidebarComponent.setMarkerInfo(e.target.markerInfo);
+            this.newMarkerInfo();
+            this.infoSidebarComponent.loadComponent();
           });
 
         this.createMarkerIcon(marker);
@@ -46,9 +61,9 @@ export class MarkerService {
     });
   }
 
-  onClick(arg0: string, onClick: any): any {
-        throw new Error("Method not implemented.");
-    }
+  newMarkerInfo(): void {
+    this.sharedService.nextMarkerInfo("Message from marker service");
+  }
 
   private createMarkerIcon(marker): void {
     // Using MarkerIcon interface
@@ -58,5 +73,7 @@ export class MarkerService {
     marker.setIcon(this.markerIcon);
   }
 }
+
+
 
 
