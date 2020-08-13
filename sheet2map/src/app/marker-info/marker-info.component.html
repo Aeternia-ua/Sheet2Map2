@@ -1,10 +1,8 @@
-<!--<div class="marker-info">-->
-<!--  <h4>{{data.headline}}</h4>-->
-<!--  <p>{{data.body}}</p>-->
-<!--</div>-->
-
 <div class="marker-info">
-  <h4>{{data.key}}</h4>
-  <p>{{data.value}}</p>
+  <ul>
+    <li *ngFor="let item of data | keyvalue">
+      <h4>{{item.key}}</h4>
+      <p>{{item.value}}</p>
+    </li>
+  </ul>
 </div>
-

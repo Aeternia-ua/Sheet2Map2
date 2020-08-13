@@ -23,8 +23,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
       this.mInfo = mInfo;
-      console.log('New data arrived');
-      console.log("App component mInfo is ", mInfo);
     });
 
   }

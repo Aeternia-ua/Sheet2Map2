@@ -44,10 +44,7 @@ export class MarkerService {
         marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
         marker
           .on('click', (e) => {
-            this.infoSidebarComponent.setMarkerInfo(e.target.markerInfo);
             this.newMarkerInfo(e.target.markerInfo);
-            // this.newMarkerInfo();
-            // this.infoSidebarComponent.loadComponent();
           });
 
         this.createMarkerIcon(marker);
@@ -61,10 +58,6 @@ export class MarkerService {
   newMarkerInfo(mInfo): void {
     this.sharedService.nextMarkerInfo(mInfo);
   }
-
-  // newMarkerInfo(mInfo): void {
-  //   this.sharedService.nextMarkerInfo(mInfo);
-  // }
 
   private createMarkerIcon(marker): void {
     // Using MarkerIcon interface
