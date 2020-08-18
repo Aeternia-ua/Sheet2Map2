@@ -7,7 +7,7 @@ import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 
 @Component({
-  selector: 'app-map',
+  selector: 'app-leaflet-map',
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })

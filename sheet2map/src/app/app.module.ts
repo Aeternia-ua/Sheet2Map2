@@ -29,8 +29,8 @@ import {MatButtonModule} from '@angular/material/button';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
-  { path: 'map', component: LeafletMapComponent },
-  { path: 'agm-leaflet-map', component: AgmMapComponent }
+  { path: 'leaflet-map', component: LeafletMapComponent },
+  { path: 'agm-map', component: AgmMapComponent }
 ];
 @NgModule({
   declarations: [
