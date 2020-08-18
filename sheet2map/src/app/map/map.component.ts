@@ -4,6 +4,7 @@ import { MarkerService } from '../_services/marker.service';
 import { Globals } from '../globals';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
+import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 
 @Component({
   selector: 'app-map',
@@ -14,7 +15,8 @@ import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
 export class MapComponent implements AfterViewInit {
   private map;
 
-  constructor(private markerService: MarkerService) {
+  constructor(private markerService: MarkerService,
+              private infoSidebarToggleService: InfoSidebarToggleService) {
   }
   ngAfterViewInit(): void {
     this.initMap();
@@ -33,8 +35,11 @@ export class MapComponent implements AfterViewInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     });
     basemap.addTo(this.map);
+    this.map.addEventListener('click', () => {
+      console.log('map is clicked');
+      this.infoSidebarToggleService.close();
+    });
   }
-
 }
 
 

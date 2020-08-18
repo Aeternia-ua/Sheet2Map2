@@ -1,0 +1,12 @@
+<mat-button-toggle-group name="mapType" aria-label="Map Type">
+  <mat-button-toggle routerLink='/map'>Leaflet Map</mat-button-toggle>
+  <mat-button-toggle routerLink='/agm-map'>Google Map</mat-button-toggle>
+</mat-button-toggle-group>
+<mat-sidenav-container>
+  <mat-sidenav #markerInfoSidebar position="end" mode="side" opened="false">
+    <app-info-sidebar></app-info-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

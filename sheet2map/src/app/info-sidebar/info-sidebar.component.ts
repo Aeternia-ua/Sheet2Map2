@@ -2,19 +2,19 @@ import {
   Component,
   ComponentFactoryResolver,
   Input,
-  OnChanges,
   OnInit,
   ViewChild,
   ViewContainerRef,
-  ChangeDetectionStrategy, ChangeDetectorRef
+  ChangeDetectionStrategy, ChangeDetectorRef, ElementRef, Directive, Output, EventEmitter, AfterViewInit
 } from '@angular/core';
 import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
 import {InfoComponent} from '../interfaces/info.component';
 import {MarkerInfo} from './info-item';
-import {DataModelService} from '../_services/data-model.service';
+import {JsonService} from '../_services/json.service';
 import { Globals } from '../globals';
-import { InfoSidebarService } from '../_services/info-sidebar.service';
 import {SharedService} from '../_services/shared.service';
+import {MatSidenav} from '@angular/material/sidenav';
+import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 
 @Component({
   selector: 'app-info-sidebar',
@@ -23,20 +23,22 @@ import {SharedService} from '../_services/shared.service';
   styleUrls: ['./info-sidebar.component.css'],
 })
 export class InfoSidebarComponent implements OnInit {
-  @ViewChild(InfoSidebarDirective, {static: true}) appInfoSidebar: InfoSidebarDirective;
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver,
+              private jsonService: JsonService,
+              private sharedService: SharedService,
+              public viewContainerRef: ViewContainerRef,
+              private changeDetectorRef: ChangeDetectorRef,
+              private infoSidebarToggleService: InfoSidebarToggleService
+              ) {
+  }
+  @ViewChild(InfoSidebarDirective, { static: true }) appInfoSidebar: InfoSidebarDirective;
   @Input()mInfo: MarkerInfo;
 
   public source = Globals.dataURL;
   public features: any[] = Globals.markersJson;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver,
-              private dataModelService: DataModelService,
-              private sharedService: SharedService,
-              public viewContainerRef: ViewContainerRef,
-              private infoSidebarService: InfoSidebarService,
-              private changeDetectorRef: ChangeDetectorRef
-              ) {
-  }
+  isOpened = false;
 
   ngOnInit(): void {
     this.buildInfoTemplate();
@@ -59,7 +61,7 @@ export class InfoSidebarComponent implements OnInit {
   }
 
   private buildInfoTemplate(): void {
-    this.dataModelService.createJson(this.source)
+    this.jsonService.createJson(this.source)
       .subscribe(
         (jsonData) => {
           // Passing JSON data to the json global variable

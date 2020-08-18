@@ -9,7 +9,7 @@ import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 export class SharedService {
 
   private mInfo = new BehaviorSubject<MarkerInfo>(
-    new MarkerInfo(MarkerInfoComponent, {Facultet: 'Nothing selected'}));
+    new MarkerInfo(MarkerInfoComponent, {}));
   sharedMarkerInfo = this.mInfo.asObservable();
 
   constructor() { }

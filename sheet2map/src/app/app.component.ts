@@ -1,7 +1,8 @@
-import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import { InfoSidebarService } from './_services/info-sidebar.service';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MarkerInfo} from './info-sidebar/info-item';
 import {SharedService} from './_services/shared.service';
+import {MatSidenav} from '@angular/material/sidenav';
+import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 
 @Component({
   selector: 'app-root',
@@ -9,26 +10,22 @@ import {SharedService} from './_services/shared.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'sheet2map';
-  public appTemplate = 'leaflet-template';
   markerInfo: typeof MarkerInfo;
   mInfo: MarkerInfo;
 
   constructor(private sharedService: SharedService,
-              private componentFactoryResolver: ComponentFactoryResolver,
-              public viewContainerRef: ViewContainerRef) {
+              private infoSidebarToggleService: InfoSidebarToggleService) {
   }
 
   ngOnInit(): void {
     this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
       this.mInfo = mInfo;
     });
-
   }
 
-  toggleAppTemplate(): void {
-    this.appTemplate = this.appTemplate === 'agm-template' ? 'leaflet-template' : 'agm-template';
+  ngAfterViewInit(): void {
   }
 }
 

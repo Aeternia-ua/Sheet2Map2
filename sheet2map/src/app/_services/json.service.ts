@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class DataModelService {
+export class JsonService {
 
   constructor(private http: HttpClient) { }
 

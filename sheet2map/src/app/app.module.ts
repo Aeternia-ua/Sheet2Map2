@@ -10,7 +10,6 @@ import { AgmMapComponent } from './agm-map/agm-map.component';
 import {AGMMarkerService} from './_services/agm-marker.service';
 import { DataParserComponent } from './data-parser/data-parser.component';
 import { LayersComponent } from './layers/layers.component';
-// import { InfowindowComponent } from './infowindow/infowindow.component';
 import {MatListModule} from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -18,21 +17,28 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { InfoSidebarDirective } from './directives/info-sidebar.directive';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
-import {MarkerInfo} from './info-sidebar/info-item';
 import {SharedService} from './_services/shared.service';
+import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
+import {RouterModule, Routes} from '@angular/router';
+import { LayoutComponent } from './layout/layout.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
+const appRoutes: Routes = [
+  { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
+  { path: 'map', component: MapComponent },
+  { path: 'agm-map', component: AgmMapComponent }
+];
 @NgModule({
   declarations: [
     AppComponent,
     AgmMapComponent,
     MapComponent,
-    // SpreadsheetComponent,
     DataParserComponent,
     LayersComponent,
-    // InfowindowComponent,
     InfoSidebarComponent,
     InfoSidebarDirective,
     MarkerInfoComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,14 +49,19 @@ import {SharedService} from './_services/shared.service';
     BrowserAnimationsModule,
     MatListModule,
     MatCardModule,
-    MatSidenavModule
+    MatSidenavModule,
+    RouterModule.forRoot(
+      appRoutes,
+      {useHash: true}
+    ),
+    MatButtonToggleModule,
   ],
-  // exports: [MarkerInfoComponent],
   providers: [
     MarkerService,
     AGMMarkerService,
     InfoSidebarComponent,
-    SharedService
+    SharedService,
+    InfoSidebarToggleService
   ],
   entryComponents: [ MarkerInfoComponent ],
   bootstrap: [AppComponent]

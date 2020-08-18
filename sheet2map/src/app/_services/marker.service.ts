@@ -5,7 +5,6 @@ import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 import { Globals } from '../globals';
 import { MarkerIcon } from '../interfaces/marker-icon';
-import {InfoSidebarService} from './info-sidebar.service';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
@@ -18,7 +17,6 @@ import {SharedService} from './shared.service';
 export class MarkerService {
 
   constructor(private http: HttpClient,
-              private infoSidebarService: InfoSidebarService,
               private infoSidebarComponent: InfoSidebarComponent,
               private sharedService: SharedService,
               ) { }

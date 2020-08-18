@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Globals } from '../globals';
-import { DataModelService } from '../_services/data-model.service';
+import { JsonService } from '../_services/json.service';
 
 @Component({
   selector: 'app-infowindow',
@@ -15,16 +15,16 @@ export class InfowindowComponent implements AfterViewInit {
   // public infoWindowContainer = document.getElementById('infowindow');
   public infoWindowContainer = document.getElementsByTagName('mat-sidenav');
 
-  constructor(private dataModelService: DataModelService) { }
+  constructor(private JsonService: JsonService) { }
 
   ngAfterViewInit(): void {
     this.buildDataModel();
   }
   private buildDataModel(): void {
-    this.dataModelService.createJson(this.source)
+    this.JsonService.createJson(this.source)
       .subscribe(
         (jsonData) => {
-          this.dataModel = this.dataModelService.createDataTemplate(jsonData);
+          this.dataModel = this.JsonService.createDataTemplate(jsonData);
           Globals.dataModel.fill(this.dataModel);
           console.log('resulting dataModel: ' + this.dataModel);
           this.buildInfoWindowTemplate(this.dataModel);

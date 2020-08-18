@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { Globals } from '../globals';
 import { AGMMarkerService } from '../_services/agm-marker.service';
 import {MapsAPILoader} from '@agm/core';
+import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 
 @Component({
   selector: 'app-agm-map',
@@ -19,14 +20,15 @@ export class AgmMapComponent implements AfterViewInit {
   mapOptions: google.maps.MapOptions;
 
   constructor(public mapsApiLoader: MapsAPILoader,
-              private agmMarkerService: AGMMarkerService) {
+              private agmMarkerService: AGMMarkerService,
+              private infoSidebarToggleService: InfoSidebarToggleService) {
      this.mapsApiLoader = mapsApiLoader;
+  }
 
-     this.mapsApiLoader.load().then(() => {
+  ngAfterViewInit(): void {
+    this.mapsApiLoader.load().then(() => {
        this.initMap();
     });
-  }
-  ngAfterViewInit(): void {
   }
 
   private initMap(): void {
@@ -34,10 +36,14 @@ export class AgmMapComponent implements AfterViewInit {
     // Google Map options
     this.mapOptions = {
       center: this.coordinates,
-      zoom: Globals.mapZoom
+      zoom: Globals.mapZoom,
+      fullscreenControl: false
     };
     this.agmMap = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
-    console.log("this.gMap ", this.gMap);
     this.agmMarkerService.createMarkers(this.agmMap);
+    // Close info sidebar when map is clicked
+    this.agmMap.addListener('click', () => {
+      this.infoSidebarToggleService.close();
+    });
   }
 }
