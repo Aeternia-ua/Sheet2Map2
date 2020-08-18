@@ -1,8 +1,9 @@
 <div class="marker-info">
   <ul>
-    <li *ngFor="let item of data | keyvalue">
+    <li *ngFor="let item of data | keyvalue; last as last">
       <h4>{{item.key}}</h4>
       <p>{{item.value}}</p>
+      <mat-divider [inset]="false" *ngIf="!last"></mat-divider>
     </li>
   </ul>
 </div>

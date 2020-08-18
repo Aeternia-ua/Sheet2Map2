@@ -7,8 +7,8 @@ import {
   ViewContainerRef,
   ChangeDetectionStrategy, ChangeDetectorRef, ElementRef, Directive, Output, EventEmitter, AfterViewInit
 } from '@angular/core';
-import {InfoSidebarDirective} from '../directives/info-sidebar.directive';
-import {InfoComponent} from '../interfaces/info.component';
+import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
+import {InfoComponent} from '../_interfaces/info.component';
 import {MarkerInfo} from './info-item';
 import {JsonService} from '../_services/json.service';
 import { Globals } from '../globals';

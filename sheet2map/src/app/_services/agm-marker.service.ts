@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import MarkerClusterer from '@google/markerclustererplus';
 import { Globals } from '../globals';
-import {AgmMarkerIcon} from '../interfaces/marker-icon';
+import {AgmMarkerIcon} from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
@@ -31,7 +31,7 @@ export class AGMMarkerService {
             });
             marker.properties = props;
             marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
-            this.createMarkerIcon(marker, 'blue');
+            this.createMarkerIcon(marker, 'blue2');
             gMarkers.push(marker);
 
             marker.addListener('click', (e) => {
@@ -48,8 +48,8 @@ export class AGMMarkerService {
     this.sharedService.nextMarkerInfo(mInfo);
   }
   private createMarkerIcon(marker, color): void {
-    let url = 'http://maps.google.com/mapfiles/ms/icons/';
-    url += color + '-dot.png';
+    let url = '../../assets/img/';
+    url += color + '.svg';
     this.agmMarkerIcon = {
       label: {
         fontFamily: 'Fontawesome',
@@ -57,7 +57,7 @@ export class AGMMarkerService {
       },
       icon: {
         url: url,
-        scaledSize: new google.maps.Size(40, 40)
+        scaledSize: new google.maps.Size(45, 45)
       }
     };
     marker.setOptions(this.agmMarkerIcon);

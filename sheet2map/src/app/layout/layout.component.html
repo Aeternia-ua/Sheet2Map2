@@ -1,12 +1,27 @@
-<mat-button-toggle-group name="mapType" aria-label="Map Type">
-  <mat-button-toggle routerLink='/map'>Leaflet Map</mat-button-toggle>
-  <mat-button-toggle routerLink='/agm-map'>Google Map</mat-button-toggle>
-</mat-button-toggle-group>
-<mat-sidenav-container>
-  <mat-sidenav #markerInfoSidebar position="end" mode="side" opened="false">
-    <app-info-sidebar></app-info-sidebar>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<div id="wrapper">
+    <mat-toolbar class="main-toolbar">
+        <div class="filter-button-container">
+          <button  mat-mini-fab color="primary" aria-label="Filters" (click)="filterSidebar.toggle()">
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+        </div>
+    <mat-button-toggle-group name="mapType" aria-label="Map Type">
+      <mat-button-toggle routerLink='/map'>Leaflet Map</mat-button-toggle>
+      <mat-button-toggle routerLink='/agm-map'>Google Map</mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-toolbar>
+  <mat-sidenav-container>
+    <mat-sidenav #filterSidebar position="start" mode="side" opened="false">
+      <section class="filter1-section">
+        <mat-checkbox class="filter1-margin">Check me!</mat-checkbox>
+      </section>
+    </mat-sidenav>
+
+    <mat-sidenav #markerInfoSidebar position="end" mode="side" opened="false">
+      <app-info-sidebar></app-info-sidebar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

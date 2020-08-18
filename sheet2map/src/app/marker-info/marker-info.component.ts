@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {InfoComponent} from '../interfaces/info.component';
+import {InfoComponent} from '../_interfaces/info.component';
 
 @Component({
   selector: 'app-marker-info',

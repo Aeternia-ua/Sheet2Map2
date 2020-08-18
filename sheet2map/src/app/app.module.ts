@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
-import { MapComponent } from './map/map.component';
+import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 import { MarkerService } from './_services/marker.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AgmMapComponent } from './agm-map/agm-map.component';
@@ -15,24 +15,28 @@ import {MatCardModule} from '@angular/material/card';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
-import { InfoSidebarDirective } from './directives/info-sidebar.directive';
+import { InfoSidebarDirective } from './_directives/info-sidebar.directive';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
 import {SharedService} from './_services/shared.service';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 import {RouterModule, Routes} from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
-  { path: 'map', component: MapComponent },
-  { path: 'agm-map', component: AgmMapComponent }
+  { path: 'map', component: LeafletMapComponent },
+  { path: 'agm-leaflet-map', component: AgmMapComponent }
 ];
 @NgModule({
   declarations: [
     AppComponent,
     AgmMapComponent,
-    MapComponent,
+    LeafletMapComponent,
     DataParserComponent,
     LayersComponent,
     InfoSidebarComponent,
@@ -55,6 +59,10 @@ const appRoutes: Routes = [
       {useHash: true}
     ),
     MatButtonToggleModule,
+    MatToolbarModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [
     MarkerService,

@@ -12,10 +12,10 @@ import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service
 export class AgmMapComponent implements AfterViewInit {
   @ViewChild('mapContainer', { static: false }) gMap: ElementRef;
   agmMap: google.maps.Map;
-  title = 'Sheet2Map Google map';
+  title = 'Sheet2Map Google leaflet-map';
   lat = Globals.mapCenter[0];
   lng = Globals.mapCenter[1];
-  // Coordinates to set the center of the map
+  // Coordinates to set the center of the leaflet-map
   coordinates: google.maps.LatLng;
   mapOptions: google.maps.MapOptions;
 
@@ -41,7 +41,7 @@ export class AgmMapComponent implements AfterViewInit {
     };
     this.agmMap = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
     this.agmMarkerService.createMarkers(this.agmMap);
-    // Close info sidebar when map is clicked
+    // Close info sidebar when leaflet-map is clicked
     this.agmMap.addListener('click', () => {
       this.infoSidebarToggleService.close();
     });

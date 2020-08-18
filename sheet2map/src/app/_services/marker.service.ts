@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 import { Globals } from '../globals';
-import { MarkerIcon } from '../interfaces/marker-icon';
+import { MarkerIcon } from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
@@ -59,9 +59,10 @@ export class MarkerService {
 
   private createMarkerIcon(marker): void {
     // Using MarkerIcon interface
-    this.markerIcon = L.AwesomeMarkers.icon(
-          {markerColor: 'red', prefix: 'fa', icon: 'plus'}
-          );
+    this.markerIcon = L.AwesomeMarkers.icon({
+            markerColor: 'red',
+            prefix: 'fa', icon: 'plus'
+    });
     marker.setIcon(this.markerIcon);
   }
 }
