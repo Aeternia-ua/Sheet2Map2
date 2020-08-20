@@ -14,6 +14,16 @@ export class JsonService {
     .pipe(map(response => response));
   }
 
+  buildInfoTemplate(source, features): void {
+    this.createJson(source)
+      .subscribe(
+        (jsonData) => {
+          // Passing JSON data to the json global variable
+          features = jsonData['features'];
+        }
+    );
+  }
+
   createDataTemplate(data): [] {
     let keys;
     let template;

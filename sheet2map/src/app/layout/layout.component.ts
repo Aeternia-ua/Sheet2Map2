@@ -3,6 +3,7 @@ import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {SharedService} from '../_services/shared.service';
 import {MatSidenav} from '@angular/material/sidenav';
+import {Globals} from '../globals';
 
 @Component({
   selector: 'app-layout',
@@ -13,6 +14,7 @@ export class LayoutComponent implements OnInit {
   @ViewChild('markerInfoSidebar', {static: true}) markerInfoSidebar: MatSidenav;
   @Input()mInfo: MarkerInfo;
   toggleActive = false;
+  public features: any[] = Globals.markersJson;
 
   constructor(private sharedService: SharedService,
               private changeDetectorRef: ChangeDetectorRef,

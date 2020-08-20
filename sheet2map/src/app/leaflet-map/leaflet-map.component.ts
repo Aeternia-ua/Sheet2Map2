@@ -36,7 +36,6 @@ export class LeafletMapComponent implements AfterViewInit {
     });
     basemap.addTo(this.map);
     this.map.addEventListener('click', () => {
-      console.log('leaflet-map is clicked');
       this.infoSidebarToggleService.close();
     });
   }

@@ -26,6 +26,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { SearchPipe } from './_pipes/search.pipe';
+import {FormsModule} from '@angular/forms';
+import { SearchComponent } from './search/search.component';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -43,6 +46,8 @@ const appRoutes: Routes = [
     InfoSidebarDirective,
     MarkerInfoComponent,
     LayoutComponent,
+    SearchPipe,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +68,7 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatIconModule,
     MatButtonModule,
+    FormsModule,
   ],
   providers: [
     MarkerService,

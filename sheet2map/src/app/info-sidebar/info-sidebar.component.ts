@@ -38,10 +38,8 @@ export class InfoSidebarComponent implements OnInit {
   public source = Globals.dataURL;
   public features: any[] = Globals.markersJson;
 
-  isOpened = false;
-
   ngOnInit(): void {
-    this.buildInfoTemplate();
+    this.jsonService.buildInfoTemplate(this.source, this.features);
     this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
         this.mInfo = mInfo;
         this.changeDetectorRef.markForCheck();
@@ -58,15 +56,5 @@ export class InfoSidebarComponent implements OnInit {
     viewContainerRef.clear();
     const componentRef = viewContainerRef.createComponent<InfoComponent>(componentFactory);
     componentRef.instance.data = markerInfo.data;
-  }
-
-  private buildInfoTemplate(): void {
-    this.jsonService.createJson(this.source)
-      .subscribe(
-        (jsonData) => {
-          // Passing JSON data to the json global variable
-          this.features = jsonData['features'];
-        }
-    );
   }
 }
