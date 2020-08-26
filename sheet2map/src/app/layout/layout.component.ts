@@ -13,8 +13,6 @@ import {Globals} from '../globals';
 export class LayoutComponent implements OnInit {
   @ViewChild('markerInfoSidebar', {static: true}) markerInfoSidebar: MatSidenav;
   @Input()mInfo: MarkerInfo;
-  toggleActive = false;
-  public features: any[] = Globals.markersJson;
 
   constructor(private sharedService: SharedService,
               private changeDetectorRef: ChangeDetectorRef,

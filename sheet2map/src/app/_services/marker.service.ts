@@ -9,6 +9,7 @@ import {MarkerInfo} from '../info-sidebar/info-item';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
+import {JsonService} from "./json.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,40 +18,41 @@ import {SharedService} from './shared.service';
 export class MarkerService {
 
   constructor(private http: HttpClient,
+              private jsonService: JsonService,
               private infoSidebarComponent: InfoSidebarComponent,
               private sharedService: SharedService,
               ) { }
 
-  public markersData = Globals.dataURL;
+  public json = Globals.dataURL;
   markerClusterGroup: L.markerClusterGroup;
   markerIcon: MarkerIcon;
   public markerInfo: MarkerInfo;
 
   createMarkers(map: L.map): void {
-    const markerClusterGroup = new L.markerClusterGroup();
+  const markerClusterGroup = new L.markerClusterGroup();
 
-    this.http.get(this.markersData).subscribe((res: any) => {
-      for (const c of res.features) {
-        const lat = c.geometry.coordinates[0];
-        const lon = c.geometry.coordinates[1];
-        // Accessing feature properties
-        const props = c.properties;
-        let marker: any;
-        // TODO Use json feature property lat and lon
-        marker = new L.marker([lon, lat]);
-        marker.properties = props;
-        marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
-        marker
-          .on('click', (e) => {
-            this.newMarkerInfo(e.target.markerInfo);
-          });
+  this.jsonService.getFeatures().subscribe((features: any) => {
+  // this.http.get(this.json).subscribe((jsonData: any) => {
+    for (const feature of features) {
+      const lat = feature.geometry.coordinates[0];
+      const lon = feature.geometry.coordinates[1];
+      // Accessing feature properties
+      const props = feature.properties;
+      let marker: any;
+      // TODO Use json feature property lat and lon
+      marker = new L.marker([lon, lat]);
+      marker.properties = props;
+      marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
+      marker
+        .on('click', (e) => {
+          this.newMarkerInfo(e.target.markerInfo);
+        });
 
-        this.createMarkerIcon(marker);
-        markerClusterGroup.addLayer(marker);
-      }
-      map.addLayer(markerClusterGroup);
-
-    });
+      this.createMarkerIcon(marker);
+      markerClusterGroup.addLayer(marker);
+    }
+    map.addLayer(markerClusterGroup);
+  });
   }
 
   newMarkerInfo(mInfo): void {

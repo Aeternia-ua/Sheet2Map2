@@ -29,6 +29,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { SearchPipe } from './_pipes/search.pipe';
 import {FormsModule} from '@angular/forms';
 import { SearchComponent } from './search/search.component';
+import {SearchService} from "./_services/search.service";
+import {JsonService} from "./_services/json.service";
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -74,8 +76,10 @@ const appRoutes: Routes = [
     MarkerService,
     AGMMarkerService,
     InfoSidebarComponent,
+    JsonService,
     SharedService,
-    InfoSidebarToggleService
+    InfoSidebarToggleService,
+    SearchService
   ],
   entryComponents: [ MarkerInfoComponent ],
   bootstrap: [AppComponent]

@@ -35,15 +35,12 @@ export class InfoSidebarComponent implements OnInit {
   @ViewChild(InfoSidebarDirective, { static: true }) appInfoSidebar: InfoSidebarDirective;
   @Input()mInfo: MarkerInfo;
 
-  public source = Globals.dataURL;
-  public features: any[] = Globals.markersJson;
-
   ngOnInit(): void {
-    this.jsonService.buildInfoTemplate(this.source, this.features);
     this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
         this.mInfo = mInfo;
         this.changeDetectorRef.markForCheck();
         this.loadMarkerInfoComponent();
+        console.log(this.mInfo);
       }
     );
   }
@@ -57,4 +54,5 @@ export class InfoSidebarComponent implements OnInit {
     const componentRef = viewContainerRef.createComponent<InfoComponent>(componentFactory);
     componentRef.instance.data = markerInfo.data;
   }
+
 }

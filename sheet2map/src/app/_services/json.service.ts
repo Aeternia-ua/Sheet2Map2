@@ -1,39 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import {Globals} from "../globals";
+import {Observable, of} from "rxjs";
+import {MarkerInfo} from "../info-sidebar/info-item";
+import {MarkerInfoComponent} from "../marker-info/marker-info.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class JsonService {
+  private sourceUrl = Globals.dataURL;
+  private features: object;
+  private json;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  createJson(src) {
-    return this.http.get<Response>(src)
+  getJson = (): Observable<Response> => this.json = this.http.get<Response>(this.sourceUrl)
     .pipe(map(response => response));
-  }
 
-  buildInfoTemplate(source, features): void {
-    this.createJson(source)
-      .subscribe(
-        (jsonData) => {
-          // Passing JSON data to the json global variable
-          features = jsonData['features'];
-        }
-    );
-  }
-
-  createDataTemplate(data): [] {
-    let keys;
-    let template;
-    const features = data.features;
-    features.forEach(feature => {
-      keys = Object.keys(feature.properties);
-    }
-    );
-    template = [...new Set(keys)];
-    return template;
+  // TODO: Return an immutable object
+  // TODO: use JsonService to get features when creating AGM and Leaflet markers
+  getFeatures(): Observable<object> {
+    return this.getJson()
+      .pipe(map(source => {
+        this.features = source['features'];
+        return this.features;
+    }));
   }
 
 }
+

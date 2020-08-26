@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {Globals} from '../globals';
+import {Component, Input, OnInit} from '@angular/core';
 import {JsonService} from '../_services/json.service';
+import {SearchService} from "../_services/search.service";
 
 @Component({
   selector: 'app-search',
@@ -8,16 +8,25 @@ import {JsonService} from '../_services/json.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  // TODO Create a shared service for json schema
-  public source = Globals.dataURL;
-  public features: any[] = Globals.markersJson;
+  // TODO Create a shared service for json model
   search = '';
-  constructor(private jsonService: JsonService) { }
+  features: object;
+
+  constructor(private jsonService: JsonService,
+    private searchService: SearchService) { }
 
   ngOnInit(): void {
-    const searchArray = this.jsonService.buildInfoTemplate(this.source, this.features);
-    console.log(searchArray);
-    console.log("markers.Json ", Globals.markersJson);
+    this.getFeatures();
   }
 
+  getFeatures(): void {
+    this.jsonService.getFeatures().subscribe((features: object) => {console.log('json service features ', features)
+      this.searchService.printFeatureProperties(features);
+    });
+
+    // TODO: Pass features to local variable
+    this.features = this.jsonService.getFeatures().subscribe((features: object) => this.features = features);
+    console.log('search component features' , this.features);
+
+  }
 }

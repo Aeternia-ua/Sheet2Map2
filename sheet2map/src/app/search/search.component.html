@@ -1,11 +1,10 @@
 <input type="search"  [(ngModel)]="search">
 
-<div *ngFor="let feature of (features | search:search) as folder">
-  {{feature.Facultet}}
-  {{feature.size}}
+<!--<div *ngFor="let feature of (features | async | search:search)">-->
+<!--  {{feature.Facultet}}-->
 
-</div>
+<!--</div>-->
 
-<div *ngIf="(features | search:search).length <1">
-  Not Found
-</div>
+<!--<div *ngIf="(features | async | search:search).length <1">-->
+<!--  Not Found-->
+<!--</div>-->
