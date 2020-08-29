@@ -13,6 +13,7 @@ export class JsonService {
   private sourceUrl = Globals.dataURL;
   private features: object;
   private json;
+  private properties: any;
 
   constructor(private http: HttpClient) {
   }

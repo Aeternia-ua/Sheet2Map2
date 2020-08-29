@@ -6,13 +6,17 @@ import {JsonService} from "./json.service";
 })
 export class SearchService {
   @Input()features;
+  properties: any;
 
   constructor(private jsonService: JsonService) { }
 
-  // Get feature properties
-  // TODO: then implement search by property value
-  printFeatureProperties(features) {
-          console.log('feature properties', features[0].properties)
+  // Create dynamic placeholder based on random property value
+  getRandomProperty(features) {
+    let randomFeature = features[Math.floor(Math.random() * features.length)];
+    let properties = Object.values(randomFeature.properties);
+    let randomProperty = properties[Math.floor(Math.random() * properties.length)];
+    return randomProperty;
   }
 }
+
 

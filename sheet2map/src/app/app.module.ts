@@ -26,11 +26,15 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import { SearchPipe } from './_pipes/search.pipe';
-import {FormsModule} from '@angular/forms';
+import { SearchPipe } from './search/search.pipe';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import {SearchService} from "./_services/search.service";
 import {JsonService} from "./_services/json.service";
+import {MatOptionModule} from "@angular/material/core";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatInputModule} from "@angular/material/input";
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -48,8 +52,8 @@ const appRoutes: Routes = [
     InfoSidebarDirective,
     MarkerInfoComponent,
     LayoutComponent,
-    SearchPipe,
     SearchComponent,
+    SearchPipe,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +75,11 @@ const appRoutes: Routes = [
     MatIconModule,
     MatButtonModule,
     FormsModule,
+    MatOptionModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   providers: [
     MarkerService,
@@ -81,6 +90,7 @@ const appRoutes: Routes = [
     InfoSidebarToggleService,
     SearchService
   ],
+  exports: [ MatFormFieldModule, MatInputModule ],
   entryComponents: [ MarkerInfoComponent ],
   bootstrap: [AppComponent]
 })

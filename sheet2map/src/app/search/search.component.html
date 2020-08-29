@@ -1,10 +1,24 @@
-<input type="search"  [(ngModel)]="search">
+<form class="search-form">
+  <mat-form-field class="search-form-field" appearance="outline">
+    <mat-label>Search here</mat-label>
+    <input matInput
+           type="search"
+           [(ngModel)]="searchInput"
+           id="search-input"
+           placeholder="Ex. {{randomProperty}}"
+           [formControl]="searchControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+<!--      If search user input is less that one character long or null, don't show autocomplete suggestions list-->
+      <div *ngIf="searchInput?.length >= 1">
+        <div *ngFor="let properties of features | keyvalue">
+          <mat-option *ngFor="let property of properties.value | keyvalue | SearchPipe: searchInput">
+            {{property.key}}: {{property.value}}
+<!--          <span *ngIf="property.value == null || property.value == ''">Nothing matches your search</span>-->
+          </mat-option>
+        </div>
+      </div>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
 
-<!--<div *ngFor="let feature of (features | async | search:search)">-->
-<!--  {{feature.Facultet}}-->
-
-<!--</div>-->
-
-<!--<div *ngIf="(features | async | search:search).length <1">-->
-<!--  Not Found-->
-<!--</div>-->
