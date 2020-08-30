@@ -32,7 +32,7 @@ export class MarkerService {
   const markerClusterGroup = new L.markerClusterGroup();
 
   this.jsonService.getFeatures().subscribe((features: any) => {
-  // this.http.get(this.json).subscribe((jsonData: any) => {
+
     for (const feature of features) {
       const lat = feature.geometry.coordinates[0];
       const lon = feature.geometry.coordinates[1];

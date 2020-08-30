@@ -5,18 +5,18 @@
            type="search"
            [(ngModel)]="searchInput"
            id="search-input"
-           placeholder="Ex. {{randomProperty}}"
+           placeholder="Ex. {{randomPlaceholder}}"
            [formControl]="searchControl"
            [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete">
-<!--      If search user input is less that one character long or null, don't show autocomplete suggestions list-->
-      <div *ngIf="searchInput?.length >= 1">
-        <div *ngFor="let properties of features | keyvalue">
-          <mat-option *ngFor="let property of properties.value | keyvalue | SearchPipe: searchInput">
-            {{property.key}}: {{property.value}}
-<!--          <span *ngIf="property.value == null || property.value == ''">Nothing matches your search</span>-->
+<!--  If search user input is less that one character long or null, don't show autocomplete suggestions list-->
+      <div *ngIf="searchInput?.length >= 2">
+          <mat-option *ngFor="let feature of features | keyvalue | SearchPipe: searchInput.toLowerCase()">
+              <div matTooltip="{{feature.value.representativeProperty}}"
+              [matTooltipPosition]=tooltipPosition.value>
+                <span (click)="this.searchService.locateMarker(feature)">{{feature.value.representativeProperty}}</span>
+              </div>
           </mat-option>
-        </div>
       </div>
     </mat-autocomplete>
   </mat-form-field>
