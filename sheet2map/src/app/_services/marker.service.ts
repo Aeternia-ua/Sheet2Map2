@@ -67,6 +67,7 @@ export class MarkerService {
     });
     marker.setIcon(this.markerIcon);
   }
+
 }
 
 

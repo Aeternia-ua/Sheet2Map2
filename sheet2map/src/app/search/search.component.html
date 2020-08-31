@@ -14,7 +14,7 @@
           <mat-option *ngFor="let feature of features | keyvalue | SearchPipe: searchInput.toLowerCase()">
               <div matTooltip="{{feature.value.representativeProperty}}"
               [matTooltipPosition]=tooltipPosition.value>
-                <span (click)="this.searchService.locateMarker(feature)">{{feature.value.representativeProperty}}</span>
+                <span (click)="this.searchService.updateSelectedResult(feature)">{{feature.value.representativeProperty}}</span>
               </div>
           </mat-option>
       </div>

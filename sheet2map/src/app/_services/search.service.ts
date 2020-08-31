@@ -1,11 +1,20 @@
-import {Injectable, Input} from '@angular/core';
+import {Injectable, Input, Type} from '@angular/core';
+import {BehaviorSubject} from "rxjs";
+
+// export class Features {
+//   constructor(public component: Type<Feature>, public data: any) {}
+// }
+//
+// class Feature extends Features {
+// }
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  // @Input()features;
-  // properties: any;
+  //Create a subject to share selected search item between search component and map component
+  selectedResult = new BehaviorSubject<object>([{}]);
+  sharedSelectedResult = this.selectedResult.asObservable();
 
   constructor() { }
 
@@ -25,14 +34,9 @@ export class SearchService {
     return randomProperty;
   }
 
-  locateMarker(feature, map): object {
-    console.log("feature to locate is ", feature);
-    let lat = feature.value.geometry.coordinates[0];
-    let lon = feature.value.geometry.coordinates[1];
-    // Zoom to searched marker
-    // map.setView(feature.[lon, lat], 13);
-    console.log('search marker coordinates ', [lon, lat]);
-    return feature;
+  // Pass in a new selected search item to the BehaviorSubject
+  updateSelectedResult(selectedResult): any {
+    this.selectedResult.next(selectedResult);
   }
 }
 

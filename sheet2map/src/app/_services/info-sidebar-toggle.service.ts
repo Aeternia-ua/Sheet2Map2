@@ -13,13 +13,11 @@ export class InfoSidebarToggleService {
     this.markerInfoSidebar = markerInfoSidebar;
   }
     public open() {
-    console.log('open');
     this.markerInfoSidebar.opened = true;
     return this.markerInfoSidebar.open();
   }
 
   public close() {
-    console.log('close');
     return this.markerInfoSidebar.close();
   }
 

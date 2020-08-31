@@ -15,19 +15,22 @@ export class SearchComponent implements OnInit {
   searchControl = new FormControl();
   tooltipPosition = new FormControl('after');
   public randomPlaceholder: any;
+  private selectedResult: any;
 
   constructor(private jsonService: JsonService,
     private searchService: SearchService) { }
 
   ngOnInit(): void {
     this.getFeatures();
+    this.searchService.sharedSelectedResult.subscribe(selectedResult => {
+      this.selectedResult = selectedResult;
+    })
   }
 
   getFeatures(): void {
     this.jsonService.getFeatures().subscribe((features: object) => {
       this.features = features;
       this.searchService.getSearchProperties(features);
-      console.log(this.features);
       this.randomPlaceholder = this.searchService.getRandomPlaceholder(features);
     });
   }

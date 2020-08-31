@@ -7,22 +7,25 @@ import {MarkerInfo} from '../info-sidebar/info-item';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
 import {JsonService} from "./json.service";
+import {Marker} from "../marker";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AGMMarkerService {
   public json = Globals.dataURL;
+  public gMarkers: any[];
   public markerInfo: MarkerInfo;
   markerClusterer: MarkerClusterer;
   agmMarkerIcon: AgmMarkerIcon;
+  private clusteringOptions: any;
 
   constructor(private http: HttpClient,
               private jsonService: JsonService,
               private sharedService: SharedService) { }
 
   createMarkers(map): void {
-      const gMarkers = [];
+    this.gMarkers = [];
       this.jsonService.getFeatures().subscribe((features: any) => {
           for (const feature of features) {
             const LatLng = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
@@ -34,15 +37,18 @@ export class AGMMarkerService {
             marker.properties = props;
             marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
             this.createMarkerIcon(marker, 'blue2');
-            gMarkers.push(marker);
+            this.gMarkers.push(marker);
 
-            marker.addListener('click', (e) => {
+            marker.addListener('click', () => {
               // Get marker info on click
               this.newMarkerInfo(marker.markerInfo);
             });
           }
-          this.markerClusterer = new MarkerClusterer(map, gMarkers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+          this.clusteringOptions = {
+            maxZoom: 10,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+          };
+          this.markerClusterer = new MarkerClusterer(map, this.gMarkers, this.clusteringOptions);
     });
   }
 
