@@ -4,7 +4,7 @@ import { AgmCoreModule } from '@agm/core';
 
 import { AppComponent } from './app.component';
 import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
-import { MarkerService } from './_services/marker.service';
+import { LeafletMarkerService } from './_services/leaflet-marker.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AgmMapComponent } from './agm-map/agm-map.component';
 import {AGMMarkerService} from './_services/agm-marker.service';
@@ -84,7 +84,7 @@ const appRoutes: Routes = [
     MatTooltipModule
   ],
   providers: [
-    MarkerService,
+    LeafletMarkerService,
     AGMMarkerService,
     InfoSidebarComponent,
     JsonService,

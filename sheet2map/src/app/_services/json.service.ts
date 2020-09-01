@@ -22,7 +22,6 @@ export class JsonService {
     .pipe(map(response => response));
 
   // TODO: Return an immutable object
-  // TODO: use JsonService to get features when creating AGM and Leaflet markers
   getFeatures(): Observable<object> {
     return this.getJson()
       .pipe(map(source => {

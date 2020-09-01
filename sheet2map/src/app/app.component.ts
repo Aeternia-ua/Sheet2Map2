@@ -4,6 +4,7 @@ import {SharedService} from './_services/shared.service';
 import {MatSidenav} from '@angular/material/sidenav';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 import {SearchService} from "./_services/search.service";
+import {MarkerService} from "./_services/marker.service";
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   mInfo: MarkerInfo;
   selectedResult: any;
 
-  constructor(private sharedService: SharedService,
-              private searchService: SearchService,
-              private infoSidebarToggleService: InfoSidebarToggleService) {
+  constructor(private markerService: MarkerService,
+              private sharedService: SharedService,
+              private searchService: SearchService) {
   }
 
   ngOnInit(): void {
+    // TODO: Check whether it is reasonable create markers in parent component
+    this.markerService.createMarkers();
     this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
       this.mInfo = mInfo;
     });

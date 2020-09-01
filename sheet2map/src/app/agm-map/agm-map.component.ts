@@ -7,6 +7,7 @@ import {MarkerInfo} from "../info-sidebar/info-item";
 import {MarkerInfoComponent} from "../marker-info/marker-info.component";
 import {SharedService} from "../_services/shared.service";
 import {SearchService} from "../_services/search.service";
+import {MarkerService} from "../_services/marker.service";
 
 @Component({
   selector: 'app-agm-map',
@@ -48,6 +49,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   }
 
   private initMap(): void {
+    console.log('init map');
     this.coordinates = new google.maps.LatLng(this.lat, this.lng);
     // Google Map options
     this.mapOptions = {
@@ -63,11 +65,15 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   }
     findMarker(feature): void {
       try {
-        let markers = this.agmMarkerService.gMarkers;
-        console.log("marker", markers[0].properties);
+        let markers = this.agmMarkerService.agmMarkers;
+        console.log("marker for search id", markers[0].id);
         console.log(' feature ', feature.value.properties);
-          // markers.forEach(e => {let t = e.properties
-          //   console.log(t)});
+          markers.forEach(marker => {
+            let id = marker.id
+            console.log('marker id ', id)});
+          let result = markers.filter(marker => {marker.id.includes('7232916b-5c88-41f4-b5f0-c44c4c3b9c8f')});
+          console.log('result ', result);
+
         // return selectedMarker;
         // let LatLng = new google.maps.LatLng(feature.value.geometry.coordinates[1], feature.value.geometry.coordinates[0]);
         // const props = feature.value.properties;
@@ -80,7 +86,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
       } catch (error) {
       }
   }
-  newMarkerInfo(mInfo): void {
-    this.sharedService.nextMarkerInfo(mInfo);
-  }
+  // newMarkerInfo(mInfo): void {
+  //   this.sharedService.nextMarkerInfo(mInfo);
+  // }
 }

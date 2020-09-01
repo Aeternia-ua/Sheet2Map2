@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
-import { MarkerService } from '../_services/marker.service';
+import { LeafletMarkerService } from '../_services/leaflet-marker.service';
 import { Globals } from '../globals';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
@@ -19,7 +19,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   private map;
   private selectedResult: any;
 
-  constructor(private markerService: MarkerService,
+  constructor(private markerService: LeafletMarkerService,
               private sharedService: SharedService,
               private infoSidebarToggleService: InfoSidebarToggleService,
               private searchService: SearchService) {
