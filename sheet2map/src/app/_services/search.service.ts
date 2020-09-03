@@ -1,30 +1,15 @@
 import {Injectable, Input, Type} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
-// export class Features {
-//   constructor(public component: Type<Feature>, public data: any) {}
-// }
-//
-// class Feature extends Features {
-// }
-
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  //Create a subject to share selected search item between search component and map component
+  //Create a subject to share selected search item between search component and map components
   selectedResult = new BehaviorSubject<object>([{}]);
   sharedSelectedResult = this.selectedResult.asObservable();
 
   constructor() { }
-
-  getSearchProperties(features): void {
-    features.forEach(feature => {
-      let props = Object.values(feature.properties).join(', ').toString();
-      feature.representativeProperty = props;
-      feature.searchProperty = props.toLowerCase();
-    });
-  }
 
   // Create dynamic placeholder based on random property value
   getRandomPlaceholder(features) {

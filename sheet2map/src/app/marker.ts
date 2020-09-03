@@ -1,6 +1,34 @@
+import {MarkerInfo} from "./info-sidebar/info-item";
+import {Feature} from "./feature";
+import {MarkerInfoComponent} from "./marker-info/marker-info.component";
+
 export class Marker {
-  constructor(public id: GUID,
-              public feature: any) {}
+  private markerID: string;
+  private markerInfo: MarkerInfo;
+  private representativeProperty: string;
+  private searchProperty: string;
+  private feature: Feature;
+
+  constructor( feature: Feature) {
+    this.markerID = Guid.newGuid();
+    this.feature = feature;
+    this.markerInfo = this.buildMarkerInfo();
+    this.representativeProperty = this.buildRepresentativeProperty();
+    this.searchProperty = this.buildSearchProperty();
+  }
+
+  private buildRepresentativeProperty(): string {
+    return Object.values(this.feature.Properties).join(', ').toString();
+  }
+
+  private buildSearchProperty(): string {
+    return this.representativeProperty.toLowerCase();
+  }
+
+  private buildMarkerInfo(): MarkerInfo {
+    return new MarkerInfo(MarkerInfoComponent, {...this.feature.Properties});
+  }
+
 }
 
 export type GUID = string & {

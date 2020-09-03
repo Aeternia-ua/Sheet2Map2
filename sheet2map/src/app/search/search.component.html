@@ -9,12 +9,12 @@
            [formControl]="searchControl"
            [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete">
-<!--  If search user input is less that one character long or null, don't show autocomplete suggestions list-->
+<!--  If search user input is less that two characters long or null, don't show autocomplete suggestions list-->
       <div *ngIf="searchInput?.length >= 2">
-          <mat-option *ngFor="let feature of features | keyvalue | SearchPipe: searchInput.toLowerCase()">
-              <div matTooltip="{{feature.value.representativeProperty}}"
+          <mat-option *ngFor="let marker of markers | async | keyvalue | SearchPipe: searchInput.toLowerCase()">
+              <div matTooltip="{{marker.value.representativeProperty}}"
               [matTooltipPosition]=tooltipPosition.value>
-                <span (click)="this.searchService.updateSelectedResult(feature)">{{feature.value.representativeProperty}}</span>
+                <span (click)="this.searchService.updateSelectedResult(marker)">{{marker.value.representativeProperty}}</span>
               </div>
           </mat-option>
       </div>

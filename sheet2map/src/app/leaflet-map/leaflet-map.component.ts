@@ -8,6 +8,9 @@ import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service
 import {SearchService} from "../_services/search.service";
 import {MarkerInfoComponent} from "../marker-info/marker-info.component";
 import {SharedService} from "../_services/shared.service";
+import {Observable} from "rxjs";
+import {share} from "rxjs/operators";
+import {MarkerService} from "../_services/marker.service";
 
 @Component({
   selector: 'app-leaflet-map',
@@ -17,12 +20,15 @@ import {SharedService} from "../_services/shared.service";
 
 export class LeafletMapComponent implements OnInit, AfterViewInit {
   private map;
+  readonly markers: Observable<any[]> = this.markerService.createMarkers().pipe(share());
   private selectedResult: any;
 
-  constructor(private markerService: LeafletMarkerService,
+  constructor(
+              private leafletMarkerService: LeafletMarkerService,
               private sharedService: SharedService,
               private infoSidebarToggleService: InfoSidebarToggleService,
-              private searchService: SearchService) {
+              private searchService: SearchService,
+              private markerService: MarkerService) {
   }
 
   ngOnInit(): void {
@@ -35,11 +41,12 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.markerService.createMarkers(this.map);
+    this.markers.subscribe(markers => {
+      console.log('markers ', markers);
+    this.leafletMarkerService.createMarkers(this.map, markers)});
   }
   private initMap(): void {
     this.map = L.map('map', {
-      // Leaflet leaflet-map options
       center: Globals.mapCenter,
       zoom: Globals.mapZoom
     });
@@ -54,13 +61,16 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  findMarker(feature): void {
+  findMarker(marker): void {
     try {
-      let latLng = [feature.value.geometry.coordinates[1], feature.value.geometry.coordinates[0]];
-      const props = feature.value.properties;
-      feature.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
-      this.newMarkerInfo(feature.markerInfo);
-      return this.map.setView(latLng, 17); // Zoom to selected search result
+      // console.log('leaflet selected marker ', marker);
+      let id = marker.value.id;
+      // console.log('leaflet selected marker ', marker, id);
+      // let latLng = [feature.value.geometry.coordinates[1], feature.value.geometry.coordinates[0]];
+      // const props = feature.value.properties;
+      // feature.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
+      // this.newMarkerInfo(feature.markerInfo);
+      // return this.map.setView(latLng, 17); // Zoom to selected search result
     } catch (error) {
       console.log('coords undefined');
     }

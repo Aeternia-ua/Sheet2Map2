@@ -10,6 +10,7 @@ import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
 import {JsonService} from "./json.service";
+import {MarkerService} from "./marker.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ import {JsonService} from "./json.service";
 export class LeafletMarkerService {
 
   constructor(private http: HttpClient,
-              private jsonService: JsonService,
+              private markerService: MarkerService,
               private infoSidebarComponent: InfoSidebarComponent,
               private sharedService: SharedService,
               ) { }
@@ -28,31 +29,31 @@ export class LeafletMarkerService {
   markerIcon: MarkerIcon;
   public markerInfo: MarkerInfo;
 
-  createMarkers(map: L.map): void {
+  createMarkers(map: L.map, markers: any[]): any {
   const markerClusterGroup = new L.markerClusterGroup();
-
-  this.jsonService.getFeatures().subscribe((features: any) => {
-
-    for (const feature of features) {
+  // this.markerService.createMarkers().subscribe((markers: any[]) => {
+    console.log('marker [0] from leaflet ', markers[0], markers[0].id);
+    for (const marker of markers) {
+      const feature = marker.feature;
       const lat = feature.geometry.coordinates[0];
-      const lon = feature.geometry.coordinates[1];
+      const lng = feature.geometry.coordinates[1];
       // Accessing feature properties
       const props = feature.properties;
-      let marker: any;
-      // TODO Use json feature property lat and lon
-      marker = new L.marker([lon, lat]);
-      marker.properties = props;
-      marker.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
-      marker
+      let lMarker: any;
+      lMarker = new L.marker([lng, lat]);
+      lMarker.id = marker.id;
+      lMarker.markerInfo = marker.markerInfo;
+
+      lMarker
         .on('click', (e) => {
           this.newMarkerInfo(e.target.markerInfo);
         });
 
-      this.createMarkerIcon(marker);
-      markerClusterGroup.addLayer(marker);
+      this.createMarkerIcon(lMarker);
+      markerClusterGroup.addLayer(lMarker);
     }
     map.addLayer(markerClusterGroup);
-  });
+  // });
   }
 
   newMarkerInfo(mInfo): void {

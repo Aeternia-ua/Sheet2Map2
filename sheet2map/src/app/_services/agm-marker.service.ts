@@ -7,16 +7,16 @@ import {MarkerInfo} from '../info-sidebar/info-item';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
 import {JsonService} from "./json.service";
-import {Marker} from "../marker";
 import {MarkerService} from "./marker.service";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
+import {map, share} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AGMMarkerService {
   public json = Globals.dataURL;
-  public markers: any[];
+  public markers: Observable<any[]>;
   public agmMarkers: any[];
   public markerInfo: MarkerInfo;
   markerClusterer: MarkerClusterer;
@@ -28,39 +28,28 @@ export class AGMMarkerService {
               private markerService: MarkerService,
               private sharedService: SharedService) { }
 
-  createMarkers(map): void {
-    // this.markerService.createMarkers().subscribe((markers: any[]) => {
-      this.markers = this.markerService.markers;
+  createMarkers(gMap, markers: any[]): any {
       this.agmMarkers = [];
-
-      for (const marker of this.markers) {
-        const id = marker.id;
+        for (const marker of markers) {
         const feature = marker.feature;
         const LatLng = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
-        const properties = feature.properties;
         let agmMarker: any;
-        agmMarker = new google.maps.Marker({
-          position: LatLng,
-        });
-        agmMarker.id = id;
-        agmMarker.properties = properties;
-        agmMarker.markerInfo = new MarkerInfo(MarkerInfoComponent, {...properties});
+        agmMarker = new google.maps.Marker({position: LatLng});
+        agmMarker.id = marker.id;
+        agmMarker.markerInfo = marker.markerInfo;
         this.createMarkerIcon(agmMarker, 'blue2');
         this.agmMarkers.push(agmMarker);
-        // console.log('agmmarker ', agmMarker);
 
-        agmMarker.addListener('click', () => {// Get marker info on click
+        agmMarker.addListener('click', () => { // Get marker info on click
           this.newMarkerInfo(agmMarker.markerInfo);
         });
-
       };
+        console.log('marker [0] from google maps ', markers[0], markers[0].id);
       this.clusteringOptions = {
         maxZoom: 10,
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
       };
-      this.markerClusterer = new MarkerClusterer(map, this.agmMarkers, this.clusteringOptions);
-
-    // })
+      this.markerClusterer = new MarkerClusterer(gMap, this.agmMarkers, this.clusteringOptions);
   };
 
   newMarkerInfo(mInfo): void {
