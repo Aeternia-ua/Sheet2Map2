@@ -8,7 +8,7 @@ import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service
 import {SearchService} from "../_services/search.service";
 import {MarkerInfoComponent} from "../marker-info/marker-info.component";
 import {SharedService} from "../_services/shared.service";
-import {Observable} from "rxjs";
+import {Observable, of} from 'rxjs';
 import {share} from "rxjs/operators";
 import {MarkerService} from "../_services/marker.service";
 
@@ -20,7 +20,7 @@ import {MarkerService} from "../_services/marker.service";
 
 export class LeafletMapComponent implements OnInit, AfterViewInit {
   private map;
-  readonly markers: Observable<any[]> = this.markerService.createMarkers().pipe(share());
+  readonly markers: Observable<any[]> = this.markerService.getMarkers();
   private selectedResult: any;
 
   constructor(
@@ -32,18 +32,18 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    //Subscribe to search selection to zoom the map to the selected marker
+    // Subscribe to search selection to zoom the map to the selected marker
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;
       this.findMarker(this.selectedResult);
-    })
+    });
     }
 
   ngAfterViewInit(): void {
     this.initMap();
+    console.log(of(this.markerService.fetchMarkers()));
     this.markers.subscribe(markers => {
-      console.log('markers ', markers);
-    this.leafletMarkerService.createMarkers(this.map, markers)});
+      this.leafletMarkerService.createMarkers(this.map, markers); });
   }
   private initMap(): void {
     this.map = L.map('map', {
@@ -64,7 +64,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   findMarker(marker): void {
     try {
       // console.log('leaflet selected marker ', marker);
-      let id = marker.value.id;
+      const id = marker.value.markerID;
       // console.log('leaflet selected marker ', marker, id);
       // let latLng = [feature.value.geometry.coordinates[1], feature.value.geometry.coordinates[0]];
       // const props = feature.value.properties;

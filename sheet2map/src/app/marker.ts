@@ -9,6 +9,10 @@ export class Marker {
   private searchProperty: string;
   private feature: Feature;
 
+  private guid(guid: string): GUID {
+    return guid as GUID;
+  }
+
   constructor( feature: Feature) {
     this.markerID = Guid.newGuid();
     this.feature = feature;

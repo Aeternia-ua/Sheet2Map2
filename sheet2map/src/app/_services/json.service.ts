@@ -19,7 +19,7 @@ export class JsonService {
   }
 
   getJson = (): Observable<Response> => this.json = this.http.get<Response>(this.sourceUrl)
-    .pipe(map(response => response));
+    .pipe(map(response => response))
 
   // TODO: Return an immutable object
   getFeatures(): Observable<object> {

@@ -1,44 +1,52 @@
-import { Injectable } from '@angular/core';
-import {JsonService} from "./json.service";
-import {Guid, GUID, Marker} from "../marker";
-import {BehaviorSubject, Observable, of, Subject} from "rxjs";
-import {map} from "rxjs/operators";
-import {MarkerInfo} from "../info-sidebar/info-item";
-import {MarkerInfoComponent} from "../marker-info/marker-info.component";
-import {Memoize} from "typescript-memoize";
-import {Markers} from "../markers";
-import {Feature} from "../feature";
+import {Injectable, Optional} from '@angular/core';
+import {JsonService} from './json.service';
+import {Marker} from '../marker';
+import {of} from 'rxjs';
+import {map, share} from 'rxjs/operators';
+import {Feature} from '../feature';
+import {MarkerProviderService} from './marker-provider.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarkerService {
-  // public markers: any[];
-  markers: Observable<any[]>;
 
-  constructor(private jsonService: JsonService) { }
+  constructor(private jsonService: JsonService,
+              private markerProviderService: MarkerProviderService) {
+  }
 
-  // TODO: Return an immutable object
-    createMarkers(): Observable<any[]> {
-    // Get features from Json feature collection
-    return this.jsonService.getJson().pipe(map(source => {
-        const markers = [];
-        const features = source['features'];
-        for (let feature of features) {
-          let newFeature = new Feature();
-          newFeature.Properties = feature.properties;
-          let marker = new Marker(newFeature);
-          // console.log('markerService marker ', marker);
-          markers.push(marker);
+  public fetchMarkers(): any {
+    return this.jsonService.getJson().pipe(map(json => {
+      this.markerProviderService.MarkersCache = [];
+      const features = json['features'];
+      for (const feature of features) {
+          const newFeature = new Feature(feature.geometry, feature.properties, feature.type);
+          const marker = new Marker(newFeature);
+          this.markerProviderService.MarkersCache.push(marker);
         }
-        console.log('marker [0] from marker service ', markers[0], markers[0].id);
-        return markers;
-    }));
+      console.log('shared markers ', this.markerProviderService.MarkersCache);
+      return this.markerProviderService.MarkersCache;
+    }), share()); // Make an observable shareable between different components
   }
-  private guid(guid: string) : GUID {
-    return guid as GUID;
+
+  // TODO: Return cashed markers
+  getMarkers(): any {
+    // Data available
+    if (this.markerProviderService.MarkersCache) {
+      console.log('Data available');
+      return of(this.markerProviderService.MarkersCache);
+    }
+    // Request pending
+    else if (this.markerProviderService.ObservableCache) {
+      console.log('Request pending');
+      return this.markerProviderService.ObservableCache;
+    }
+    // New request needed
+    else {
+      this.markerProviderService.ObservableCache = this.fetchMarkers();
+      console.log('New request needed');
+    }
+    return this.markerProviderService.ObservableCache;
   }
-  getMarkers(): Observable<any[]> {
-    return this.markers = this.createMarkers();
-  }
+
 }

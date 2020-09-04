@@ -3,13 +3,12 @@ import { Globals } from '../globals';
 import { AGMMarkerService } from '../_services/agm-marker.service';
 import {MapsAPILoader} from '@agm/core';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
-import {MarkerInfo} from "../info-sidebar/info-item";
-import {MarkerInfoComponent} from "../marker-info/marker-info.component";
-import {SharedService} from "../_services/shared.service";
-import {SearchService} from "../_services/search.service";
-import {MarkerService} from "../_services/marker.service";
-import {Observable, Subject, timer} from "rxjs";
-import {mapTo, share, tap} from "rxjs/operators";
+import {SharedService} from '../_services/shared.service';
+import {SearchService} from '../_services/search.service';
+import {MarkerService} from '../_services/marker.service';
+import {Observable, Subject, timer} from 'rxjs';
+import {mapTo, share, tap} from 'rxjs/operators';
+import {Memoize} from 'typescript-memoize';
 
 @Component({
   selector: 'app-agm-map',
@@ -26,7 +25,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   coordinates: google.maps.LatLng;
   mapOptions: google.maps.MapOptions;
   private selectedResult: any;
-  readonly markers: Observable<any[]> = this.markerService.getMarkers().pipe(share());
+  readonly markers: Observable<any[]> = this.markerService.getMarkers();
 
   constructor(public mapsApiLoader: MapsAPILoader,
               private markerService: MarkerService,
@@ -39,9 +38,10 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    //Subscribe to search selection to zoom the map to the selected marker
+    // Subscribe to search selection to zoom the map to the selected marker
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;
+      console.log('this.selectedResult ', this.selectedResult);
       this.findMarker(this.selectedResult);
     });
   }
@@ -51,8 +51,8 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
        this.initMap();
        // Subscribe to shared observable 'markers'
        this.markers.subscribe(markers => {
-         this.agmMarkerService.createMarkers(this.map, markers)
-       })
+         this.agmMarkerService.createMarkers(this.map, markers);
+       });
     });
   }
 
@@ -74,12 +74,12 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
     findMarker(marker): void {
       try {
         const agmMarkers = this.agmMarkerService.agmMarkers;
-        const selectedMarkerId = marker.value.id;
-        console.log('selected via search marker ', marker.value, selectedMarkerId);
-        console.log('the same marker from google maps markers ', agmMarkers[0].id);
-        let selectedMarker = agmMarkers.find(agmMarker => agmMarker.id === selectedMarkerId);
+        const selectedMarkerId = marker.value.markerID;
+        console.log('selected!! ', selectedMarkerId);
+        console.log('google maps marker 0 ', agmMarkers[0]);
+        const selectedMarker = agmMarkers.find(agmMarker => agmMarker.markerID === selectedMarkerId);
         console.log( 'google maps marker match is --- ', selectedMarker);
-        let LatLng = new google.maps.LatLng(selectedMarker.value.feature.geometry.coordinates[1], selectedMarker.value.feature.geometry.coordinates[0]);
+        const LatLng = new google.maps.LatLng(selectedMarker.value.feature.geometry.coordinates[1], selectedMarker.value.feature.geometry.coordinates[0]);
         this.map.panTo(LatLng);
         return selectedMarker;
 

@@ -31,17 +31,16 @@ export class LeafletMarkerService {
 
   createMarkers(map: L.map, markers: any[]): any {
   const markerClusterGroup = new L.markerClusterGroup();
-  // this.markerService.createMarkers().subscribe((markers: any[]) => {
-    console.log('marker [0] from leaflet ', markers[0], markers[0].id);
-    for (const marker of markers) {
+  console.log('marker [0] from leaflet ', markers[0], markers[0].markerID);
+  for (const marker of markers) {
       const feature = marker.feature;
       const lat = feature.geometry.coordinates[0];
       const lng = feature.geometry.coordinates[1];
       // Accessing feature properties
-      const props = feature.properties;
+      // const props = feature.properties;
       let lMarker: any;
       lMarker = new L.marker([lng, lat]);
-      lMarker.id = marker.id;
+      lMarker.markerID = marker.markerID;
       lMarker.markerInfo = marker.markerInfo;
 
       lMarker
@@ -52,8 +51,7 @@ export class LeafletMarkerService {
       this.createMarkerIcon(lMarker);
       markerClusterGroup.addLayer(lMarker);
     }
-    map.addLayer(markerClusterGroup);
-  // });
+  map.addLayer(markerClusterGroup);
   }
 
   newMarkerInfo(mInfo): void {

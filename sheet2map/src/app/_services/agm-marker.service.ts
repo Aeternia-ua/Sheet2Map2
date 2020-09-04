@@ -6,10 +6,9 @@ import {AgmMarkerIcon} from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
-import {JsonService} from "./json.service";
-import {MarkerService} from "./marker.service";
-import {Observable, of} from "rxjs";
-import {map, share} from "rxjs/operators";
+import {JsonService} from './json.service';
+import {MarkerService} from './marker.service';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +29,15 @@ export class AGMMarkerService {
 
   createMarkers(gMap, markers: any[]): any {
       this.agmMarkers = [];
-        for (const marker of markers) {
+      // console.log('markers for google map ', markers);
+      for (const marker of markers) {
         const feature = marker.feature;
         const LatLng = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
         let agmMarker: any;
         agmMarker = new google.maps.Marker({position: LatLng});
-        agmMarker.id = marker.id;
+        agmMarker.markerID = marker.markerID;
+        agmMarker.searchProperty = marker.searchProperty;
+        agmMarker.representativeProperty = marker.representativeProperty;
         agmMarker.markerInfo = marker.markerInfo;
         this.createMarkerIcon(agmMarker, 'blue2');
         this.agmMarkers.push(agmMarker);
@@ -43,14 +45,13 @@ export class AGMMarkerService {
         agmMarker.addListener('click', () => { // Get marker info on click
           this.newMarkerInfo(agmMarker.markerInfo);
         });
-      };
-        console.log('marker [0] from google maps ', markers[0], markers[0].id);
+      }
       this.clusteringOptions = {
         maxZoom: 10,
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
       };
       this.markerClusterer = new MarkerClusterer(gMap, this.agmMarkers, this.clusteringOptions);
-  };
+  }
 
   newMarkerInfo(mInfo): void {
     this.sharedService.nextMarkerInfo(mInfo);
