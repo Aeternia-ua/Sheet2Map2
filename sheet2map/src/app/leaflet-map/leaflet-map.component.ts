@@ -64,8 +64,8 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   findMarker(marker): void {
     try {
       // console.log('leaflet selected marker ', marker);
-      const id = marker.value.markerID;
-      // console.log('leaflet selected marker ', marker, id);
+      const markerID = marker.value.markerID;
+      console.log('leaflet selected marker ', marker, markerID);
       // let latLng = [feature.value.geometry.coordinates[1], feature.value.geometry.coordinates[0]];
       // const props = feature.value.properties;
       // feature.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });

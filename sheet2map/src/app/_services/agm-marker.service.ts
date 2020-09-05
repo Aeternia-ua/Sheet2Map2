@@ -4,11 +4,10 @@ import MarkerClusterer from '@google/markerclustererplus';
 import { Globals } from '../globals';
 import {AgmMarkerIcon} from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/info-item';
-import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
 import {JsonService} from './json.service';
 import {MarkerService} from './marker.service';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class AGMMarkerService {
 
   createMarkers(gMap, markers: any[]): any {
       this.agmMarkers = [];
-      // console.log('markers for google map ', markers);
+      console.log('marker for google map ', markers[0]['markerID']);
       for (const marker of markers) {
         const feature = marker.feature;
         const LatLng = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);

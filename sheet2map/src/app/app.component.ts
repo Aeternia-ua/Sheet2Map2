@@ -25,12 +25,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // TODO: Check whether it is reasonable create markers in parent component
-    // this.markerService.createMarkers().subscribe((markers: any[]) => {
-    //   this.markers = this.markerService.markers;
-    // });
-    // console.log('app component markers ', this.markers);
-    // this.markerService.createMarkers();
     this.sharedService.sharedMarkerInfo.subscribe(mInfo => {
       this.mInfo = mInfo;
     });

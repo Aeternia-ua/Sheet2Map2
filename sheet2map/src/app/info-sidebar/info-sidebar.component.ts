@@ -5,15 +5,12 @@ import {
   OnInit,
   ViewChild,
   ViewContainerRef,
-  ChangeDetectionStrategy, ChangeDetectorRef, ElementRef, Directive, Output, EventEmitter, AfterViewInit
-} from '@angular/core';
+  ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
 import {InfoComponent} from '../_interfaces/info.component';
 import {MarkerInfo} from './info-item';
 import {JsonService} from '../_services/json.service';
-import { Globals } from '../globals';
 import {SharedService} from '../_services/shared.service';
-import {MatSidenav} from '@angular/material/sidenav';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 
 @Component({

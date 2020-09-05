@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 
+// In-memory caching data-provider service
 @Injectable({
   providedIn: 'root'
 })
 export class MarkerProviderService {
-  private observableCache: Observable<any[]>;
-  private markersCache: any[];
+  private observableCache: Observable<any[]>; // Store ongoing requests
+  private markersCache: any[]; // Store received data
 
   constructor() { }
 

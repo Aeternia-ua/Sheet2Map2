@@ -26,7 +26,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import { SearchPipe } from './search/search.pipe';
+// import { SearchPipe } from './search/search.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import {SearchService} from "./_services/search.service";
@@ -55,7 +55,7 @@ const appRoutes: Routes = [
     MarkerInfoComponent,
     LayoutComponent,
     SearchComponent,
-    SearchPipe,
+    // SearchPipe,
   ],
   imports: [
     BrowserModule,

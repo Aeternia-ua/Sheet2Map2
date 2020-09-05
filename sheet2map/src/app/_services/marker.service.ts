@@ -1,4 +1,4 @@
-import {Injectable, Optional} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {JsonService} from './json.service';
 import {Marker} from '../marker';
 import {of} from 'rxjs';
@@ -24,7 +24,6 @@ export class MarkerService {
           const marker = new Marker(newFeature);
           this.markerProviderService.MarkersCache.push(marker);
         }
-      console.log('shared markers ', this.markerProviderService.MarkersCache);
       return this.markerProviderService.MarkersCache;
     }), share()); // Make an observable shareable between different components
   }

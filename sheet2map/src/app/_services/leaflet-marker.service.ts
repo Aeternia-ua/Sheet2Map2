@@ -7,9 +7,7 @@ import { Globals } from '../globals';
 import { MarkerIcon } from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/info-item';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
-import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 import {SharedService} from './shared.service';
-import {JsonService} from "./json.service";
 import {MarkerService} from "./marker.service";
 
 @Injectable({
@@ -31,7 +29,7 @@ export class LeafletMarkerService {
 
   createMarkers(map: L.map, markers: any[]): any {
   const markerClusterGroup = new L.markerClusterGroup();
-  console.log('marker [0] from leaflet ', markers[0], markers[0].markerID);
+  console.log('marker [0] from leaflet ', markers[0].markerID);
   for (const marker of markers) {
       const feature = marker.feature;
       const lat = feature.geometry.coordinates[0];
