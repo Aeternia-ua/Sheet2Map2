@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {JsonService} from './json.service';
 import {Marker} from '../marker';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, share} from 'rxjs/operators';
 import {Feature} from '../feature';
 import {MarkerProviderService} from './marker-provider.service';
@@ -47,5 +47,4 @@ export class MarkerService {
     }
     return this.markerProviderService.ObservableCache;
   }
-
 }

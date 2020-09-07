@@ -13,10 +13,9 @@ export class SearchService {
   constructor() { }
 
   searchMarkers(markers: any[], input: string): any[] {
-    console.log('search method marker 0', markers[0]);
     if (!input) { return markers; }
     if (!markers) { return []; }
-    const filteredMarkers = markers.filter(marker => marker.searchProperty.includes(input) >= 1);
+    const filteredMarkers = [markers.filter(marker => marker.searchProperty.includes(input) >= 1)];
     console.log('filtered ', filteredMarkers);
     return filteredMarkers;
   }

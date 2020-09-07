@@ -33,10 +33,13 @@ export class Marker {
     return new MarkerInfo(MarkerInfoComponent, {...this.feature.Properties});
   }
 
-  get RepresentativeProperty(): string {
-    return this.representativeProperty;
+  get Feature(): Feature {
+    return this.feature;
   }
 
+  get MarkerID(): string {
+    return this.markerID;
+  }
 }
 
 export type GUID = string & {

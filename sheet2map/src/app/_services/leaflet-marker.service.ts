@@ -26,16 +26,15 @@ export class LeafletMarkerService {
   markerClusterGroup: L.markerClusterGroup;
   markerIcon: MarkerIcon;
   public markerInfo: MarkerInfo;
+  public markersRef = [];
+  public markers: any[] = [];
 
   createMarkers(map: L.map, markers: any[]): any {
   const markerClusterGroup = new L.markerClusterGroup();
-  console.log('marker [0] from leaflet ', markers[0].markerID);
   for (const marker of markers) {
       const feature = marker.feature;
       const lat = feature.geometry.coordinates[0];
       const lng = feature.geometry.coordinates[1];
-      // Accessing feature properties
-      // const props = feature.properties;
       let lMarker: any;
       lMarker = new L.marker([lng, lat]);
       lMarker.markerID = marker.markerID;
@@ -48,8 +47,12 @@ export class LeafletMarkerService {
 
       this.createMarkerIcon(lMarker);
       markerClusterGroup.addLayer(lMarker);
+      // Create markers array to be able to iterate through clustered markers
+      this.markersRef[marker.markerID] = lMarker;
+      this.markers.push(lMarker);
     }
   map.addLayer(markerClusterGroup);
+  console.log(markerClusterGroup);
   }
 
   newMarkerInfo(mInfo): void {

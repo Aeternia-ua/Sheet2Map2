@@ -3,7 +3,7 @@ export class Feature {
 
 
   constructor(
-    private geometry: object,
+    private geometry: any,
     private properties: object,
     private type: string) {
   }
@@ -16,15 +16,15 @@ export class Feature {
     this.properties = properties;
   }
 
-  get Geometry(): object {
+  get Geometry(): any {
     return this.geometry;
   }
 
-  set Geometry(geometry: object) {
+  set Geometry(geometry: any) {
     this.geometry = geometry;
   }
 
-    get Type(): string {
+  get Type(): string {
     return this.type;
   }
 

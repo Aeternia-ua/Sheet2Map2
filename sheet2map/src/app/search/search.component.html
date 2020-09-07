@@ -1,45 +1,24 @@
-<!--<form class="search-form">-->
-<!--  <mat-form-field class="search-form-field" appearance="outline">-->
-<!--    <mat-label>Search here</mat-label>-->
-<!--    <input matInput-->
-<!--           type="search"-->
-<!--           [(ngModel)]="searchInput"-->
-<!--           id="search-input"-->
-<!--           placeholder="Ex. {{randomPlaceholder}}"-->
-<!--           [formControl]="searchControl"-->
-<!--           [matAutocomplete]="auto">-->
-<!--    <mat-autocomplete #auto="matAutocomplete">-->
-<!--  If search input is less that two characters long or null, don't show autocomplete suggestions list-->
-<!--      <div *ngIf="searchInput?.length >= 2">-->
-<!--          <mat-option *ngFor="let marker of markers | async | keyvalue | SearchPipe: searchInput.toLowerCase()">-->
-<!--              <div matTooltip="{{marker.value.representativeProperty}}"-->
-<!--              [matTooltipPosition]=tooltipPosition.value>-->
-<!--              </div>-->
-<!--          </mat-option>-->
-<!--      </div>-->
-<!--    </mat-autocomplete>-->
-<!--  </mat-form-field>-->
-<!--</form>-->
-<!--    NEW-->
-    <form class="search-form" [formGroup]='searchForm'>
-      <mat-form-field class="search-form-field" appearance="outline">
-        <mat-label>Search here</mat-label>
-        <input matInput
-               [(ngModel)]="searchInput"
-               type="search"
-               id="search-input"
-               placeholder="Ex. {{randomPlaceholder}}"
-               [matAutocomplete]="auto"
-               formControlName='userInput'>
-    </mat-form-field>
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-       <mat-option *ngFor="let marker of (filteredMarkers | async | keyvalue)?.representativeProperty" [value]="property">
-              <div matTooltip="{{property.value}}"
-                   [matTooltipPosition]=tooltipPosition.value>
-                <span (click)="this.searchService.updateSelectedResult(marker)">
-                  {{property.value}}
-                </span>
-              </div>
-      </mat-option>
-    </mat-autocomplete>
-<!--    NEW-->
+ <form class="search-form" [formGroup]='searchForm'>
+    <mat-form-field class="search-form-field" appearance="outline">
+      <mat-label>Search here</mat-label>
+      <input matInput
+             type="search"
+             placeholder="Ex. {{randomPlaceholder}}"
+             [matAutocomplete]="auto"
+             formControlName='userInput'>
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <!--  If search input is less that two characters long or null, don't show autocomplete suggestions list-->
+<!--   <div *ngIf="searchInput?.length >= 2">-->
+    <!--Marker value returns the selected result into search field as a string-->
+     <mat-option *ngFor="let marker of (filteredMarkers | async | keyvalue)"  [value]="marker.value">
+         <div matTooltip="{{marker.value.representativeProperty}}"
+                 [matTooltipPosition]=tooltipPosition.value>
+              <span (click)="this.searchService.updateSelectedResult(marker)">
+                {{marker.value.representativeProperty}}
+              </span>
+         </div>
+     </mat-option>
+<!--    </div>-->
+  </mat-autocomplete>
+ </form>

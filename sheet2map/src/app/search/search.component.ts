@@ -42,7 +42,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
       this.filteredMarkers = this.searchForm.get('userInput').valueChanges
       .pipe(
         debounceTime(300),
-        switchMap(input => this.searchService.searchMarkers(markers, input.toLowerCase()))
+        // switchMap(input => this.searchService.searchMarkers(markers, input.toLowerCase()))
+        switchMap(input => this.searchService.searchMarkers(markers, input))
       );
     });
   }
@@ -50,8 +51,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
   }
-  displayFn(property): any {
-    if (property) { return property.RepresentativeProperty; }
+  displayFn(marker): string {
+    if (marker) {
+      return marker.representativeProperty;
+    }
   }
 }
 
