@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 import {MarkerInfo} from '../info-sidebar/info-item';
-import {SharedService} from '../_services/shared.service';
+import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {MatSidenav} from '@angular/material/sidenav';
 import {Globals} from '../globals';
 
@@ -14,7 +14,7 @@ export class LayoutComponent implements OnInit {
   @ViewChild('markerInfoSidebar', {static: true}) markerInfoSidebar: MatSidenav;
   @Input()mInfo: MarkerInfo;
 
-  constructor(private sharedService: SharedService,
+  constructor(private sharedService: SharedMarkerInfoService,
               private changeDetectorRef: ChangeDetectorRef,
               private infoSidebarToggleService: InfoSidebarToggleService) { }
 

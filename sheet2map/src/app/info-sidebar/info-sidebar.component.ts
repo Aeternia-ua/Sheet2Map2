@@ -10,7 +10,7 @@ import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
 import {InfoComponent} from '../_interfaces/info.component';
 import {MarkerInfo} from './info-item';
 import {JsonService} from '../_services/json.service';
-import {SharedService} from '../_services/shared.service';
+import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class InfoSidebarComponent implements OnInit {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
               private jsonService: JsonService,
-              private sharedService: SharedService,
+              private sharedService: SharedMarkerInfoService,
               public viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private infoSidebarToggleService: InfoSidebarToggleService

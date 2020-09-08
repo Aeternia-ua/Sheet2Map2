@@ -17,7 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { InfoSidebarDirective } from './_directives/info-sidebar.directive';
 import { MarkerInfoComponent } from './marker-info/marker-info.component';
-import {SharedService} from './_services/shared.service';
+import {SharedMarkerInfoService} from './_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 import {RouterModule, Routes} from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
@@ -90,7 +90,7 @@ const appRoutes: Routes = [
     InfoSidebarComponent,
     JsonService,
     MarkerService,
-    SharedService,
+    SharedMarkerInfoService,
     InfoSidebarToggleService,
     SearchService
   ],

@@ -7,9 +7,12 @@
              [matAutocomplete]="auto"
              formControlName='userInput'>
   </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+  <mat-autocomplete #auto="matAutocomplete"
+                    showPanel="false"
+                    isOpen="false"
+                    [displayWith]="displayFn">
     <!--  If search input is less that two characters long or null, don't show autocomplete suggestions list-->
-<!--   <div *ngIf="searchInput?.length >= 2">-->
+<!--   <div *ngIf="'userInput'?.length >= 2" showPanel = true>-->
     <!--Marker value returns the selected result into search field as a string-->
      <mat-option *ngFor="let marker of (filteredMarkers | async | keyvalue)"  [value]="marker.value">
          <div matTooltip="{{marker.value.representativeProperty}}"

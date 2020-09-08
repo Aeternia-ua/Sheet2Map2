@@ -6,7 +6,7 @@ import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 @Injectable({
   providedIn: 'root'
 })
-export class SharedService {
+export class SharedMarkerInfoService {
 
   private mInfo = new BehaviorSubject<MarkerInfo>(
     new MarkerInfo(MarkerInfoComponent, {}));

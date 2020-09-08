@@ -1,6 +1,5 @@
 import {Injectable, Input, Type} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Marker} from '../marker';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,6 @@ export class SearchService {
     if (!input) { return markers; }
     if (!markers) { return []; }
     const filteredMarkers = [markers.filter(marker => marker.searchProperty.includes(input) >= 1)];
-    console.log('filtered ', filteredMarkers);
     return filteredMarkers;
   }
 

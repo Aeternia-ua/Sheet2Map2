@@ -3,12 +3,11 @@ import { Globals } from '../globals';
 import { AGMMarkerService } from '../_services/agm-marker.service';
 import {MapsAPILoader} from '@agm/core';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
-import {SharedService} from '../_services/shared.service';
+import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {SearchService} from '../_services/search.service';
 import {MarkerService} from '../_services/marker.service';
 import {Observable, Subject, timer} from 'rxjs';
-import {mapTo, share, tap} from 'rxjs/operators';
-import {Memoize} from 'typescript-memoize';
+import {Marker} from '../marker';
 
 @Component({
   selector: 'app-agm-map',
@@ -21,8 +20,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   title = 'Sheet2Map Google map';
   lat = Globals.mapCenter[0];
   lng = Globals.mapCenter[1];
-  // Coordinates to set the center of the map
-  coordinates: google.maps.LatLng;
+  coordinates: google.maps.LatLng; // Coordinates to set initial center of the map
   mapOptions: google.maps.MapOptions;
   private selectedResult: any;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
@@ -30,70 +28,65 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   constructor(public mapsApiLoader: MapsAPILoader,
               private markerService: MarkerService,
               private agmMarkerService: AGMMarkerService,
-              private sharedService: SharedService,
+              private sharedService: SharedMarkerInfoService,
               private searchService: SearchService,
               private infoSidebarToggleService: InfoSidebarToggleService) {
     this.mapsApiLoader = mapsApiLoader;
   }
 
   ngOnInit(): void {
-
-    // Subscribe to search selection to zoom the map to the selected marker
+    // Subscribe to search selection to find marker on map
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;
       console.log('this.selectedResult ', this.selectedResult);
-      this.findMarker(this.selectedResult);
+      this.findMarker(this.selectedResult, this.agmMarkerService.clusterMarkers);
     });
   }
 
   ngAfterViewInit(): void {
     this.mapsApiLoader.load().then(() => {
        this.initMap();
-       // Subscribe to shared observable 'markers'
-       this.markers.subscribe(markers => {
+       this.markers.subscribe(markers => { // Subscribe to shared markers data
          this.agmMarkerService.createMarkers(this.map, markers);
+         // To get a reference to the markerLayer mapPane
+         const overlay = new google.maps.OverlayView();
+         overlay.draw = function() {
+            // Assign an id to the markerlayer Pane, so it can be referenced by CSS
+           // TODO: Create custom animation for selected marker
+           // https://stackoverflow.com/questions/27205659/google-map-with-custom-marker-css-animation
+          this.getPanes().markerLayer.id = 'markerLayer';
+          };
+         overlay.setMap(this.map);
        });
     });
   }
 
   private initMap(): void {
-    console.log('init map');
     this.coordinates = new google.maps.LatLng(this.lat, this.lng);
-    // Google Map options
-    this.mapOptions = {
+    this.mapOptions = { // Google Map options
       center: this.coordinates,
       zoom: Globals.mapZoom,
       fullscreenControl: false
     };
     this.map = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
-    // Close info sidebar when map is clicked
     this.map.addListener('click', () => {
-      this.infoSidebarToggleService.close();
+      this.infoSidebarToggleService.close(); // Close info sidebar when map is clicked
+      this.deselect(this.agmMarkerService.selectedMarker); // If exists, deselect previously selected marker
     });
   }
-    findMarker(marker): void {
-      try {
-        const agmMarkers = this.agmMarkerService.agmMarkers;
-        const selectedMarkerId = marker.value.markerID;
-        console.log('selected!! ', selectedMarkerId);
-        console.log('google maps marker 0 ', agmMarkers[0]);
-        const selectedMarker = agmMarkers.find(agmMarker => agmMarker.markerID === selectedMarkerId);
-        console.log( 'google maps marker match is --- ', selectedMarker);
-        const LatLng = new google.maps.LatLng(selectedMarker.value.feature.geometry.coordinates[1], selectedMarker.value.feature.geometry.coordinates[0]);
-        this.map.panTo(LatLng);
-        return selectedMarker;
+  findMarker(marker, cluster): void {
+    try {
+      const selectedMarker: Marker = marker.value;
+      const foundMarker = cluster.find(gmarker => gmarker.markerID === selectedMarker.MarkerID);
+      this.map.panTo(foundMarker.position);
+      this.map.setZoom(13);
+      new google.maps.event.trigger( foundMarker, 'click' );
+    } catch (error) {
+      console.log('Google map search input is undefined');
+    }
+  }
 
-        // return selectedMarker;
-        // let LatLng = new google.maps.LatLng(feature.value.geometry.coordinates[1], feature.value.geometry.coordinates[0]);
-        // const props = feature.value.properties;
-        // console.log('array of markers ', this.agmMarkerService.gMarkers);
-        // feature.setAnimation(google.maps.Animation.BOUNCE);
-        // feature.markerInfo = new MarkerInfo(MarkerInfoComponent, { ...props });
-        // this.newMarkerInfo(feature.markerInfo);
-        // this.map.setZoom(17);
-        // this.map.panTo(LatLng); // Pan and zoom to selected search result
-      } catch (error) {
-            console.log('search input undefined');
-        }
-      }
+  private deselect(marker): google.maps.Marker {
+    if (marker) { return marker.setAnimation(null); }
+  }
 }

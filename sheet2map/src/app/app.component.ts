@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MarkerInfo} from './info-sidebar/info-item';
-import {SharedService} from './_services/shared.service';
+import {SharedMarkerInfoService} from './_services/shared-marker-info.service';
 import {MatSidenav} from '@angular/material/sidenav';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 import {SearchService} from "./_services/search.service";
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   private markers: any;
 
   constructor(private markerService: MarkerService,
-              private sharedService: SharedService,
+              private sharedService: SharedMarkerInfoService,
               private searchService: SearchService) {
   }
 
