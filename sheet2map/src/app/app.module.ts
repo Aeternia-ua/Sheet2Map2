@@ -37,6 +37,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatInputModule} from "@angular/material/input";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MarkerService} from "./_services/marker.service";
+import { HomeComponent } from './home/home.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -55,6 +57,7 @@ const appRoutes: Routes = [
     MarkerInfoComponent,
     LayoutComponent,
     SearchComponent,
+    HomeComponent,
     // SearchPipe,
   ],
   imports: [
@@ -82,7 +85,8 @@ const appRoutes: Routes = [
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatTooltipModule
+    MatTooltipModule,
+    LayoutModule
   ],
   providers: [
     LeafletMarkerService,

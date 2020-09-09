@@ -14,6 +14,7 @@ export class SearchService {
   searchMarkers(markers: any[], input: string): any[] {
     if (!input) { return markers; }
     if (!markers) { return []; }
+    input = input.toLowerCase();
     const filteredMarkers = [markers.filter(marker => marker.searchProperty.includes(input) >= 1)];
     return filteredMarkers;
   }

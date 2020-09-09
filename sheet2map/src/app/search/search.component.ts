@@ -14,14 +14,13 @@ import {debounceTime, switchMap} from 'rxjs/operators';
 })
 export class SearchComponent implements OnInit, AfterViewInit {
   // TODO: Store markers returned by markerService.createMarkers() in memory
-  searchInput: string = '';
-  searchControl = new FormControl();
   tooltipPosition = new FormControl('after');
   public randomPlaceholder: any;
   private selectedResult: any;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
   filteredMarkers: Observable<any[]>;
   searchForm: FormGroup;
+  // userinput: null;
 
   constructor(
               private markerService: MarkerService,
@@ -55,6 +54,18 @@ export class SearchComponent implements OnInit, AfterViewInit {
     if (marker) {
       return marker.representativeProperty;
     }
+  }
+  checkInputLength(): boolean {
+    if (this.searchForm.value.length >= 2) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  clearSearchField(): void {
+    this.searchForm.reset();
   }
 }
 

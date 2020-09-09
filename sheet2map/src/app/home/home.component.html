@@ -1,0 +1,59 @@
+<div id="wrapper">
+  <mat-toolbar color="primary">
+
+    <button
+      type="button"
+      aria-label="Filters"
+      mat-mini-fab
+      color="accent"
+      (click)="drawer.toggle()"
+      *ngIf="isHandset$ | async">
+      <mat-icon aria-label="Filters">filter_alt</mat-icon>
+    </button>
+    <div class="search"><app-search></app-search></div>
+    <mat-button-toggle-group name="mapType" aria-label="Map Type">
+      <mat-button-toggle routerLink='/leaflet-map'>Leaflet Map</mat-button-toggle>
+      <mat-button-toggle routerLink='/agm-map'>Google Map</mat-button-toggle>
+    </mat-button-toggle-group>
+
+  </mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+
+  <mat-sidenav #drawer class="sidenav filter-sidenav"
+               fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item href="#">Link 1</a>
+        <section class="filter1-section">
+          <mat-checkbox class="filter1-margin">Check me!</mat-checkbox>
+        </section>
+      <a mat-list-item href="#">Link 2</a>
+      <a mat-list-item href="#">Link 3</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+<!--  <mat-sidenav #markerInfoSidebar class="sidenav filter-sidenav"-->
+<!--               position="end"-->
+<!--               fixedInViewport-->
+<!--               [attr.role]="(isHandset$ | async) ? 'dialog' : 'information'"-->
+<!--               [opened]="(isHandset$ | async) === false">-->
+<!--    <app-info-sidebar></app-info-sidebar>-->
+<!--  </mat-sidenav>-->
+
+  <mat-sidenav #markerInfoSidebar
+               position="end"
+               mode="side"
+               opened="false">
+    <app-info-sidebar></app-info-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+</div>

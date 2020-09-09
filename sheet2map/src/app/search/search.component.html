@@ -1,18 +1,21 @@
  <form class="search-form" [formGroup]='searchForm'>
-    <mat-form-field class="search-form-field" appearance="outline">
+    <mat-form-field class="search-form-field" appearance="fill">
       <mat-label>Search here</mat-label>
       <input matInput
              type="search"
              placeholder="Ex. {{randomPlaceholder}}"
              [matAutocomplete]="auto"
-             formControlName='userInput'>
+             formControlName='userInput' name='userInput'>
+      <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="searchForm.value.userInput">
+        <mat-icon [inline]="true">close</mat-icon>
+      </button>
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete"
-                    showPanel="false"
-                    isOpen="false"
+                    showPanel = false
+                    isOpen = false
                     [displayWith]="displayFn">
-    <!--  If search input is less that two characters long or null, don't show autocomplete suggestions list-->
-<!--   <div *ngIf="'userInput'?.length >= 2" showPanel = true>-->
+    <!--  If search input is less that one characters long or null, don't show autocomplete suggestions list-->
+   <div *ngIf="searchForm.value.userInput?.length >= 1" showPanel = true>
     <!--Marker value returns the selected result into search field as a string-->
      <mat-option *ngFor="let marker of (filteredMarkers | async | keyvalue)"  [value]="marker.value">
          <div matTooltip="{{marker.value.representativeProperty}}"
@@ -22,6 +25,6 @@
               </span>
          </div>
      </mat-option>
-<!--    </div>-->
+    </div>
   </mat-autocomplete>
  </form>
