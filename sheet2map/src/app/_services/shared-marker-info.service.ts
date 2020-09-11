@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {MarkerInfo} from '../info-sidebar/info-item';
+import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 
 @Injectable({

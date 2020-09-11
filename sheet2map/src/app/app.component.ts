@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {MarkerInfo} from './info-sidebar/info-item';
+import {MarkerInfo} from './info-sidebar/marker-info.class';
 import {SharedMarkerInfoService} from './_services/shared-marker-info.service';
 import {MatSidenav} from '@angular/material/sidenav';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {Globals} from "../globals";
 import {Observable, of} from "rxjs";
-import {MarkerInfo} from "../info-sidebar/info-item";
+import {MarkerInfo} from "../info-sidebar/marker-info.class";
 import {MarkerInfoComponent} from "../marker-info/marker-info.component";
 
 @Injectable({

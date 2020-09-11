@@ -1,4 +1,4 @@
-import {MarkerInfo} from "./info-sidebar/info-item";
+import {MarkerInfo} from "./info-sidebar/marker-info.class";
 import {Feature} from "./feature";
 import {MarkerInfoComponent} from "./marker-info/marker-info.component";
 

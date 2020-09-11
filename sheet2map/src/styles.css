@@ -1,3 +1,7 @@
 @import "~leaflet/dist/leaflet.css";
 /*@import "../src/app/agm-map/agm-map.component.css";*/
 
+/*TOOLBAR*/
+.flexExpand {
+  flex: 1 1 auto;
+}

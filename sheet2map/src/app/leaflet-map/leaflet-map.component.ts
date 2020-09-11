@@ -7,7 +7,7 @@ import {SearchService} from '../_services/search.service';
 import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {Observable, of} from 'rxjs';
 import {MarkerService} from '../_services/marker.service';
-import {Marker} from '../marker';
+import {Marker} from '../marker.class';
 
 @Component({
   selector: 'app-leaflet-map',

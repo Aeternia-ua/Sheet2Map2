@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import MarkerClusterer from '@google/markerclustererplus';
 import { Globals } from '../globals';
-import {AgmMarkerIcon} from '../_interfaces/marker-icon';
-import {MarkerInfo} from '../info-sidebar/info-item';
+// import {AgmMarkerIcon} from '../_interfaces/marker-icon';
+import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {SharedMarkerInfoService} from './shared-marker-info.service';
 import {JsonService} from './json.service';
 import {MarkerService} from './marker.service';
 import {Observable} from 'rxjs';
-import {Marker} from '../marker';
+import {Marker} from '../marker.class';
+import {AgmMarkerIcon} from '../_interfaces/marker-icon';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,7 @@ export class AGMMarkerService {
           optimized: false // Unoptimized markers exist as img elements inside the markerLayer mapPane
         });
         agmMarker.markerID = marker.markerID;
+        agmMarker.properties = marker.feature.properties;
         agmMarker.searchProperty = marker.searchProperty;
         agmMarker.representativeProperty = marker.representativeProperty;
         agmMarker.markerInfo = marker.markerInfo;

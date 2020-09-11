@@ -4,8 +4,8 @@ import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import 'leaflet.awesome-markers';
 import { Globals } from '../globals';
-import { MarkerIcon } from '../_interfaces/marker-icon';
-import {MarkerInfo} from '../info-sidebar/info-item';
+import {LeafletMarkerIcon} from '../_interfaces/marker-icon';
+import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {SharedMarkerInfoService} from './shared-marker-info.service';
 import {MarkerService} from "./marker.service";
@@ -24,7 +24,7 @@ export class LeafletMarkerService {
 
   public json = Globals.dataURL;
   markerClusterGroup: L.markerClusterGroup;
-  markerIcon: MarkerIcon;
+  markerIcon: LeafletMarkerIcon;
   public markerInfo: MarkerInfo;
   public clusterMarkers: VRLayer[];
   selectedMarker: L.marker;
@@ -71,26 +71,13 @@ export class LeafletMarkerService {
     this.setIcon(marker, this.hightlightedColor);
   }
 
-  public setIcon(marker, color): void {
-    // Using MarkerIcon interface
+  public setIcon(marker, color): void { // Using MarkerIcon interface
     this.markerIcon = L.AwesomeMarkers.icon({
             markerColor: color,
             prefix: 'fa', icon: 'plus'
     });
     marker.setIcon(this.markerIcon);
   }
-
-  // private getFlattenedMarkers(layers): void {
-  //   const markers: any[] = [];
-  //   for (const layer of layers) {
-  //       if (layer.getChildCount) {
-  //         markers.push(layer.getAllChildMarkers());
-  //       } else if (layer instanceof L.Marker) {
-  //         markers.push(layer);
-  //       }
-  //     }
-  //   this.flattenedMarkers = [].concat(... markers);
-  // }
 }
 
 

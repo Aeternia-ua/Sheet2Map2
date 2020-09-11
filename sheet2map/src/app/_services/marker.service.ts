@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {JsonService} from './json.service';
-import {Marker} from '../marker';
+import {Marker} from '../marker.class';
 import {Observable, of} from 'rxjs';
 import {map, share} from 'rxjs/operators';
 import {Feature} from '../feature';
@@ -32,18 +32,15 @@ export class MarkerService {
   getMarkers(): any {
     // Data available
     if (this.markerProviderService.MarkersCache) {
-      console.log('Data available');
       return of(this.markerProviderService.MarkersCache);
     }
     // Request pending
     else if (this.markerProviderService.ObservableCache) {
-      console.log('Request pending');
       return this.markerProviderService.ObservableCache;
     }
     // New request needed
     else {
       this.markerProviderService.ObservableCache = this.fetchMarkers();
-      console.log('New request needed');
     }
     return this.markerProviderService.ObservableCache;
   }

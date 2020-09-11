@@ -4,7 +4,7 @@ import {SearchService} from '../_services/search.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MarkerService} from '../_services/marker.service';
 import {Observable, of} from 'rxjs';
-import {Marker} from '../marker';
+import {Marker} from '../marker.class';
 import {debounceTime, switchMap} from 'rxjs/operators';
 
 @Component({
@@ -14,13 +14,12 @@ import {debounceTime, switchMap} from 'rxjs/operators';
 })
 export class SearchComponent implements OnInit, AfterViewInit {
   // TODO: Store markers returned by markerService.createMarkers() in memory
-  tooltipPosition = new FormControl('after');
+  tooltipPosition = new FormControl('below');
   public randomPlaceholder: any;
   private selectedResult: any;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
   filteredMarkers: Observable<any[]>;
   searchForm: FormGroup;
-  // userinput: null;
 
   constructor(
               private markerService: MarkerService,
@@ -41,7 +40,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
       this.filteredMarkers = this.searchForm.get('userInput').valueChanges
       .pipe(
         debounceTime(300),
-        // switchMap(input => this.searchService.searchMarkers(markers, input.toLowerCase()))
         switchMap(input => this.searchService.searchMarkers(markers, input))
       );
     });

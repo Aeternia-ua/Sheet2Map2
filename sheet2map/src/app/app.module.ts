@@ -20,7 +20,6 @@ import { MarkerInfoComponent } from './marker-info/marker-info.component';
 import {SharedMarkerInfoService} from './_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 import {RouterModule, Routes} from '@angular/router';
-import { LayoutComponent } from './layout/layout.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -39,6 +38,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MarkerService} from "./_services/marker.service";
 import { HomeComponent } from './home/home.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { FiltersComponent } from './filters/filters.component';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -55,9 +55,9 @@ const appRoutes: Routes = [
     InfoSidebarComponent,
     InfoSidebarDirective,
     MarkerInfoComponent,
-    LayoutComponent,
     SearchComponent,
     HomeComponent,
+    FiltersComponent,
     // SearchPipe,
   ],
   imports: [

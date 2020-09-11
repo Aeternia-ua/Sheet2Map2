@@ -1,4 +1,4 @@
-import { Marker } from './marker';
+import { Marker } from './marker.class';
 
 describe('Marker', () => {
   it('should create an instance', () => {

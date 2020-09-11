@@ -8,7 +8,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
 import {InfoComponent} from '../_interfaces/info.component';
-import {MarkerInfo} from './info-item';
+import {MarkerInfo} from './marker-info.class';
 import {JsonService} from '../_services/json.service';
 import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';

@@ -7,7 +7,8 @@ import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {SearchService} from '../_services/search.service';
 import {MarkerService} from '../_services/marker.service';
 import {Observable, Subject, timer} from 'rxjs';
-import {Marker} from '../marker';
+import {Marker} from '../marker.class';
+import {FiltersService} from '../_services/filters.service';
 
 @Component({
   selector: 'app-agm-map',
@@ -24,13 +25,15 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   mapOptions: google.maps.MapOptions;
   private selectedResult: any;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
+  private input: boolean;
 
   constructor(public mapsApiLoader: MapsAPILoader,
               private markerService: MarkerService,
               private agmMarkerService: AGMMarkerService,
               private sharedService: SharedMarkerInfoService,
               private searchService: SearchService,
-              private infoSidebarToggleService: InfoSidebarToggleService) {
+              private infoSidebarToggleService: InfoSidebarToggleService,
+              private filtersService: FiltersService) {
     this.mapsApiLoader = mapsApiLoader;
   }
 
@@ -57,6 +60,9 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
           this.getPanes().markerLayer.id = 'markerLayer';
           };
          overlay.setMap(this.map);
+
+         // TODO Get input from filter component
+         // this.filterMarkers(this.agmMarkerService.clusterMarkers);
        });
     });
   }
@@ -66,14 +72,16 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
     this.mapOptions = { // Google Map options
       center: this.coordinates,
       zoom: Globals.mapZoom,
-      fullscreenControl: false
+      fullscreenControl: false,
     };
     this.map = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
+
     this.map.addListener('click', () => {
       this.infoSidebarToggleService.close(); // Close info sidebar when map is clicked
       this.deselect(this.agmMarkerService.selectedMarker); // If exists, deselect previously selected marker
     });
   }
+
   findMarker(marker, cluster): void {
     try {
       const selectedMarker: Marker = marker.value;
@@ -85,7 +93,6 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
       console.log('Google map search input is undefined');
     }
   }
-
   private deselect(marker): google.maps.Marker {
     if (marker) { return marker.setAnimation(null); }
   }

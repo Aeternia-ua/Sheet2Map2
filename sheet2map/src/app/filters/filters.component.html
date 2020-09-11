@@ -1,0 +1,15 @@
+<div class="filters">
+  <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+       <div *ngFor="let filterKey of (keyValues | keyvalue)">
+          <a mat-list-item href="#">{{filterKey.key}}</a>
+          <section class="filter-section">
+            <div *ngFor="let filterValue of (filterKey.value | keyvalue)">
+              <mat-checkbox class="filter" (change)="filterMarkers()">
+              <p>{{filterValue.value}}</p>
+              </mat-checkbox>
+            </div>
+          </section>
+       </div>
+    </mat-nav-list>
+</div>

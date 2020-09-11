@@ -5,7 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 import {MatSidenav} from '@angular/material/sidenav';
-import {MarkerInfo} from '../info-sidebar/info-item';
+import {MarkerInfo} from '../info-sidebar/marker-info.class';
 
 @Component({
   selector: 'app-home',
