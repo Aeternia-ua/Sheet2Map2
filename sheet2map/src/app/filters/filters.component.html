@@ -5,7 +5,8 @@
           <a mat-list-item href="#">{{filterKey.key}}</a>
           <section class="filter-section">
             <div *ngFor="let filterValue of (filterKey.value | keyvalue)">
-              <mat-checkbox class="filter" (change)="filterMarkers()">
+              <mat-checkbox class="filter"
+                            (change)="this.filtersService.getSelectedFilters(filterKey.key, filterValue.value, $event)">
               <p>{{filterValue.value}}</p>
               </mat-checkbox>
             </div>

@@ -12,8 +12,8 @@ import {debounceTime, switchMap} from 'rxjs/operators';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit, AfterViewInit {
-  // TODO: Store markers returned by markerService.createMarkers() in memory
+export class SearchComponent implements OnInit {
+
   tooltipPosition = new FormControl('below');
   public randomPlaceholder: any;
   private selectedResult: any;
@@ -32,9 +32,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
       this.selectedResult = selectedResult;
     });
 
-    this.searchForm = this.formBuilder.group({
-      userInput: null
-    });
+    this.searchForm = this.formBuilder.group({userInput: null});
 
     this.markers.subscribe(markers => {
       this.filteredMarkers = this.searchForm.get('userInput').valueChanges
@@ -45,20 +43,9 @@ export class SearchComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-
-  }
   displayFn(marker): string {
     if (marker) {
       return marker.representativeProperty;
-    }
-  }
-  checkInputLength(): boolean {
-    if (this.searchForm.value.length >= 2) {
-      return true;
-    }
-    else {
-      return false;
     }
   }
 

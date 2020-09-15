@@ -25,7 +25,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   mapOptions: google.maps.MapOptions;
   private selectedResult: any;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
-  private input: boolean;
+  private filteredMarkers: any[];
 
   constructor(public mapsApiLoader: MapsAPILoader,
               private markerService: MarkerService,
@@ -41,9 +41,14 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
     // Subscribe to search selection to find marker on map
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;
-      console.log('this.selectedResult ', this.selectedResult);
-      this.findMarker(this.selectedResult, this.agmMarkerService.clusterMarkers);
+      this.findMarker(this.selectedResult, this.agmMarkerService.clusteredMarkers);
     });
+    // // Subscribe to filter selection to filter markers on map
+    // this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
+    //   this.selectedFilters = selectedFilters;
+    //   this.agmMarkerService.filterMarkers(this.selectedFilters, this.agmMarkerService.clusteredMarkers);
+    // });
+
   }
 
   ngAfterViewInit(): void {
@@ -61,8 +66,11 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
           };
          overlay.setMap(this.map);
 
-         // TODO Get input from filter component
-         // this.filterMarkers(this.agmMarkerService.clusterMarkers);
+         // Subscribe to filter selection to filter markers on map
+         this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
+          this.filteredMarkers = this.filtersService.getFilteredMarkers(selectedFilters, markers);
+          this.agmMarkerService.updateMarkers(this.filteredMarkers);
+         });
        });
     });
   }
@@ -75,14 +83,13 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
       fullscreenControl: false,
     };
     this.map = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
-
     this.map.addListener('click', () => {
       this.infoSidebarToggleService.close(); // Close info sidebar when map is clicked
       this.deselect(this.agmMarkerService.selectedMarker); // If exists, deselect previously selected marker
     });
   }
 
-  findMarker(marker, cluster): void {
+  private findMarker(marker, cluster): void {
     try {
       const selectedMarker: Marker = marker.value;
       const foundMarker = cluster.find(gmarker => gmarker.markerID === selectedMarker.MarkerID);

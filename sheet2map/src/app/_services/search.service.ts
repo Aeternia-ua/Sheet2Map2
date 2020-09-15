@@ -11,7 +11,7 @@ export class SearchService {
 
   constructor() { }
 
-  searchMarkers(markers: any[], input: string): any[] {
+  public searchMarkers(markers: any[], input: string): any[] {
     if (!input) { return markers; }
     if (!markers) { return []; }
     input = input.toLowerCase();

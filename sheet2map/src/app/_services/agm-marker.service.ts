@@ -10,6 +10,7 @@ import {MarkerService} from './marker.service';
 import {Observable} from 'rxjs';
 import {Marker} from '../marker.class';
 import {AgmMarkerIcon} from '../_interfaces/marker-icon';
+import {Filter} from '../filter.class';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class AGMMarkerService {
   markerClusterer: MarkerClusterer;
   agmMarkerIcon: AgmMarkerIcon;
   private clusteringOptions: any;
-  public clusterMarkers: any[];
+  public clusteredMarkers: any[];
   selectedMarker: google.maps.Marker;
 
   constructor(private jsonService: JsonService,
@@ -31,7 +32,7 @@ export class AGMMarkerService {
 
   createMarkers(map, markers: any[]): any {
       this.agmMarkers = [];
-      for (const marker of markers) {
+      markers.forEach(marker => {
         const feature = marker.feature;
         const LatLng = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
         let agmMarker: any;
@@ -48,18 +49,19 @@ export class AGMMarkerService {
         this.setIcon(agmMarker, 'blue2');
         this.agmMarkers.push(agmMarker);
 
-        agmMarker.addListener('click', () => { // Get marker info on click
-          this.newMarkerInfo(agmMarker.markerInfo);
+        agmMarker.addListener('click', () => {
+          this.newMarkerInfo(agmMarker.markerInfo); // Get marker info on click
           this.select(agmMarker);
           this.selectedMarker = agmMarker;
         });
-      }
-      this.clusteringOptions = {
+      })
+
+      this.clusteringOptions = { // Create marker clusterer
         maxZoom: 10,
         imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
       };
       this.markerClusterer = new MarkerClusterer(map, this.agmMarkers, this.clusteringOptions);
-      this.clusterMarkers = this.markerClusterer.getMarkers();
+      this.clusteredMarkers = this.markerClusterer.getMarkers();
   }
 
   newMarkerInfo(mInfo): void {
@@ -86,5 +88,20 @@ export class AGMMarkerService {
       }
     };
     marker.setOptions(this.agmMarkerIcon);
+  }
+
+  public updateMarkers(markers): void {
+    const filteredMarkers: any[] = [];
+    markers.forEach(marker => {
+      const filteredMarker = this.clusteredMarkers.find(gmarker => gmarker.markerID === marker.MarkerID);
+      filteredMarkers.push(filteredMarker);
+    })
+    this.markerClusterer.clearMarkers(); // Update marker clusterer
+    if (filteredMarkers.length > 0) {
+      this.markerClusterer.addMarkers(filteredMarkers);
+    }
+    else {
+      this.markerClusterer.addMarkers(this.clusteredMarkers);
+    }
   }
 }

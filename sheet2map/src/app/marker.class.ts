@@ -1,5 +1,5 @@
 import {MarkerInfo} from "./info-sidebar/marker-info.class";
-import {Feature} from "./feature";
+import {Feature} from "./feature.class";
 import {MarkerInfoComponent} from "./marker-info/marker-info.component";
 
 export class Marker {

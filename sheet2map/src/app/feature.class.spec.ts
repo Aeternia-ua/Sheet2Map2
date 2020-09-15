@@ -1,4 +1,4 @@
-import { Feature } from './feature';
+import { Feature } from './feature.class';
 
 describe('Feature', () => {
   it('should create an instance', () => {

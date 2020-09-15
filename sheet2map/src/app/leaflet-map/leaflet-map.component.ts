@@ -8,6 +8,7 @@ import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {Observable, of} from 'rxjs';
 import {MarkerService} from '../_services/marker.service';
 import {Marker} from '../marker.class';
+import {FiltersService} from '../_services/filters.service';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -19,13 +20,15 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   private map;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
   private selectedResult: any;
+  private filteredMarkers: any[] = [];
 
   constructor(
               private leafletMarkerService: LeafletMarkerService,
               private sharedService: SharedMarkerInfoService,
               private infoSidebarToggleService: InfoSidebarToggleService,
               private searchService: SearchService,
-              private markerService: MarkerService) {
+              private markerService: MarkerService,
+              private filtersService: FiltersService) {
   }
 
   ngOnInit(): void {
@@ -38,10 +41,16 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
     this.markers.subscribe(markers => {
       this.leafletMarkerService.createMarkers(this.map, markers);
 
+      // Subscribe to filter selection to filter markers on map
+      this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
+        this.filteredMarkers = this.filtersService.getFilteredMarkers(selectedFilters, markers);
+        this.leafletMarkerService.updateMarkers(this.filteredMarkers);
+      });
+
       // Subscribe to search selection to find selected marker on the map
       this.searchService.sharedSelectedResult.subscribe(selectedResult => {
         this.selectedResult = selectedResult;
-        this.findMarker(this.selectedResult, this.leafletMarkerService.clusterMarkers, this.leafletMarkerService.layers);
+        this.findMarker(this.selectedResult, this.leafletMarkerService.clusteredMarkers, this.leafletMarkerService.layers);
       });
     });
   }

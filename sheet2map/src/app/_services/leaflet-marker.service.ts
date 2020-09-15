@@ -9,6 +9,7 @@ import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {SharedMarkerInfoService} from './shared-marker-info.service';
 import {MarkerService} from "./marker.service";
+import {Marker} from '../marker.class';
 
 @Injectable({
   providedIn: 'root'
@@ -23,18 +24,19 @@ export class LeafletMarkerService {
               ) { }
 
   public json = Globals.dataURL;
-  markerClusterGroup: L.markerClusterGroup;
+  markerClusterGroup;
   markerIcon: LeafletMarkerIcon;
   public markerInfo: MarkerInfo;
-  public clusterMarkers: VRLayer[];
+  // public clusteredMarkers: VRLayer[];
+  public clusteredMarkers: any[];
   selectedMarker: L.marker;
   public defaultColor = 'blue'; // TODO: Create config for styling default and selected marker
   public hightlightedColor = 'red';
   public layers: any[] = [];
 
   createMarkers(map: L.map, markers: any[]): any {
-  const markerClusterGroup = new L.markerClusterGroup();
-  for (const marker of markers) {
+    this.markerClusterGroup = new L.markerClusterGroup();
+    markers.forEach(marker => {
       const feature = marker.feature;
       const lat = feature.geometry.coordinates[0];
       const lng = feature.geometry.coordinates[1];
@@ -51,17 +53,31 @@ export class LeafletMarkerService {
         });
 
       this.setIcon(lMarker, this.defaultColor);
-      markerClusterGroup.addLayer(lMarker);
-  }
-  map.addLayer(markerClusterGroup);
+      this.markerClusterGroup.addLayer(lMarker);
+    })
+    map.addLayer(this.markerClusterGroup);
   // TODO: You are using only layers[1] to toggle zoom on marker inside marker cluster
-  map.eachLayer(layer => this.layers.push(layer));
-  // TODO
-  this.clusterMarkers = markerClusterGroup.getLayers();
+    map.eachLayer(layer => this.layers.push(layer));
+    this.clusteredMarkers = this.markerClusterGroup.getLayers();
   }
 
   newMarkerInfo(mInfo): void {
     this.sharedService.nextMarkerInfo(mInfo);
+  }
+
+  public updateMarkers(markers): void {
+    const filteredMarkers: any[] = [];
+    markers.forEach(marker => {
+      const filteredMarker = this.clusteredMarkers.find(lmarker => lmarker.markerID === marker.MarkerID);
+      filteredMarkers.push(filteredMarker);
+    });
+    this.markerClusterGroup.clearLayers(); // Update marker clusterer
+    if (filteredMarkers.length > 0) {
+      this.markerClusterGroup.addLayers(filteredMarkers);
+    }
+    else {
+      this.markerClusterGroup.addLayer(this.clusteredMarkers);
+    }
   }
 
   private select(marker: L.marker): void {

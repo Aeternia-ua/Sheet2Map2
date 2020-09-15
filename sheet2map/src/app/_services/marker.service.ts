@@ -3,7 +3,7 @@ import {JsonService} from './json.service';
 import {Marker} from '../marker.class';
 import {Observable, of} from 'rxjs';
 import {map, share} from 'rxjs/operators';
-import {Feature} from '../feature';
+import {Feature} from '../feature.class';
 import {MarkerProviderService} from './marker-provider.service';
 
 @Injectable({
