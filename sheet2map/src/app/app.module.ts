@@ -39,6 +39,7 @@ import {MarkerService} from "./_services/marker.service";
 import { HomeComponent } from './home/home.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FiltersComponent } from './filters/filters.component';
+import { ClarityModule } from '@clr/angular';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -86,7 +87,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatInputModule,
     MatTooltipModule,
-    LayoutModule
+    LayoutModule,
+    ClarityModule
   ],
   providers: [
     LeafletMarkerService,

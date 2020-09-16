@@ -23,6 +23,8 @@
     "@angular/platform-browser": "~10.0.5",
     "@angular/platform-browser-dynamic": "~10.0.5",
     "@angular/router": "~10.0.5",
+    "@clr/angular": "4.0.1",
+    "@clr/ui": "4.0.1",
     "@google/markerclusterer": "^2.0.8",
     "@google/markerclustererplus": "^5.0.4",
     "@types/googlemaps": "^3.39.11",
@@ -38,7 +40,9 @@
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "typescript-memoize": "^1.0.0-alpha.3",
-    "zone.js": "~0.10.3"
+    "zone.js": "~0.10.3",
+    "@clr/icons": "4.0.1",
+    "@webcomponents/webcomponentsjs": "^2.0.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^10.0.0",

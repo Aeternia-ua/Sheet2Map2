@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {of, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {Filter} from '../filter.class';
 
 @Injectable({
@@ -20,29 +20,24 @@ export class FiltersService {
       .map(key => ({ [key]: properties[key] }));
       filterProperties.push(filterProperty);
     }
-    const reduced = [].concat(...filterProperties).reduce((result, object) => {
+    const reduced: any[] = [].concat(...filterProperties).reduce((result, object) => {
         Object.entries(object).forEach(([key, value]) => (result[key] = result[key] || []).push(value));
         return result;
     }, Object.create(null));
-
     const keyValues: object = {};
     Object.entries(reduced).forEach(([key, value]) => keyValues[key] = [... new Set(value)]);
     return keyValues;
     }
-
   // Pass in new selected filtering properties to the BehaviorSubject
   getSelectedFilters(key, value, event): any {
     const selectedFilter = new Filter(key, value);
     if (event.checked) {
-      // const newFilter = Object.assign({}, selectedFilter);
-      // this.selectedFilters.push(selectedFilter);
       this.selectedFilters.push(selectedFilter);
     }
     else {
       this.selectedFilters.splice(this.selectedFilters
       .findIndex(element => element.key === selectedFilter.Key && element.value === selectedFilter.Value), 1);
     }
-    console.log(' getSelectedFilters selected filters ', this.selectedFilters);
     this.selectedFiltersChange.next(this.selectedFilters);
   }
 
@@ -58,7 +53,6 @@ export class FiltersService {
       const selectedValues = selectedFilters.filter(el => el.key === category).map(el => el.value);
       filteredMarkers = this.filterByCategory(filteredMarkers, category, selectedValues);
     });
-
     return filteredMarkers;
   }
 
