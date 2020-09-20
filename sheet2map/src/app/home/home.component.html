@@ -1,48 +1,49 @@
-<div id="wrapper">
-  <mat-toolbar color="primary">
 
-    <span>
-      <button
-        type="button"
-        aria-label="Filters"
-        mat-mini-fab
-        color="accent"
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Filters">filter_alt</mat-icon>
-      </button>
-    </span>
-    <span class="flexExpand"></span>
-    <span class="search"><app-search></app-search></span>
-    <span>
-      <mat-button-toggle-group name="mapType" aria-label="Map Type">
-        <mat-button-toggle routerLink='/leaflet-map'>Leaflet Map</mat-button-toggle>
-        <mat-button-toggle routerLink='/agm-map'>Google Map</mat-button-toggle>
-      </mat-button-toggle-group>
-    </span>
+<div class="main-container">
+    <header class="header header-6">
+      <app-search></app-search>
+      <div class="header-actions">
+        <div class="btn-group btn-primary btn-icon">
+          <button class="btn" routerLink='/leaflet-map'>Leaflet Map</button>
+          <button class="btn" routerLink='/agm-map'>Google Map</button>
+        </div>
+      </div>
+  </header>
 
-  </mat-toolbar>
+  <div class="content-container">
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+      <app-filters></app-filters>
+    </clr-vertical-nav>
+        <div class="map-col content-area"><router-outlet></router-outlet></div>
+  </div>
 
-<mat-sidenav-container class="sidenav-container">
-
-  <mat-sidenav #drawer class="sidenav filter-sidenav"
-               fixedInViewport
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-               [mode]="(isHandset$ | async) ? 'over' : 'side'"
-               [opened]="(isHandset$ | async) === false">
-    <app-filters></app-filters>
-  </mat-sidenav>
-
-  <mat-sidenav #markerInfoSidebar
-               position="end"
-               mode="side"
-               opened="false">
-    <app-info-sidebar></app-info-sidebar>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <!-- Add Content Here -->
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
 </div>
+
+<!--<div id="wrapper">-->
+<!--  <mat-toolbar color="primary">-->
+
+<!--  </mat-toolbar>-->
+
+<!--<mat-sidenav-container class="sidenav-container">-->
+
+<!--  <mat-sidenav #drawer class="sidenav filter-sidenav"-->
+<!--               fixedInViewport-->
+<!--               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"-->
+<!--               [mode]="(isHandset$ | async) ? 'over' : 'side'"-->
+<!--               [opened]="(isHandset$ | async) === false">-->
+<!--    <app-filters></app-filters>-->
+<!--  </mat-sidenav>-->
+
+<!--  <mat-sidenav #markerInfoSidebar-->
+<!--               position="end"-->
+<!--               mode="side"-->
+<!--               opened="false">-->
+<!--    <app-info-sidebar></app-info-sidebar>-->
+<!--  </mat-sidenav>-->
+
+<!--  <mat-sidenav-content>-->
+<!--    &lt;!&ndash; Add Content Here &ndash;&gt;-->
+<!--    <router-outlet></router-outlet>-->
+<!--  </mat-sidenav-content>-->
+<!--</mat-sidenav-container>-->
+<!--</div>-->

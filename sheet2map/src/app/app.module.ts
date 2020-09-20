@@ -25,7 +25,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-// import { SearchPipe } from './search/search.pipe';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import {SearchService} from "./_services/search.service";
@@ -40,6 +39,11 @@ import { HomeComponent } from './home/home.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FiltersComponent } from './filters/filters.component';
 import { ClarityModule } from '@clr/angular';
+import { FiltersDirective } from './_directives/filters.directive';
+import { OptionComponent } from './autocomplete/option/option.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { AutocompleteContentDirective } from './_directives/autocomplete-content.directive';
+import { AutocompleteDirective } from './_directives/autocomplete.directive';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -59,7 +63,11 @@ const appRoutes: Routes = [
     SearchComponent,
     HomeComponent,
     FiltersComponent,
-    // SearchPipe,
+    FiltersDirective,
+    OptionComponent,
+    AutocompleteComponent,
+    AutocompleteContentDirective,
+    AutocompleteDirective,
   ],
   imports: [
     BrowserModule,
@@ -101,7 +109,7 @@ const appRoutes: Routes = [
     SearchService
   ],
   exports: [ MatFormFieldModule, MatInputModule ],
-  entryComponents: [ MarkerInfoComponent ],
+  entryComponents: [ MarkerInfoComponent, AutocompleteComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

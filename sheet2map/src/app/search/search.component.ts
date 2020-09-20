@@ -1,11 +1,11 @@
 import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {JsonService} from '../_services/json.service';
 import {SearchService} from '../_services/search.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {MarkerService} from '../_services/marker.service';
 import {Observable, of} from 'rxjs';
-import {Marker} from '../marker.class';
 import {debounceTime, switchMap} from 'rxjs/operators';
+import {mark} from '@angular/compiler-cli/src/ngtsc/perf/src/clock';
+import {ClrLoadingState} from '@clr/angular';
 
 @Component({
   selector: 'app-search',
@@ -20,6 +20,7 @@ export class SearchComponent implements OnInit {
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
   filteredMarkers: Observable<any[]>;
   searchForm: FormGroup;
+  searchField: FormControl;
 
   constructor(
               private markerService: MarkerService,
@@ -32,10 +33,10 @@ export class SearchComponent implements OnInit {
       this.selectedResult = selectedResult;
     });
 
-    this.searchForm = this.formBuilder.group({userInput: null});
-
+    this.searchForm = this.formBuilder.group({searchField: [this.searchField]});
     this.markers.subscribe(markers => {
-      this.filteredMarkers = this.searchForm.get('userInput').valueChanges
+      console.log(this.searchForm);
+      this.filteredMarkers = this.searchForm.get('searchField').valueChanges
       .pipe(
         debounceTime(300),
         switchMap(input => this.searchService.searchMarkers(markers, input))
@@ -50,7 +51,7 @@ export class SearchComponent implements OnInit {
   }
 
   clearSearchField(): void {
-    this.searchForm.reset();
+    this.searchForm.get('searchField').reset();
   }
 }
 

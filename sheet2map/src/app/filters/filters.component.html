@@ -1,16 +1,19 @@
-<div class="filters">
-  <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-       <div *ngFor="let filterKey of (keyValues | keyvalue)">
-          <a mat-list-item href="#">{{filterKey.key}}</a>
-          <section class="filter-section">
-            <div *ngFor="let filterValue of (filterKey.value | keyvalue)">
-              <mat-checkbox class="filter"
-                            (change)="this.filtersService.getSelectedFilters(filterKey.key, filterValue.value, $event)">
-              <p>{{filterValue.value}}</p>
-              </mat-checkbox>
-            </div>
-          </section>
-       </div>
-    </mat-nav-list>
+<div *ngFor="let filterKey of keyValues | keyvalue">
+  <clr-vertical-nav-group>
+    <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon>
+    {{filterKey.key}}
+    <clr-vertical-nav-group-children *clrIfExpanded>
+      <div *ngFor="let filterValue of (filterKey.value | keyvalue)">
+        <clr-checkbox-container>
+          <clr-checkbox-wrapper>
+            <input type="checkbox"
+                   [formControl]="filterCheckbox"
+                   clrCheckbox value="{{filterValue.value}}"
+                   (change)="this.filtersService.getSelectedFilters(filterKey.key, filterValue.value, $event)"/>
+            <label>{{filterValue.value}}</label>
+          </clr-checkbox-wrapper>
+        </clr-checkbox-container>
+      </div>
+    </clr-vertical-nav-group-children>
+  </clr-vertical-nav-group>
 </div>

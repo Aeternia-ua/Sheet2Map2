@@ -56,8 +56,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
        this.initMap();
        this.markers.subscribe(markers => { // Subscribe to shared markers data
          this.agmMarkerService.createMarkers(this.map, markers);
-         // To get a reference to the markerLayer mapPane
-         const overlay = new google.maps.OverlayView();
+         const overlay = new google.maps.OverlayView(); // To get a reference to the markerLayer mapPane
          overlay.draw = function() {
             // Assign an id to the markerlayer Pane, so it can be referenced by CSS
            // TODO: Create custom animation for selected marker

@@ -1,30 +1,33 @@
- <form class="search-form" [formGroup]='searchForm'>
-    <mat-form-field class="search-form-field" appearance="fill">
-      <mat-label>Search here</mat-label>
-      <input matInput
+<form clrForm class="search" clrLayout="vertical" [formGroup]="searchForm">
+  <clr-input-container>
+    <label for="search_input" class="clr-control-label">
+      <input clrInput id="search_input"
+             class="control"
              type="search"
-             placeholder="Ex. {{randomPlaceholder}}"
-             [matAutocomplete]="auto"
-             formControlName='userInput' name='userInput'>
-      <button mat-button mat-icon-button matSuffix (click)="clearSearchField()" *ngIf="searchForm.value.userInput">
-        <mat-icon [inline]="true">close</mat-icon>
+             placeholder="Search here..."
+             formControlName="searchField"
+             [appAutocomplete]="autocomplete">
+      <button type="button"
+              class="btn btn-sm btn-link"
+              title="Clear search"
+              (click)="clearSearchField()" *ngIf="searchForm.value.searchField">
+        <clr-icon shape="window-close"></clr-icon>
       </button>
-  </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete"
-                    showPanel = false
-                    isOpen = false
-                    [displayWith]="displayFn">
-    <!--  If search input is less that one characters long or null, don't show autocomplete suggestions list-->
-   <div *ngIf="searchForm.value.userInput?.length >= 1" showPanel = true>
-    <!--Marker value returns the selected result into search field as a string-->
-     <mat-option *ngFor="let marker of (filteredMarkers | async | keyvalue)"  [value]="marker.value">
-         <div matTooltip="{{marker.value.representativeProperty}}"
-                 [matTooltipPosition]=tooltipPosition.value>
+    </label>
+    <app-autocomplete #autocomplete="appAutocomplete">
+      <ng-template appAutocompleteContent>
+        <ng-container *ngIf="searchForm.value.searchField?.length >= 1">
+            <app-option *ngFor="let marker of (filteredMarkers | async | keyvalue)" [value]="marker.value.representativeProperty">
+<!--              <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">-->
               <span (click)="this.searchService.updateSelectedResult(marker)">
-                {{marker.value.representativeProperty}}
+                <clr-icon shape="map-marker" role="img" aria-label="Marker pin"></clr-icon>
+                {{ marker.value.representativeProperty }}
               </span>
-         </div>
-     </mat-option>
-    </div>
-  </mat-autocomplete>
- </form>
+<!--              <span class="tooltip-content">{{ marker.value.representativeProperty }}</span>-->
+<!--            </a>-->
+            </app-option>
+        </ng-container>
+      </ng-template>
+    </app-autocomplete>
+  </clr-input-container>
+</form>

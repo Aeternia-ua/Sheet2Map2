@@ -1,15 +1,12 @@
 .map-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /*margin: 30px;*/
+  height: 100%;
 }
 
-.map-frame {
-  border: 1px solid grey;
+#map {
   height: 100%;
+  /*position: absolute;*/
+  top: 0;
+  bottom: 0;
 }
 
 /* Custom marker style */

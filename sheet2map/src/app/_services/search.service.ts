@@ -12,10 +12,12 @@ export class SearchService {
   constructor() { }
 
   public searchMarkers(markers: any[], input: string): any[] {
+    console.log('input is ', input);
     if (!input) { return markers; }
     if (!markers) { return []; }
     input = input.toLowerCase();
     const filteredMarkers = [markers.filter(marker => marker.searchProperty.includes(input) >= 1)];
+    console.log('filtered markers ', filteredMarkers);
     return filteredMarkers;
   }
 
@@ -30,6 +32,7 @@ export class SearchService {
   // Pass in a new selected search item to the BehaviorSubject
   updateSelectedResult(selectedResult): any {
     this.selectedResult.next(selectedResult);
+    console.log('updated selection ', this.selectedResult.next(selectedResult));
   }
 }
 

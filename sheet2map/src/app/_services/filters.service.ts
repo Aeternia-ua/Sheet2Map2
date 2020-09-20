@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Filter} from '../filter.class';
+import {Marker} from '../marker.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltersService {
   // Create a subject to share selected filtering properties between filters component and map components
-  private selectedFilters: any[] = [];
+  private selectedFilters: Filter[] = [];
   selectedFiltersChange = new Subject<any>();
 
   constructor() { }
@@ -28,21 +29,23 @@ export class FiltersService {
     Object.entries(reduced).forEach(([key, value]) => keyValues[key] = [... new Set(value)]);
     return keyValues;
     }
+
   // Pass in new selected filtering properties to the BehaviorSubject
-  getSelectedFilters(key, value, event): any {
+  getSelectedFilters(key, value, event): void {
     const selectedFilter = new Filter(key, value);
-    if (event.checked) {
+    console.log('event ', event);
+    if (event.target.checked) {
       this.selectedFilters.push(selectedFilter);
     }
     else {
       this.selectedFilters.splice(this.selectedFilters
-      .findIndex(element => element.key === selectedFilter.Key && element.value === selectedFilter.Value), 1);
+      .findIndex(element => element.Key === selectedFilter.Key && element.Value === selectedFilter.Value), 1);
     }
     this.selectedFiltersChange.next(this.selectedFilters);
   }
 
-  getFilteredMarkers(selectedFilters, markers: any[]): any[] {
-    let filteredMarkers: any[] = [];
+  getFilteredMarkers(selectedFilters, markers: Marker[]): Marker[] {
+    let filteredMarkers: Marker[] = [];
     if (selectedFilters.length === 0) {
       return markers;
     }
@@ -53,13 +56,14 @@ export class FiltersService {
       const selectedValues = selectedFilters.filter(el => el.key === category).map(el => el.value);
       filteredMarkers = this.filterByCategory(filteredMarkers, category, selectedValues);
     });
+    console.log('filteredMarkers ', filteredMarkers);
     return filteredMarkers;
   }
 
-  filterByCategory(markers: any[], category: string, categoryValues: string[]): any[] {
-    const filteredMarkers: any[] = [];
+  filterByCategory(markers: Marker[], category: string, categoryValues: string[]): Marker[] {
+    const filteredMarkers: Marker[] = [];
     for (const selectedValue of categoryValues) {
-      filteredMarkers.push(... markers.filter(el => el.feature.properties[category] === selectedValue));
+      filteredMarkers.push(... markers.filter(el => el.Feature.Properties[category] === selectedValue));
     }
     return filteredMarkers;
   }
