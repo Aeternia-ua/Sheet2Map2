@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {MarkerService} from '../_services/marker.service';
 import {FiltersService} from '../_services/filters.service';
 import {Marker} from '../marker.class';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-filters',
@@ -15,8 +15,7 @@ export class FiltersComponent implements OnInit {
   keyValues: any;
   public input: string;
   status = false;
-  filterCheckbox: FormControl = new FormControl(false);
-  private filterForm: FormGroup;
+  filterForm: FormGroup = new FormGroup({});
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
@@ -26,8 +25,18 @@ export class FiltersComponent implements OnInit {
   ngOnInit(): void {
     this.markers.subscribe(markers => { // Subscribe to shared markers data
       this.keyValues = this.filtersService.generateFilters(markers);
+      this.filterForm = this.buildFilterForm(this.keyValues); // Build reactive FormGroup
       this.changeDetectorRef.detectChanges();
     });
-    // this.filterCheckbox = new FormControl(false);
+  }
+
+  private buildFilterForm(keyValues: object): FormGroup {
+    const form: FormGroup = this.formBuilder.group({});
+    Object.entries(keyValues).forEach(([key, values]) => {
+      form.setControl(key, this.formBuilder.group({}));
+      values.forEach(value => {(form.get(key) as FormGroup).addControl(value, new FormControl(false)); });
+    });
+    console.log('rebuilt form ', form);
+    return form;
   }
 }

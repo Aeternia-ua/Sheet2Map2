@@ -1,19 +1,44 @@
-<div *ngFor="let filterKey of keyValues | keyvalue">
-  <clr-vertical-nav-group>
-    <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon>
-    {{filterKey.key}}
-    <clr-vertical-nav-group-children *clrIfExpanded>
-      <div *ngFor="let filterValue of (filterKey.value | keyvalue)">
-        <clr-checkbox-container>
-          <clr-checkbox-wrapper>
-            <input type="checkbox"
-                   [formControl]="filterCheckbox"
-                   clrCheckbox value="{{filterValue.value}}"
-                   (change)="this.filtersService.getSelectedFilters(filterKey.key, filterValue.value, $event)"/>
-            <label>{{filterValue.value}}</label>
-          </clr-checkbox-wrapper>
-        </clr-checkbox-container>
-      </div>
-    </clr-vertical-nav-group-children>
-  </clr-vertical-nav-group>
-</div>
+<form [formGroup]="filterForm">
+  <div *ngFor="let filterCategory of filterForm.controls | keyvalue ">
+    <clr-vertical-nav-group>
+      <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon> {{filterCategory.key}}
+
+      <clr-vertical-nav-group-children *clrIfExpanded>
+        <ng-container [formGroupName]="filterCategory.key" *ngFor="let filter of filterCategory.value.controls | keyvalue ">
+          <clr-checkbox-container>
+            <clr-checkbox-wrapper>
+              <input type="checkbox" clrCheckbox
+                   [formControlName]=filter.key
+                   value="{{filter}}"
+                   (change)="this.filtersService.getSelectedFilters(filterCategory.key, filter.key, $event)"/>
+              <label>{{filter.key}}</label>
+            </clr-checkbox-wrapper>
+          </clr-checkbox-container>
+        </ng-container>
+      </clr-vertical-nav-group-children>
+
+    </clr-vertical-nav-group>
+  </div>
+</form>
+
+
+<!--<div *ngFor="let filterKey of keyValues | keyvalue">-->
+<!--  <clr-vertical-nav-group>-->
+<!--    <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon>-->
+<!--    {{filterKey.key}}-->
+<!--    <clr-vertical-nav-group-children *clrIfExpanded>-->
+<!--&lt;!&ndash;      <div [formGroup]="filterForm">&ndash;&gt;-->
+<!--      <div *ngFor="let filterValue of (filterKey.value | keyvalue)">-->
+<!--        <clr-checkbox-container>-->
+<!--          <clr-checkbox-wrapper>-->
+<!--            <input type="checkbox"-->
+<!--                   clrCheckbox value="{{filterValue.value}}"-->
+<!--                   (change)="this.filtersService.getSelectedFilters(filterKey.key, filterValue.value, $event)"/>-->
+<!--            <label>{{filterValue.value}}</label>-->
+<!--          </clr-checkbox-wrapper>-->
+<!--        </clr-checkbox-container>-->
+<!--      </div>-->
+<!--&lt;!&ndash;      </div>&ndash;&gt;-->
+<!--    </clr-vertical-nav-group-children>-->
+<!--  </clr-vertical-nav-group>-->
+<!--</div>-->
