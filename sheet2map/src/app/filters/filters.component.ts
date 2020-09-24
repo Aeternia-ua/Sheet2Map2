@@ -1,9 +1,21 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {Observable} from 'rxjs';
 import {MarkerService} from '../_services/marker.service';
 import {FiltersService} from '../_services/filters.service';
 import {Marker} from '../marker.class';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {EventEmitter} from 'events';
 
 @Component({
   selector: 'app-filters',
@@ -14,8 +26,12 @@ export class FiltersComponent implements OnInit {
   readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
   keyValues: any;
   public input: string;
-  status = false;
   filterForm: FormGroup = new FormGroup({});
+  // @ViewChild('test') clearFiltersBtn: ElementRef;
+  @ViewChildren('clearFiltersBtn') clearFiltersButtons: QueryList<ElementRef>;
+  // @Input() isDisabled = false;
+  @Output() btnClick = new EventEmitter();
+  isDisabled = false;
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
@@ -36,7 +52,29 @@ export class FiltersComponent implements OnInit {
       form.setControl(key, this.formBuilder.group({}));
       values.forEach(value => {(form.get(key) as FormGroup).addControl(value, new FormControl(false)); });
     });
-    console.log('rebuilt form ', form);
     return form;
+  }
+
+  private uncheckFilters(category): void {
+    this.disableClearFiltersBtn(category);
+    (this.filterForm.get(category) as FormGroup).reset();
+  }
+
+  private toggleClearFiltersBtn(category): void {
+    const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category);
+    const categoryFilters = (this.filterForm.get(category) as FormGroup).controls;
+    const checkboxIsChecked = Object.entries(categoryFilters).find(([key, checkbox]) => checkbox.value === true);
+
+    if (checkboxIsChecked) { // If at least one checkbox is checked, enable button
+      button.nativeElement.disabled = false;
+    }
+    else {
+      button.nativeElement.disabled = true;
+    }
+  }
+  private disableClearFiltersBtn(category): void {
+    // const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category);
+    (this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category))
+      .nativeElement.disabled = true;
   }
 }

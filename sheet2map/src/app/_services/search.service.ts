@@ -21,18 +21,18 @@ export class SearchService {
     return filteredMarkers;
   }
 
+  // Pass in a new selected search item to the BehaviorSubject
+  updateSelectedResult(selectedResult): any {
+    this.selectedResult.next(selectedResult);
+    console.log('updated selectedResult ', selectedResult);
+  }
+
   // Create dynamic placeholder based on random property value
   getRandomPlaceholder(features) {
     const randomFeature = features[Math.floor(Math.random() * features.length)];
     const properties = Object.values(randomFeature.properties);
     const randomProperty = properties[Math.floor(Math.random() * properties.length)];
     return randomProperty;
-  }
-
-  // Pass in a new selected search item to the BehaviorSubject
-  updateSelectedResult(selectedResult): any {
-    this.selectedResult.next(selectedResult);
-    console.log('updated selection ', this.selectedResult.next(selectedResult));
   }
 }
 

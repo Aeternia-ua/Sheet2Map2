@@ -97,7 +97,7 @@ export class AGMMarkerService {
       filteredMarkers.push(filteredMarker);
     })
     this.markerClusterer.clearMarkers(); // Update marker clusterer
-    if (filteredMarkers.length > 0) {
+    if (filteredMarkers.length >= 0) {
       this.markerClusterer.addMarkers(filteredMarkers);
     }
     else {

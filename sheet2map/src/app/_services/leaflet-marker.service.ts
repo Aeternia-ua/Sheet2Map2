@@ -72,7 +72,7 @@ export class LeafletMarkerService {
       filteredMarkers.push(filteredMarker);
     });
     this.markerClusterGroup.clearLayers(); // Update marker clusterer
-    if (filteredMarkers.length > 0) {
+    if (filteredMarkers.length >= 0) {
       this.markerClusterGroup.addLayers(filteredMarkers);
     }
     else {

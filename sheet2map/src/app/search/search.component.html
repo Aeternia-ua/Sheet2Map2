@@ -17,14 +17,10 @@
     <app-autocomplete #autocomplete="appAutocomplete">
       <ng-template appAutocompleteContent>
         <ng-container *ngIf="searchForm.value.searchField?.length >= 1">
-            <app-option *ngFor="let marker of (filteredMarkers | async | keyvalue)" [value]="marker.value.representativeProperty">
-<!--              <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg">-->
-              <span (click)="this.searchService.updateSelectedResult(marker)">
+            <app-option *ngFor="let marker of (filteredMarkers | async | keyvalue)" [value]="marker.value.representativeProperty"
+            (click)="this.searchService.updateSelectedResult(marker)">
                 <clr-icon shape="map-marker" role="img" aria-label="Marker pin"></clr-icon>
                 {{ marker.value.representativeProperty }}
-              </span>
-<!--              <span class="tooltip-content">{{ marker.value.representativeProperty }}</span>-->
-<!--            </a>-->
             </app-option>
         </ng-container>
       </ng-template>

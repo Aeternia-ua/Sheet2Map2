@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
 import { LeafletMarkerService } from '../_services/leaflet-marker.service';
 import { Globals } from '../globals';
@@ -17,7 +17,9 @@ import {FiltersService} from '../_services/filters.service';
 })
 
 export class LeafletMapComponent implements OnInit, AfterViewInit {
+  @ViewChild('mapContainer', { static: false }) lMap: ElementRef;
   private map;
+  mapOptions;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
   private selectedResult: any;
   private filteredMarkers: any[] = [];
@@ -33,7 +35,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    }
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -55,11 +57,11 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
     });
   }
   private initMap(): void {
-    this.map = L.map('map', {
+    this.mapOptions = {
       center: Globals.mapCenter,
       zoom: Globals.mapZoom
-    });
-    // This is the Carto Positron basemap
+    };
+    this.map = new L.map(this.lMap.nativeElement, this.mapOptions);
     const basemap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: Globals.mapMaxZoom,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
