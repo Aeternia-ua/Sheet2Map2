@@ -10,9 +10,6 @@ import { AgmMapComponent } from './agm-map/agm-map.component';
 import {AGMMarkerService} from './_services/agm-marker.service';
 import { DataParserComponent } from './data-parser/data-parser.component';
 import { LayersComponent } from './layers/layers.component';
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card';
-import {MatSidenavModule} from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoSidebarComponent } from './info-sidebar/info-sidebar.component';
 import { InfoSidebarDirective } from './_directives/info-sidebar.directive';
@@ -20,20 +17,10 @@ import { MarkerInfoComponent } from './marker-info/marker-info.component';
 import {SharedMarkerInfoService} from './_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from './_services/info-sidebar-toggle.service';
 import {RouterModule, Routes} from '@angular/router';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { SearchComponent } from './search/search.component';
 import {SearchService} from "./_services/search.service";
 import {JsonService} from "./_services/json.service";
-import {MatOptionModule} from "@angular/material/core";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {MatInputModule} from "@angular/material/input";
-import {MatTooltipModule} from "@angular/material/tooltip";
 import {MarkerService} from "./_services/marker.service";
 import { HomeComponent } from './home/home.component';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -44,11 +31,13 @@ import { OptionComponent } from './autocomplete/option/option.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { AutocompleteContentDirective } from './_directives/autocomplete-content.directive';
 import { AutocompleteDirective } from './_directives/autocomplete.directive';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
-  { path: 'leaflet-map', component: LeafletMapComponent },
-  { path: 'agm-map', component: AgmMapComponent }
+  { path: 'openstreetmaps', component: LeafletMapComponent },
+  { path: 'googlemaps', component: AgmMapComponent },
+  { path: '', redirectTo: 'openstreetmaps', pathMatch: 'full' }
 ];
 @NgModule({
   declarations: [
@@ -76,27 +65,15 @@ const appRoutes: Routes = [
     }),
     HttpClientModule,
     BrowserAnimationsModule,
-    MatListModule,
-    MatCardModule,
-    MatSidenavModule,
     RouterModule.forRoot(
       appRoutes,
       {useHash: true}
     ),
-    MatButtonToggleModule,
-    MatToolbarModule,
-    MatCheckboxModule,
-    MatIconModule,
-    MatButtonModule,
     FormsModule,
-    MatOptionModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
     ReactiveFormsModule,
-    MatInputModule,
-    MatTooltipModule,
     LayoutModule,
-    ClarityModule
+    ClarityModule,
+    OverlayModule
   ],
   providers: [
     LeafletMarkerService,
@@ -108,7 +85,6 @@ const appRoutes: Routes = [
     InfoSidebarToggleService,
     SearchService
   ],
-  exports: [ MatFormFieldModule, MatInputModule ],
   entryComponents: [ MarkerInfoComponent, AutocompleteComponent ],
   bootstrap: [AppComponent]
 })

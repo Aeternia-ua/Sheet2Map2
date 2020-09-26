@@ -27,11 +27,8 @@ export class FiltersComponent implements OnInit {
   keyValues: any;
   public input: string;
   filterForm: FormGroup = new FormGroup({});
-  // @ViewChild('test') clearFiltersBtn: ElementRef;
   @ViewChildren('clearFiltersBtn') clearFiltersButtons: QueryList<ElementRef>;
-  // @Input() isDisabled = false;
   @Output() btnClick = new EventEmitter();
-  isDisabled = false;
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
@@ -62,9 +59,8 @@ export class FiltersComponent implements OnInit {
 
   private toggleClearFiltersBtn(category): void {
     const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category);
-    const categoryFilters = (this.filterForm.get(category) as FormGroup).controls;
-    const checkboxIsChecked = Object.entries(categoryFilters).find(([key, checkbox]) => checkbox.value === true);
-
+    const filters = (this.filterForm.get(category) as FormGroup).controls;
+    const checkboxIsChecked = Object.entries(filters).find(([key, checkbox]) => checkbox.value === true);
     if (checkboxIsChecked) { // If at least one checkbox is checked, enable button
       button.nativeElement.disabled = false;
     }
@@ -72,8 +68,8 @@ export class FiltersComponent implements OnInit {
       button.nativeElement.disabled = true;
     }
   }
+
   private disableClearFiltersBtn(category): void {
-    // const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category);
     (this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category))
       .nativeElement.disabled = true;
   }

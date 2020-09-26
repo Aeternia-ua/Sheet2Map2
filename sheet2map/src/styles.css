@@ -23,3 +23,19 @@ html, body {
   z-index:1000
 }
 /* END Styles required for the right positioning of autocomplete dropdown menu*/
+
+/* Changing filters subnav sections height to fit clearFilter buttons*/
+.nav-group-text, .nav-group-trigger {
+  height: 2.2rem!important;
+}
+
+.nav-group-text {
+  padding-left: 0!important;
+}
+
+/* Override styles of dynamically generated DOM elements*/
+
+/*.header-backdrop {*/
+/*  background-color: rgba(0, 0, 0, 0.1) !important;*/
+/*}*/
+

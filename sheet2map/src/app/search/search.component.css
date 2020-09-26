@@ -1,22 +1,15 @@
-/*.search-form {*/
-/*  min-width: 150px;*/
-/*  max-width: 500px;*/
-/*  width: 100%;*/
-/*}*/
 
-/*.search-form-field {*/
-/*  width: 100%;*/
-/*}*/
-/*!*Search autocomplete options tooltip*!*/
-/*::ng-deep .mat-tooltip {*/
-/* font-size: 15px;*/
-/* white-space: pre-wrap;*/
-/* color: gray !important;*/
-/* background-color: rgba(255, 255, 255, .9);*/
-/* border:1px solid gray;*/
-/* max-width: 300px !important;*/
-/*}*/
+#search-input {
+  color: #ffffff;
+  width: 13rem;
+}
 
-.search-box input[type=text] .header .search input[type=text] {
-  color: black!important;
+#search-input-container {
+  margin-top: 0;
+}
+
+@media screen and (max-width: 768px) {
+  header .search-box label input, header .search label input, .header .search-box label input, .header .search label input {
+    display: inline;
+  }
 }

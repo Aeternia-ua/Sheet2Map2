@@ -1,26 +1,61 @@
-.sidenav-container {
- /* height: 100%;*/
- height: 85vh;
+.main-container .content-container .content-area {
+  padding: 0.1rem;
 }
+
+/* HEADER STYLES */
+
+.search-box {
+  max-width: 25rem;
+  min-width: 18rem;
+}
+
+/* LEFT FILTERS NAVBAR STYLES */
+
+.clr-vertical-nav {
+  width: 15rem;
+}
+
+.clr-vertical-nav .nav-trigger, .clr-vertical-nav .nav-group-trigger {
+  height: auto;
+}
+
+/*.sidenav {*/
+/*  width: 200px;*/
+/*  width: 200px;*/
+/*}*/
 
 .sidenav {
-  width: 200px;
-}
-
-.sidenav .mat-toolbar {
-  background: inherit;
-}
-
-.mat-toolbar.mat-primary {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  max-height: 100%;
 }
 
 .map-col {
   height: 100%;
 }
 
-/*#wrapper {
-  min-height: 100%;
-}*/
+/* RIGHT INFO SIDEBAR STYLES */
+
+#sidenav-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: min-content;
+}
+
+.sidenav-right.closed {
+  margin-right: -13rem;
+  overflow: hidden;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.sidenav-right {
+  right: 0;
+  margin-left: 1.5rem;
+  border-right: .05rem solid #ccc;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}

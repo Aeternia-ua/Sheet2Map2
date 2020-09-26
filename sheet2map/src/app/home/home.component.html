@@ -1,48 +1,36 @@
-<div class="main-container">
-    <header class="header header-6">
-      <app-search></app-search>
-      <div class="header-actions">
-        <div class="btn-group btn-primary btn-icon">
-          <button class="btn" routerLink='/agm-map'>Google Map</button>
-          <button class="btn" routerLink='/leaflet-map'>Leaflet Map</button>
-        </div>
+<clr-main-container class="main-container">
+    <clr-header class="header header-6">
+      <div class="branding">
+        <clr-icon class="logo" shape="map"></clr-icon>
+        <span class="title">Sheet2Map</span>
       </div>
-  </header>
+      <div class="search-box"><app-search></app-search></div>
+      <div class="divider"></div>
+<!--      <div class="header-nav clr-nav-level-1"><app-search></app-search></div>-->
+      <div class="header-nav header-actions" [clr-nav-level]="2">
+        <a class="nav-link nav-text" routerLink='/googlemaps'>Google map</a>
+        <a class="nav-link nav-text" routerLink='/openstreetmaps'>Leaflet Map</a>
+<!--        <div class="btn-group btn-primary btn-icon">-->
+<!--          <button class="btn" routerLink='/googlemaps'>Google Map</button>-->
+<!--          <button class="btn" routerLink='/openstreetmaps'>Leaflet Map</button>-->
+<!--        </div>-->
+<!--        <button type="button" class="navbar-toggler"-->
+<!--                (click)="infoSidebarToggleService.toggle()">-->
+<!--          Location info</button>-->
+      </div>
+  </clr-header>
 
   <div class="content-container">
-    <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+    <clr-vertical-nav [clrVerticalNavCollapsible]="true" [clr-nav-level]="1">
       <app-filters></app-filters>
     </clr-vertical-nav>
-        <div class="map-col content-area"><router-outlet></router-outlet></div>
+    <div class="map-col content-area"><router-outlet></router-outlet></div>
+    <div id="sidenav-wrapper">
+        <nav class="sidenav sidenav-right" #markerInfoSidebar
+             [ngClass]="isOpened === false ? 'closed' : ''">
+          <div class="sidenav-content"><app-info-sidebar></app-info-sidebar></div>
+        </nav>
+    </div>
   </div>
+</clr-main-container>
 
-</div>
-
-<!--<div id="wrapper">-->
-<!--  <mat-toolbar color="primary">-->
-
-<!--  </mat-toolbar>-->
-
-<!--<mat-sidenav-container class="sidenav-container">-->
-
-<!--  <mat-sidenav #drawer class="sidenav filter-sidenav"-->
-<!--               fixedInViewport-->
-<!--               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"-->
-<!--               [mode]="(isHandset$ | async) ? 'over' : 'side'"-->
-<!--               [opened]="(isHandset$ | async) === false">-->
-<!--    <app-filters></app-filters>-->
-<!--  </mat-sidenav>-->
-
-<!--  <mat-sidenav #markerInfoSidebar-->
-<!--               position="end"-->
-<!--               mode="side"-->
-<!--               opened="false">-->
-<!--    <app-info-sidebar></app-info-sidebar>-->
-<!--  </mat-sidenav>-->
-
-<!--  <mat-sidenav-content>-->
-<!--    &lt;!&ndash; Add Content Here &ndash;&gt;-->
-<!--    <router-outlet></router-outlet>-->
-<!--  </mat-sidenav-content>-->
-<!--</mat-sidenav-container>-->
-<!--</div>-->
