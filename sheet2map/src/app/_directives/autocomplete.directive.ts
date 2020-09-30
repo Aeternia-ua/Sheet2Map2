@@ -86,7 +86,6 @@ export class AutocompleteDirective implements OnInit, OnDestroy {
   }
 
   get origin() {
-    console.log('origin ', this.host.nativeElement);
     return this.host.nativeElement;
   }
 }

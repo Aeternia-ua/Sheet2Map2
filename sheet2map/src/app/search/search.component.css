@@ -1,15 +1,43 @@
+.search-box {
+  /*max-width: 25rem;*/
+}
 
 #search-input {
   color: #ffffff;
-  width: 13rem;
+  width: 80%;
 }
 
 #search-input-container {
   margin-top: 0;
 }
 
-@media screen and (max-width: 768px) {
-  header .search-box label input, header .search label input, .header .search-box label input, .header .search label input {
-    display: inline;
+@media (max-width: 640px) {
+  #search-input {
+    display: inline-block;
+    min-width: 3.5rem;
   }
+}
+  @media (min-width: 640px) {
+  #search-input {
+    display: inline-block;
+    min-width: 9rem;
+  }
+}
+/* This is when mobile header triggers */
+@media screen and (min-width: 768px) {
+  #search-input {
+    display: inline-block;
+    min-width: 11rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  #search-input {
+    display: inline-block;
+    min-width: 15rem;
+  }
+}
+
+@media (min-width: 1280px) {
+
 }

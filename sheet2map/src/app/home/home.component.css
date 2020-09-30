@@ -4,10 +4,7 @@
 
 /* HEADER STYLES */
 
-.search-box {
-  max-width: 25rem;
-  min-width: 18rem;
-}
+
 
 /* LEFT FILTERS NAVBAR STYLES */
 
@@ -19,17 +16,8 @@
   height: auto;
 }
 
-/*.sidenav {*/
-/*  width: 200px;*/
-/*  width: 200px;*/
-/*}*/
-
 .sidenav {
   max-height: 100%;
-}
-
-.map-col {
-  height: 100%;
 }
 
 /* RIGHT INFO SIDEBAR STYLES */
@@ -37,7 +25,8 @@
 #sidenav-wrapper {
   position: relative;
   overflow: hidden;
-  height: 100%;
+  max-height: 100%;
+  min-height: 100%;
   width: min-content;
 }
 

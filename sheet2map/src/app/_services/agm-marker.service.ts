@@ -10,7 +10,6 @@ import {MarkerService} from './marker.service';
 import {Observable} from 'rxjs';
 import {Marker} from '../marker.class';
 import {AgmMarkerIcon} from '../_interfaces/marker-icon';
-import {Filter} from '../filter.class';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +21,7 @@ export class AGMMarkerService {
   public markerInfo: MarkerInfo;
   markerClusterer: MarkerClusterer;
   agmMarkerIcon: AgmMarkerIcon;
+  public defaultColor = 'blue2';
   private clusteringOptions: any;
   public clusteredMarkers: any[];
   selectedMarker: google.maps.Marker;
@@ -30,29 +30,29 @@ export class AGMMarkerService {
               private markerService: MarkerService,
               private sharedService: SharedMarkerInfoService) { }
 
-  createMarkers(map, markers: any[]): any {
+  createMarkers(map: google.maps.Map, markers: Marker[]): void {
       this.agmMarkers = [];
       markers.forEach(marker => {
-        const feature = marker.feature;
-        const LatLng = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+        const feature = marker.Feature;
+        const LatLng = new google.maps.LatLng(feature.Geometry.coordinates[1], feature.Geometry.coordinates[0]);
         let agmMarker: any;
         agmMarker = new google.maps.Marker({
           position: LatLng,
           animation: null,
           optimized: false // Unoptimized markers exist as img elements inside the markerLayer mapPane
         });
-        agmMarker.markerID = marker.markerID;
-        agmMarker.properties = marker.feature.properties;
-        agmMarker.searchProperty = marker.searchProperty;
-        agmMarker.representativeProperty = marker.representativeProperty;
-        agmMarker.markerInfo = marker.markerInfo;
-        this.setIcon(agmMarker, 'blue2');
+        agmMarker.markerID = marker.MarkerID;
+        agmMarker.properties = marker.Feature.Properties;
+        agmMarker.searchProperty = marker.SearchProperty;
+        agmMarker.representativeProperty = marker.RepresentativeProperty;
+        agmMarker.markerInfo = marker.MarkerInfo;
+        this.setIcon(agmMarker, this.defaultColor);
         this.agmMarkers.push(agmMarker);
 
         agmMarker.addListener('click', () => {
           this.newMarkerInfo(agmMarker.markerInfo); // Get marker info on click
-          this.select(agmMarker);
           this.selectedMarker = agmMarker;
+          this.select(this.selectedMarker);
         });
       })
 
@@ -74,7 +74,7 @@ export class AGMMarkerService {
     marker.setAnimation(google.maps.Animation.BOUNCE);
   }
 
-  private setIcon(marker, color): void {
+  public setIcon(marker: google.maps.Marker, color): void {
     let url = '../../assets/img/';
     url += color + '.svg';
     this.agmMarkerIcon = {
@@ -90,18 +90,20 @@ export class AGMMarkerService {
     marker.setOptions(this.agmMarkerIcon);
   }
 
-  public updateMarkers(markers): void {
-    const filteredMarkers: any[] = [];
-    markers.forEach(marker => {
-      const filteredMarker = this.clusteredMarkers.find(gmarker => gmarker.markerID === marker.MarkerID);
-      filteredMarkers.push(filteredMarker);
-    })
-    this.markerClusterer.clearMarkers(); // Update marker clusterer
+  public updateMarkers(filteredMarkers: Marker[]): MarkerClusterer {
+    this.markerClusterer.clearMarkers();
     if (filteredMarkers.length >= 0) {
-      this.markerClusterer.addMarkers(filteredMarkers);
+    const filteredClusteredMarkers: any[] = [];
+    filteredMarkers.forEach(marker => {
+      const filteredMarker = this.clusteredMarkers.find(gmarker => gmarker.markerID === marker.MarkerID);
+      filteredClusteredMarkers.push(filteredMarker);
+    });
+    this.markerClusterer.addMarkers(filteredClusteredMarkers);
+    return this.markerClusterer;
     }
-    else {
+    else { // If filtered markers undefined
       this.markerClusterer.addMarkers(this.clusteredMarkers);
+      return this.markerClusterer;
     }
   }
 }

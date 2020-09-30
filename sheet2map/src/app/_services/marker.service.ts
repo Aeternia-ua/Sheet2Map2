@@ -19,16 +19,16 @@ export class MarkerService {
     return this.jsonService.getJson().pipe(map(json => {
       this.markerProviderService.MarkersCache = [];
       const features = json['features'];
-      for (const feature of features) {
-          const newFeature = new Feature(feature.geometry, feature.properties, feature.type);
-          const marker = new Marker(newFeature);
-          this.markerProviderService.MarkersCache.push(marker);
-        }
+      // for (const feature of features) {
+      features.forEach(feature => {
+        const newFeature = new Feature(feature.geometry, feature.properties, feature.type);
+        const marker = new Marker(newFeature);
+        this.markerProviderService.MarkersCache.push(marker);
+      })
       return this.markerProviderService.MarkersCache;
     }), share()); // Make an observable shareable between different components
   }
 
-  // TODO: Return cashed markers
   getMarkers(): any {
     // Data available
     if (this.markerProviderService.MarkersCache) {
@@ -42,6 +42,6 @@ export class MarkerService {
     else {
       this.markerProviderService.ObservableCache = this.fetchMarkers();
     }
-    return this.markerProviderService.ObservableCache;
+    return this.markerProviderService.ObservableCache; // Return cashed markers
   }
 }

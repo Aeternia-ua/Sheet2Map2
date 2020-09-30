@@ -3,11 +3,11 @@ import {Feature} from "./feature.class";
 import {MarkerInfoComponent} from "./marker-info/marker-info.component";
 
 export class Marker {
-  private markerID: string;
+  private readonly markerID: string;
   private markerInfo: MarkerInfo;
   private representativeProperty: string;
   private searchProperty: string;
-  private feature: Feature;
+  private readonly feature: Feature;
 
   private guid(guid: string): GUID {
     return guid as GUID;
@@ -16,20 +16,20 @@ export class Marker {
   constructor( feature: Feature) {
     this.markerID = Guid.newGuid();
     this.feature = feature;
-    this.markerInfo = this.buildMarkerInfo();
-    this.representativeProperty = this.buildRepresentativeProperty();
-    this.searchProperty = this.buildSearchProperty();
+    this.markerInfo = this.MarkerInfo;
+    this.representativeProperty = this.RepresentativeProperty;
+    this.searchProperty = this.SearchProperty;
   }
 
-  private buildRepresentativeProperty(): string {
+  get RepresentativeProperty(): string {
     return Object.values(this.feature.Properties).join(', ').toString();
   }
 
-  private buildSearchProperty(): string {
+  get SearchProperty(): string {
     return this.representativeProperty.toLowerCase();
   }
 
-  private buildMarkerInfo(): MarkerInfo {
+  get MarkerInfo(): MarkerInfo {
     return new MarkerInfo(MarkerInfoComponent, {...this.feature.Properties});
   }
 

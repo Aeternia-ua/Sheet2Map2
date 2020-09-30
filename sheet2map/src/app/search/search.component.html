@@ -1,6 +1,7 @@
+<div class="search-box">
 <form clrForm class="search" clrLayout="vertical" [formGroup]="searchForm">
   <clr-input-container id="search-input-container">
-    <label for="search_input" class="clr-control-label">
+    <label for="search-input" class="clr-control-label">
       <input clrInput id="search-input"
              class="control"
              type="search"
@@ -17,7 +18,7 @@
     <app-autocomplete #autocomplete="appAutocomplete">
       <ng-template appAutocompleteContent>
         <ng-container *ngIf="searchForm.value.searchField?.length >= 1">
-            <app-option *ngFor="let marker of (filteredMarkers | async | keyvalue)" [value]="marker.value.representativeProperty"
+            <app-option *ngFor="let marker of (searchResults | async | keyvalue)" [value]="marker.value.representativeProperty"
             (click)="this.searchService.updateSelectedResult(marker)">
                 <clr-icon shape="map-marker" role="img" aria-label="Marker pin"></clr-icon>
                 {{ marker.value.representativeProperty }}
@@ -27,3 +28,4 @@
     </app-autocomplete>
   </clr-input-container>
 </form>
+</div>

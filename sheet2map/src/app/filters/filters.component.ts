@@ -40,6 +40,9 @@ export class FiltersComponent implements OnInit {
       this.keyValues = this.filtersService.generateFilters(markers);
       this.filterForm = this.buildFilterForm(this.keyValues); // Build reactive FormGroup
       this.changeDetectorRef.detectChanges();
+
+      this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
+        this.filtersService.updateFilteredMarkers(selectedFilters, markers); });
     });
   }
 

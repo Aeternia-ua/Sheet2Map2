@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import * as L from 'leaflet';
 import { LeafletMarkerService } from '../_services/leaflet-marker.service';
 import { Globals } from '../globals';
@@ -9,6 +9,8 @@ import {Observable, of} from 'rxjs';
 import {MarkerService} from '../_services/marker.service';
 import {Marker} from '../marker.class';
 import {FiltersService} from '../_services/filters.service';
+import {AgmGeolocationService} from '../_services/agm-geolocation.service';
+import {LeafletGeolocationService} from '../_services/leaflet-geolocation.service';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -18,19 +20,19 @@ import {FiltersService} from '../_services/filters.service';
 
 export class LeafletMapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { static: false }) lMap: ElementRef;
-  private map;
+  private map: L.map;
   mapOptions;
-  readonly markers: Observable<any[]> = this.markerService.getMarkers();
+  readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
   private selectedResult: any;
-  private filteredMarkers: any[] = [];
+  @Input()filteredMarkers: Marker[];
 
   constructor(
               private leafletMarkerService: LeafletMarkerService,
-              private sharedService: SharedMarkerInfoService,
               private infoSidebarToggleService: InfoSidebarToggleService,
               private searchService: SearchService,
               private markerService: MarkerService,
-              private filtersService: FiltersService) {
+              private filtersService: FiltersService,
+              private leafletGeolocationService: LeafletGeolocationService) {
   }
 
   ngOnInit(): void {
@@ -39,16 +41,12 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
-    console.log(of(this.markerService.fetchMarkers()));
     this.markers.subscribe(markers => {
       this.leafletMarkerService.createMarkers(this.map, markers);
-
-      // Subscribe to filter selection to filter markers on map
-      this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
-        this.filteredMarkers = this.filtersService.getFilteredMarkers(selectedFilters, markers);
+      this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
+        this.filteredMarkers = filteredMarkers;
         this.leafletMarkerService.updateMarkers(this.filteredMarkers);
       });
-
       // Subscribe to search selection to find selected marker on the map
       this.searchService.sharedSelectedResult.subscribe(selectedResult => {
         this.selectedResult = selectedResult;
@@ -67,6 +65,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     });
     basemap.addTo(this.map);
+    this.addGeolocationControl(this.map); // Add a custom geolocation button
 
     this.map.addEventListener('click', () => {
       this.infoSidebarToggleService.close();
@@ -74,7 +73,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  findMarker(marker, cluster, layers): void {
+  findMarker(marker: L.marker, cluster: any, layers: any[]): void {
     try {
       const selectedMarker: Marker = marker.value;
       const foundMarker: L.marker = cluster.find(lmarker => lmarker.markerID === selectedMarker.MarkerID);
@@ -89,6 +88,31 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   private deselect(marker): L.marker {
     if (marker) { return this.leafletMarkerService.setIcon(marker, this.leafletMarkerService.defaultColor); }
   }
+
+  private createGeolocationControl(): L.Control {
+    L.Control.GeolocationControl = L.Control.extend({
+      onAdd: (map: L.map) => {
+        const el = L.DomUtil.create('div', 'leaflet-bar leaflet-geolocation-control');
+        el.innerHTML = '<i class=\'fa fa-location-arrow\' aria-hidden=\'true\'' +
+          'title="Your location" style="font-size: 18px"></i>';
+        el.addEventListener('click', () => {
+          this.leafletGeolocationService.getUserLocation(this.map);
+        });
+        return el;
+        },
+      onRemove: (map: L.map) => {
+        // Nothing to do here
+        }
+    });
+  }
+
+  private addGeolocationControl(map: L.map): void {
+    this.createGeolocationControl();
+    L.control.geolocation = (opts) => {
+      return new L.Control.GeolocationControl(opts);
+    }
+    L.control.geolocation({ position: 'topleft' }).addTo(map);
+}
 }
 
 

@@ -2,11 +2,23 @@
   height: 100%;
 }
 
+#map-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: min-content;
+}
+
+
 #map {
   height: 100%;
   /*position: absolute;*/
   top: 0;
   bottom: 0;
+}
+
+.gmnoprint img {
+  max-width: none!important;
 }
 
 /* Custom marker style */

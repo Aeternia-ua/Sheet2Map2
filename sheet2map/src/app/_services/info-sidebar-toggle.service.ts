@@ -9,7 +9,6 @@ import {MarkerInfoComponent} from '../marker-info/marker-info.component';
 })
 export class InfoSidebarToggleService {
   private markerInfoSidebar: InfoSidebar = new InfoSidebar();
-  // private isOpened = new BehaviorSubject<boolean>(this.markerInfoSidebar.IsOpened);
   private isOpened = new BehaviorSubject<boolean>(null);
   sharedInfoSidebarState = this.isOpened.asObservable();
 
@@ -20,14 +19,14 @@ export class InfoSidebarToggleService {
   }
     // TODO Refactor logic of managing info sidebar state
     public open(): void  {
-    this.markerInfoSidebar.IsOpened = true;
-    this.isOpened.next(this.markerInfoSidebar.IsOpened);
+    // this.markerInfoSidebar.IsOpened = true;
+    this.isOpened.next(this.markerInfoSidebar.IsOpened = true);
     return this.markerInfoSidebar.open();
   }
 
   public close = (): void => {
-    this.markerInfoSidebar.IsOpened = false;
-    this.isOpened.next(this.markerInfoSidebar.IsOpened);
+    // this.markerInfoSidebar.IsOpened = false;
+    this.isOpened.next(this.markerInfoSidebar.IsOpened = false);
     return this.markerInfoSidebar.close();
   }
 

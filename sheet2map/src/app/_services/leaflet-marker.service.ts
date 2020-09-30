@@ -8,7 +8,7 @@ import {LeafletMarkerIcon} from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {SharedMarkerInfoService} from './shared-marker-info.service';
-import {MarkerService} from "./marker.service";
+import {MarkerService} from './marker.service';
 import {Marker} from '../marker.class';
 
 @Injectable({
@@ -20,74 +20,77 @@ export class LeafletMarkerService {
   constructor(private http: HttpClient,
               private markerService: MarkerService,
               private infoSidebarComponent: InfoSidebarComponent,
-              private sharedService: SharedMarkerInfoService,
-              ) { }
+              private sharedService: SharedMarkerInfoService) { }
 
   public json = Globals.dataURL;
   markerClusterGroup;
   markerIcon: LeafletMarkerIcon;
   public markerInfo: MarkerInfo;
-  // public clusteredMarkers: VRLayer[];
   public clusteredMarkers: any[];
   selectedMarker: L.marker;
   public defaultColor = 'blue'; // TODO: Create config for styling default and selected marker
-  public hightlightedColor = 'red';
+  public highlightedColor = 'red';
   public layers: any[] = [];
 
-  createMarkers(map: L.map, markers: any[]): any {
+  createMarkers(map: L.map, markers: Marker[]): void {
     this.markerClusterGroup = new L.markerClusterGroup();
     markers.forEach(marker => {
-      const feature = marker.feature;
-      const lat = feature.geometry.coordinates[0];
-      const lng = feature.geometry.coordinates[1];
+      const feature = marker.Feature;
+      const lat = feature.Geometry.coordinates[0];
+      const lng = feature.Geometry.coordinates[1];
       let lMarker: any;
       lMarker = new L.marker([lng, lat]);
-      lMarker.markerID = marker.markerID;
-      lMarker.markerInfo = marker.markerInfo;
+      lMarker.markerID = marker.MarkerID;
+      lMarker.markerInfo = marker.MarkerInfo;
 
       lMarker
         .on('click', (e) => {
           this.newMarkerInfo(e.target.markerInfo);
-          this.select(e.target);
           this.selectedMarker = e.target;
+          this.select(this.selectedMarker);
         });
 
       this.setIcon(lMarker, this.defaultColor);
       this.markerClusterGroup.addLayer(lMarker);
-    })
+    });
+
     map.addLayer(this.markerClusterGroup);
-  // TODO: You are using only layers[1] to toggle zoom on marker inside marker cluster
+    console.log('this.markerClusterGroup ', this.markerClusterGroup);
+    // TODO: You are using only layers[1] to toggle zoom on marker inside marker cluster
     map.eachLayer(layer => this.layers.push(layer));
-    this.clusteredMarkers = this.markerClusterGroup.getLayers();
+    this.clusteredMarkers = this.markerClusterGroup.getLayers(); // Get clustered markers
   }
 
-  newMarkerInfo(mInfo): void {
+  newMarkerInfo(mInfo: MarkerInfo): void {
     this.sharedService.nextMarkerInfo(mInfo);
   }
 
-  public updateMarkers(markers): void {
-    const filteredMarkers: any[] = [];
-    markers.forEach(marker => {
-      const filteredMarker = this.clusteredMarkers.find(lmarker => lmarker.markerID === marker.MarkerID);
-      filteredMarkers.push(filteredMarker);
-    });
-    this.markerClusterGroup.clearLayers(); // Update marker clusterer
+  public updateMarkers(filteredMarkers: Marker[]): any {
+    this.markerClusterGroup.clearLayers(); // Clear marker clusterer
     if (filteredMarkers.length >= 0) {
-      this.markerClusterGroup.addLayers(filteredMarkers);
+      const filteredClusteredMarkers: any[] = [];
+      filteredMarkers.forEach(marker => {
+        const filteredLMarker: L.marker = this.clusteredMarkers
+          .find(lmarker => lmarker.markerID === marker.MarkerID);
+        filteredClusteredMarkers.push(filteredLMarker);
+      });
+      this.markerClusterGroup.addLayers(filteredClusteredMarkers); // Add filtered Leaflet markers to clusterer
+      return this.markerClusterGroup;
     }
-    else {
-      this.markerClusterGroup.addLayer(this.clusteredMarkers);
-    }
+      else { // If filtered markers undefined
+        this.markerClusterGroup.addLayers(this.clusteredMarkers);
+        return this.markerClusterGroup;
+      }
   }
 
   private select(marker: L.marker): void {
-    if (this.selectedMarker) { // Set previously selected marker back to default state
+    if (this.selectedMarker) { // Set previously selected marker icon back to default
       this.setIcon(this.selectedMarker, this.defaultColor);
     }
-    this.setIcon(marker, this.hightlightedColor);
+    this.setIcon(marker, this.highlightedColor);
   }
 
-  public setIcon(marker, color): void { // Using MarkerIcon interface
+  public setIcon(marker: L.marker, color): void { // Using MarkerIcon interface
     this.markerIcon = L.AwesomeMarkers.icon({
             markerColor: color,
             prefix: 'fa', icon: 'plus'
