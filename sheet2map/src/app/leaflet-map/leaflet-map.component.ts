@@ -11,6 +11,7 @@ import {Marker} from '../marker.class';
 import {FiltersService} from '../_services/filters.service';
 import {AgmGeolocationService} from '../_services/agm-geolocation.service';
 import {LeafletGeolocationService} from '../_services/leaflet-geolocation.service';
+import {LeafletGeolocationControlService} from '../_services/leaflet-geolocation-control.service';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -32,7 +33,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
               private searchService: SearchService,
               private markerService: MarkerService,
               private filtersService: FiltersService,
-              private leafletGeolocationService: LeafletGeolocationService) {
+              private leafletGeolocationControlService: LeafletGeolocationControlService) {
   }
 
   ngOnInit(): void {
@@ -65,11 +66,11 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     });
     basemap.addTo(this.map);
-    this.addGeolocationControl(this.map); // Add a custom geolocation button
+    this.leafletGeolocationControlService.addGeolocationControl(this.map); // Add a custom geolocation button
 
     this.map.addEventListener('click', () => {
       this.infoSidebarToggleService.close();
-      this.deselect(this.leafletMarkerService.selectedMarker); // If exists, deselect previously selected marker
+      this.leafletMarkerService.deselect(this.leafletMarkerService.selectedMarker); // If exists, deselect previously selected marker
     });
   }
 
@@ -85,34 +86,6 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
       console.log('Leaflet search input is undefined');
     }
   }
-  private deselect(marker): L.marker {
-    if (marker) { return this.leafletMarkerService.setIcon(marker, this.leafletMarkerService.defaultColor); }
-  }
-
-  private createGeolocationControl(): L.Control {
-    L.Control.GeolocationControl = L.Control.extend({
-      onAdd: (map: L.map) => {
-        const el = L.DomUtil.create('div', 'leaflet-bar leaflet-geolocation-control');
-        el.innerHTML = '<i class=\'fa fa-location-arrow\' aria-hidden=\'true\'' +
-          'title="Your location" style="font-size: 18px"></i>';
-        el.addEventListener('click', () => {
-          this.leafletGeolocationService.getUserLocation(this.map);
-        });
-        return el;
-        },
-      onRemove: (map: L.map) => {
-        // Nothing to do here
-        }
-    });
-  }
-
-  private addGeolocationControl(map: L.map): void {
-    this.createGeolocationControl();
-    L.control.geolocation = (opts) => {
-      return new L.Control.GeolocationControl(opts);
-    }
-    L.control.geolocation({ position: 'topleft' }).addTo(map);
-}
 }
 
 

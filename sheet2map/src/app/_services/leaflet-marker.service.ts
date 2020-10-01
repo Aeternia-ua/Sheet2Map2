@@ -46,8 +46,8 @@ export class LeafletMarkerService {
       lMarker
         .on('click', (e) => {
           this.newMarkerInfo(e.target.markerInfo);
-          this.selectedMarker = e.target;
-          this.select(this.selectedMarker);
+          this.select(e.target); // First, change the state of marker to 'selected'
+          this.selectedMarker = e.target; // Then, reassign var to deselect this marker on next marker click
         });
 
       this.setIcon(lMarker, this.defaultColor);
@@ -84,10 +84,16 @@ export class LeafletMarkerService {
   }
 
   private select(marker: L.marker): void {
+    // console.log('this.selectedMarker ', this.selectedMarker);
     if (this.selectedMarker) { // Set previously selected marker icon back to default
+      console.log('this.selectedMarker ', this.selectedMarker);
       this.setIcon(this.selectedMarker, this.defaultColor);
     }
     this.setIcon(marker, this.highlightedColor);
+  }
+
+  deselect(marker): L.marker {
+    if (marker) { return this.setIcon(marker, this.defaultColor); }
   }
 
   public setIcon(marker: L.marker, color): void { // Using MarkerIcon interface

@@ -1,7 +1,5 @@
 export class Feature {
 
-
-
   constructor(
     private geometry: any,
     private properties: object,

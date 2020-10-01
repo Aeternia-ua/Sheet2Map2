@@ -32,6 +32,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { AutocompleteContentDirective } from './_directives/autocomplete-content.directive';
 import { AutocompleteDirective } from './_directives/autocomplete.directive';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { AgmGeolocationControlComponent } from './agm-geolocation-control/agm-geolocation-control.component';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -57,6 +58,7 @@ const appRoutes: Routes = [
     AutocompleteComponent,
     AutocompleteContentDirective,
     AutocompleteDirective,
+    AgmGeolocationControlComponent,
   ],
   imports: [
     BrowserModule,

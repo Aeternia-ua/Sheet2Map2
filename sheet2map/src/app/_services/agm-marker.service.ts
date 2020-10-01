@@ -51,8 +51,8 @@ export class AGMMarkerService {
 
         agmMarker.addListener('click', () => {
           this.newMarkerInfo(agmMarker.markerInfo); // Get marker info on click
-          this.selectedMarker = agmMarker;
-          this.select(this.selectedMarker);
+          this.select(agmMarker); // First, change the state of marker to 'selected'
+          this.selectedMarker = agmMarker; // Then, reassign var to deselect this marker on next marker click
         });
       })
 
