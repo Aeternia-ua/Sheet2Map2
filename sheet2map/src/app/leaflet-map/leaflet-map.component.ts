@@ -21,6 +21,7 @@ import {LeafletGeolocationControlService} from '../_services/leaflet-geolocation
 
 export class LeafletMapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { static: false }) lMap: ElementRef;
+  @ViewChild('geolocationControl', { static: false }) geolocationControl: ElementRef;
   private map: L.map;
   mapOptions;
   readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
@@ -33,6 +34,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
               private searchService: SearchService,
               private markerService: MarkerService,
               private filtersService: FiltersService,
+              private leafletGeolocationService: LeafletGeolocationService,
               private leafletGeolocationControlService: LeafletGeolocationControlService) {
   }
 
@@ -66,8 +68,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     });
     basemap.addTo(this.map);
-    this.leafletGeolocationControlService.addGeolocationControl(this.map); // Add a custom geolocation button
-
+    this.leafletGeolocationControlService.addGeolocationControl(this.map, this.geolocationControl);
     this.map.addEventListener('click', () => {
       this.infoSidebarToggleService.close();
       this.leafletMarkerService.deselect(this.leafletMarkerService.selectedMarker); // If exists, deselect previously selected marker

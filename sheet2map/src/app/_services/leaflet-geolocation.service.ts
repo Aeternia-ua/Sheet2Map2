@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
-import LatLng = google.maps.LatLng;
 import {LeafletMarkerService} from './leaflet-marker.service';
 import {GeoLocator} from '../geoLocator.class';
 
@@ -8,24 +7,34 @@ import {GeoLocator} from '../geoLocator.class';
   providedIn: 'root'
 })
 export class LeafletGeolocationService {
-  private userLocationMarker: L.marker;
-  private userLocation: L.latLng;
+  private userLocationMarker: L.marker = null;
+  private userLocation: L.latLng = null;
+  private userLocationRadius: L.circle = null;
 
   constructor(private leafletMarkerService: LeafletMarkerService) { }
 
-  getUserLocation(map: L.map): L.marker {
+  getUserLocation(map: L.map): void {
     const locator: GeoLocator = new GeoLocator();
     locator.UserLocation.subscribe(location => {
       if (location) {
         this.userLocation = new L.latLng([location.latitude, location.longitude]);
-        this.userLocationMarker = new L.marker(this.userLocation);
-        // TODO: Create custom user location marker icon
-        this.leafletMarkerService.setIcon(this.userLocationMarker, this.leafletMarkerService.highlightedColor);
-        this.userLocationMarker.addTo(map);
-        L.circle(this.userLocation, location.accuracy).addTo(map);
-        map.locate({setView: true});
+        if (this.userLocationMarker === null && this.userLocationRadius === null) {
+          this.userLocationMarker = new L.marker(this.userLocation);
+          // TODO: Create custom user location marker icon
+          this.leafletMarkerService.setIcon(this.userLocationMarker, this.leafletMarkerService.highlightedColor);
+          this.userLocationMarker.addTo(map);
+          this.userLocationRadius = new L.circle(this.userLocation, location.accuracy).addTo(map);
+          map.locate({setView: true});
+        }
       }
     });
-    return this.userLocationMarker;
+  }
+    clearUserLocation(map): void {
+    if (this.userLocationRadius && this.userLocationMarker) {
+      map.removeLayer(this.userLocationMarker);
+      this.userLocationMarker = null;
+      map.removeLayer(this.userLocationRadius);
+      this.userLocationRadius = null;
+    }
   }
 }

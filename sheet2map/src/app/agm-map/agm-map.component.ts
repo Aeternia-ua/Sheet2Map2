@@ -12,7 +12,7 @@ import {FiltersService} from '../_services/filters.service';
 import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {AgmGeolocationService} from '../_services/agm-geolocation.service';
 import {AgmGeolocationControlComponent} from '../agm-geolocation-control/agm-geolocation-control.component';
-import {AgmGeolocationControlService} from '../_services/agm-geolocation-control.service';
+import {GeolocationControlService} from '../_services/geolocation-control.service';
 
 @Component({
   selector: 'app-agm-map',
@@ -21,6 +21,7 @@ import {AgmGeolocationControlService} from '../_services/agm-geolocation-control
 })
 export class AgmMapComponent implements OnInit, AfterViewInit {
   @ViewChild('mapContainer', { static: false }) gMap: ElementRef;
+  @ViewChild('geolocationControl', { static: false }) geolocationControl: ElementRef;
   map: google.maps.Map;
   title = 'Sheet2Map Google map';
   lat = Globals.mapCenter[0];
@@ -30,7 +31,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   private selectedResult: any;
   readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
   @Input()filteredMarkers: Marker[];
-  // private controlUI: any;
+  private geolocationBtnIsActive: boolean;
 
   constructor(public mapsApiLoader: MapsAPILoader,
               private markerService: MarkerService,
@@ -38,7 +39,8 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
               private searchService: SearchService,
               private infoSidebarToggleService: InfoSidebarToggleService,
               private filtersService: FiltersService,
-              private agmGeolocationControlService: AgmGeolocationControlService) {
+              private geolocationControlService: GeolocationControlService,
+              private agmGeolocationService: AgmGeolocationService) {
     this.mapsApiLoader = mapsApiLoader;
   }
 
@@ -84,16 +86,13 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
       },
     };
     this.map = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
-    this.agmGeolocationControlService.addGeolocationControl(this.map); // Add user geolocation button
+    // this.agmGeolocationControlService.addGeolocationControl(this.map); // Add user geolocation button
+    this.addGeolocationControl(this.map);
 
     this.map.addListener('click', () => {
       this.infoSidebarToggleService.close(); // Close info sidebar when map is clicked
-      this.deselect(this.agmMarkerService.selectedMarker); // If exists, deselect previously selected marker
+      this.agmMarkerService.deselect(this.agmMarkerService.selectedMarker); // If exists, deselect previously selected marker
     });
-  }
-
-  private deselect(marker): google.maps.Marker {
-    if (marker) { return marker.setAnimation(null); }
   }
 
   private findMarker(marker, cluster): void {
@@ -106,5 +105,23 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
     } catch (error) {
       console.log('Google map search input is undefined');
     }
+  }
+
+  private addGeolocationControl(map: google.maps.Map): any {
+    const geolocationDiv = this.geolocationControl.nativeElement;
+    geolocationDiv.index = 1;
+    map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(geolocationDiv);
+
+    this.geolocationControlService.btnStateChange.subscribe(isActive => {
+      this.geolocationBtnIsActive = isActive;
+      geolocationDiv.addEventListener('click', () => {
+        if (this.geolocationBtnIsActive) {
+          this.agmGeolocationService.getUserLocation(map);
+        }
+        else {
+          this.agmGeolocationService.clearUserLocation();
+        }
+      });
+    });
   }
 }

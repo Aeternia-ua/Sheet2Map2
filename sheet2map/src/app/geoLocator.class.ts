@@ -33,7 +33,6 @@ export class GeoLocator implements UserLocation {
     } else {
       this.handleLocationError(false); // Browser doesn't support Geolocation
     }
-    console.log('userloc instance ', this.usrLoc$);
     return this.usrLoc$;
   }
 

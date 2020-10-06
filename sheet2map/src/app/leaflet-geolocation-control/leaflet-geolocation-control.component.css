@@ -1,0 +1,19 @@
+/* Custom Geolocation button style */
+#geolocation-btn {
+  width: 25px;
+  height: 25px;
+  background-color: #ffff;
+  text-align: center;
+  cursor: pointer;
+  display: block;
+}
+
+#geolocation-icon {
+  font-size: 18px;
+  vertical-align: middle;
+  margin-top: 4px;
+}
+
+#geolocation-icon.geolocation-btn-active {
+  color: darkcyan;
+}

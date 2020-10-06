@@ -1,14 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {GeolocationControlService} from '../_services/geolocation-control.service';
 
 @Component({
-  selector: 'app-agm-geolocation-control',
-  templateUrl: './agm-geolocation-control.component.html',
-  styleUrls: ['./agm-geolocation-control.component.css']
+  selector: 'app-leaflet-geolocation-control',
+  templateUrl: './leaflet-geolocation-control.component.html',
+  styleUrls: ['./leaflet-geolocation-control.component.css']
 })
-export class AgmGeolocationControlComponent implements OnInit {
+export class LeafletGeolocationControlComponent implements OnInit {
   btnIsActive: boolean;
-
   constructor(public geolocationControlService: GeolocationControlService) { }
 
   ngOnInit(): void {
@@ -16,4 +15,5 @@ export class AgmGeolocationControlComponent implements OnInit {
       this.btnIsActive = isActive;
     });
   }
+
 }

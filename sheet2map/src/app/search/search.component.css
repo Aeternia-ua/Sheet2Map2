@@ -1,5 +1,18 @@
+.search {
+  width: 25rem;
+  max-width: 25rem;
+}
+
+.clr-control-label {
+   fxFlex: 100%;
+}
+
 .search-box {
-  /*max-width: 25rem;*/
+  width: 100%;
+}
+
+.search-box label {
+  width: 100%;
 }
 
 #search-input {
@@ -9,35 +22,45 @@
 
 #search-input-container {
   margin-top: 0;
+  width: 100%;
 }
 
 @media (max-width: 640px) {
   #search-input {
     display: inline-block;
-    min-width: 3.5rem;
+    /*min-width: 3.5rem;*/
   }
 }
   @media (min-width: 640px) {
   #search-input {
     display: inline-block;
-    min-width: 9rem;
+    /*min-width: 9rem;*/
   }
 }
 /* This is when mobile header triggers */
 @media screen and (min-width: 768px) {
   #search-input {
     display: inline-block;
-    min-width: 11rem;
+    /*min-width: 11rem;*/
   }
 }
 
 @media (min-width: 1024px) {
   #search-input {
     display: inline-block;
-    min-width: 15rem;
+    /*min-width: 15rem;*/
   }
 }
 
 @media (min-width: 1280px) {
 
+}
+
+.filter-label {
+  cursor: pointer;
+  max-width: 10rem;
+  display:inline-block;
+  justify-content: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

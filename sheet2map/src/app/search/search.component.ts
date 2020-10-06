@@ -1,6 +1,6 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {SearchService} from '../_services/search.service';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Form, FormBuilder, FormControl, FormGroup, NgControl} from '@angular/forms';
 import {MarkerService} from '../_services/marker.service';
 import {Observable, of} from 'rxjs';
 import {debounceTime, switchMap} from 'rxjs/operators';
@@ -8,6 +8,9 @@ import {mark} from '@angular/compiler-cli/src/ngtsc/perf/src/clock';
 import {ClrLoadingState} from '@clr/angular';
 import {FiltersService} from '../_services/filters.service';
 import {Marker} from '../marker.class';
+import {Filter} from '../filter.class';
+import {FiltersComponent} from '../filters/filters.component';
+import {SharedFilterFormService} from '../_services/shared-filter-form.service';
 
 @Component({
   selector: 'app-search',
@@ -16,20 +19,22 @@ import {Marker} from '../marker.class';
 })
 export class SearchComponent implements OnInit {
 
-  tooltipPosition = new FormControl('below');
   public randomPlaceholder: any;
   private selectedResult: any;
   readonly markers: Observable<any[]> = this.markerService.getMarkers();
   searchResults: Observable<any[]>;
   searchForm: FormGroup;
   searchField: FormControl;
+  @Input()selectedFilters: Filter[];
   @Input()filteredMarkers: Marker[];
+  @Input() filterForm: Observable<FormGroup> = this.sharedFilterFormService.sharedFilterForm;
 
   constructor(
               private markerService: MarkerService,
               private searchService: SearchService,
               private filtersService: FiltersService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private sharedFilterFormService: SharedFilterFormService) {
   }
 
   ngOnInit(): void {
@@ -37,9 +42,12 @@ export class SearchComponent implements OnInit {
       this.selectedResult = selectedResult;
     });
 
+    this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
+      this.selectedFilters = selectedFilters;
+    });
+
     this.searchForm = this.formBuilder.group({searchField: [this.searchField]});
     this.markers.subscribe(markers => {
-      // TODO: Solve sharing filteredMarkers between components
       this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
         this.filteredMarkers = filteredMarkers;
         this.searchResults = this.searchForm.get('searchField').valueChanges
@@ -53,6 +61,23 @@ export class SearchComponent implements OnInit {
 
   clearSearchField(): void {
     this.searchForm.get('searchField').reset();
+  }
+
+  dismiss(filterCategory: string, filterValue: string): void {
+    this.selectedFilters.splice(this.selectedFilters.findIndex(element =>
+      element.Key === filterCategory && element.Value === filterValue), 1);
+  }
+
+  updateFilters(): void {
+    this.filtersService.selectedFiltersChange.next(this.selectedFilters);
+  }
+
+  uncheckFilter(filterCategory: string, filterValue: string): void {
+    this.filterForm.subscribe(form => {
+      const categoryFilters: FormGroup = (form.get(filterCategory) as FormGroup);
+      // Fields with dot in name cannot be retrieved using form.get(). Should use form.get([]) instead
+      (categoryFilters.get([filterValue]) as FormControl).setValue(false);
+     });
   }
 }
 

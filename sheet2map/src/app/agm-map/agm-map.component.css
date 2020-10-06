@@ -1,3 +1,8 @@
+/*@import "././node_modules/font-awesome/css/font-awesome.css";*/
+
+@font-face {
+  font-family: "FontAwesome";
+}
 .map-container {
   height: 100%;
 }
@@ -43,3 +48,4 @@
 /*    opacity: 0;*/
 /*  }*/
 /*}*/
+

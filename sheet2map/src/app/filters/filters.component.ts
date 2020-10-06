@@ -16,6 +16,8 @@ import {FiltersService} from '../_services/filters.service';
 import {Marker} from '../marker.class';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {EventEmitter} from 'events';
+import {SharedFilterFormService} from '../_services/shared-filter-form.service';
+import {Filter} from '../filter.class';
 
 @Component({
   selector: 'app-filters',
@@ -24,25 +26,29 @@ import {EventEmitter} from 'events';
 })
 export class FiltersComponent implements OnInit {
   readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
-  keyValues: any;
+  private keyValues: object;
   public input: string;
   filterForm: FormGroup = new FormGroup({});
   @ViewChildren('clearFiltersBtn') clearFiltersButtons: QueryList<ElementRef>;
+  @Input()selectedFilters: Filter[];
   @Output() btnClick = new EventEmitter();
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
               private changeDetectorRef: ChangeDetectorRef,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private sharedFilterFormService: SharedFilterFormService) { }
 
   ngOnInit(): void {
     this.markers.subscribe(markers => { // Subscribe to shared markers data
       this.keyValues = this.filtersService.generateFilters(markers);
       this.filterForm = this.buildFilterForm(this.keyValues); // Build reactive FormGroup
+      this.sharedFilterFormService.nextFilterForm(this.filterForm); // Pass form to the shared service for access in search component
       this.changeDetectorRef.detectChanges();
-
       this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
-        this.filtersService.updateFilteredMarkers(selectedFilters, markers); });
+        this.selectedFilters = selectedFilters;
+        // TODO: Add toggle clearFiltersBtn check here?
+        this.filtersService.updateFilteredMarkers(this.selectedFilters, markers); });
     });
   }
 
@@ -55,15 +61,16 @@ export class FiltersComponent implements OnInit {
     return form;
   }
 
-  private uncheckFilters(category): void {
-    this.disableClearFiltersBtn(category);
-    (this.filterForm.get(category) as FormGroup).reset();
+  public uncheckFilters(filterCategory): void {
+    this.disableClearFiltersBtn(filterCategory);
+    (this.filterForm.get(filterCategory) as FormGroup).reset();
   }
 
-  private toggleClearFiltersBtn(category): void {
-    const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category);
-    const filters = (this.filterForm.get(category) as FormGroup).controls;
+  private toggleClearFiltersBtn(filterCategory): void {
+    const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === filterCategory);
+    const filters = (this.filterForm.get(filterCategory) as FormGroup).controls;
     const checkboxIsChecked = Object.entries(filters).find(([key, checkbox]) => checkbox.value === true);
+    console.log('checkboxIsChecked ', checkboxIsChecked);
     if (checkboxIsChecked) { // If at least one checkbox is checked, enable button
       button.nativeElement.disabled = false;
     }
@@ -72,8 +79,8 @@ export class FiltersComponent implements OnInit {
     }
   }
 
-  private disableClearFiltersBtn(category): void {
-    (this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === category))
+  private disableClearFiltersBtn(filterCategory): void {
+    (this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === filterCategory))
       .nativeElement.disabled = true;
   }
 }

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {Filter} from '../filter.class';
 import {Marker} from '../marker.class';
+import {FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FiltersService {
   // Create a subject to share selected filtering properties between filters component and map components
-  private selectedFilters: Filter[] = [];
+  selectedFilters: Filter[] = [];
   selectedFiltersChange = new Subject<Filter[]>();
   private filteredMarkers = new BehaviorSubject<Marker[]>(null);
   sharedFilteredMarkers = this.filteredMarkers.asObservable();
@@ -42,6 +43,7 @@ export class FiltersService {
       this.selectedFilters.splice(this.selectedFilters
         .findIndex(element => element.Key === selectedFilter.Key && element.Value === selectedFilter.Value), 1);
     }
+    console.log('selected Filters ', this.selectedFilters);
     this.selectedFiltersChange.next(this.selectedFilters); // Pass in new selected filters to BehaviorSubject
   }
 
@@ -56,7 +58,6 @@ export class FiltersService {
   }
 
   updateFilteredMarkers(selectedFilters, markers: Marker[]): any {
-    console.log('selectedFilters.length ', selectedFilters.length);
     if (selectedFilters.length === 0) {
       this.filteredMarkers.next(markers);
     }

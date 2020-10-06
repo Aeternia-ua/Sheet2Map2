@@ -33,6 +33,9 @@ import { AutocompleteContentDirective } from './_directives/autocomplete-content
 import { AutocompleteDirective } from './_directives/autocomplete.directive';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AgmGeolocationControlComponent } from './agm-geolocation-control/agm-geolocation-control.component';
+import {GeolocationControlService} from './_services/geolocation-control.service';
+import { LeafletGeolocationControlComponent } from './leaflet-geolocation-control/leaflet-geolocation-control.component';
+import { DismissableDirective } from './_directives/dismissable.directive';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -59,6 +62,8 @@ const appRoutes: Routes = [
     AutocompleteContentDirective,
     AutocompleteDirective,
     AgmGeolocationControlComponent,
+    LeafletGeolocationControlComponent,
+    DismissableDirective,
   ],
   imports: [
     BrowserModule,
@@ -81,11 +86,13 @@ const appRoutes: Routes = [
     LeafletMarkerService,
     AGMMarkerService,
     InfoSidebarComponent,
+    FiltersComponent,
     JsonService,
     MarkerService,
     SharedMarkerInfoService,
     InfoSidebarToggleService,
-    SearchService
+    SearchService,
+    GeolocationControlService
   ],
   entryComponents: [ MarkerInfoComponent, AutocompleteComponent ],
   bootstrap: [AppComponent]

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AgmGeolocationControlService } from './agm-geolocation-control.service';
+import { GeolocationControlService } from './geolocation-control.service';
 
 describe('AgmGeolocationBtnService', () => {
-  let service: AgmGeolocationControlService;
+  let service: GeolocationControlService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AgmGeolocationControlService);
+    service = TestBed.inject(GeolocationControlService);
   });
 
   it('should be created', () => {

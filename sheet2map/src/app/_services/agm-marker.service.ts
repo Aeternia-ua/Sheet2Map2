@@ -39,7 +39,7 @@ export class AGMMarkerService {
         agmMarker = new google.maps.Marker({
           position: LatLng,
           animation: null,
-          optimized: false // Unoptimized markers exist as img elements inside the markerLayer mapPane
+          optimized: true // Unoptimized markers exist as img elements inside the markerLayer mapPane
         });
         agmMarker.markerID = marker.MarkerID;
         agmMarker.properties = marker.Feature.Properties;
@@ -72,6 +72,10 @@ export class AGMMarkerService {
     if (this.selectedMarker) { // Set previously selected marker back to default state
       this.selectedMarker.setAnimation(null); }
     marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+
+  deselect(marker): google.maps.Marker {
+    if (marker) { return marker.setAnimation(null); }
   }
 
   public setIcon(marker: google.maps.Marker, color): void {

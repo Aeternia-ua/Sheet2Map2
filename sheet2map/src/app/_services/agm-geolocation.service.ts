@@ -8,30 +8,43 @@ import {GeoLocator} from '../geoLocator.class';
 export class AgmGeolocationService {
 
   private userLocation: google.maps.LatLng;
-  private userLocationMarker: google.maps.Marker;
+  private userLocationMarker: google.maps.Marker = null;
+  private userLocationRadius: google.maps.Circle = null;
 
   constructor(private agmMarkerService: AGMMarkerService) {
   }
 
-  getUserLocation(map: google.maps.Map): google.maps.Marker {
+  getUserLocation(map: google.maps.Map): void {
     const locator: GeoLocator = new GeoLocator();
     locator.UserLocation.subscribe(location => {
       if (location) {
         this.userLocation = new google.maps.LatLng(location.latitude, location.longitude);
-        map.setCenter(this.userLocation);
-        this.userLocationMarker = new google.maps.Marker({
-          position: this.userLocation,
-          map: map
-        });
-        const circle = new google.maps.Circle({
-          center: this.userLocation,
-          radius: location.accuracy,
-          map: map
-        });
-        // TODO: design custom geolocation marker
-        this.agmMarkerService.setIcon(this.userLocationMarker, this.agmMarkerService.defaultColor);
+        if (this.userLocationMarker === null && this.userLocationRadius === null) {
+          this.userLocationMarker = new google.maps.Marker({position: this.userLocation,
+            map: map
+          });
+          this.userLocationRadius = new google.maps.Circle({
+            center: this.userLocation,
+            radius: location.accuracy,
+            map: map,
+            strokeColor: 'rgb(51, 136, 255)',
+            fillColor: 'rgb(51, 136, 255)',
+            strokeWeight: 3
+          });
+          // TODO: design custom geolocation marker
+          this.agmMarkerService.setIcon(this.userLocationMarker, this.agmMarkerService.defaultColor);
+          map.setCenter(this.userLocation);
+        }
       }
     });
-    return this.userLocationMarker;
+  }
+
+  clearUserLocation(): void {
+    if (this.userLocationRadius && this.userLocationMarker) {
+      this.userLocationMarker.setMap(null);
+      this.userLocationMarker = null;
+      this.userLocationRadius.setMap(null);
+      this.userLocationRadius = null;
+    }
   }
 }

@@ -1,17 +1,18 @@
 <form clrForm [formGroup]="filterForm">
   <div *ngFor="let category of filterForm.controls | keyvalue ">
     <clr-vertical-nav-group>
-      <button type="button"
-              class="btn btn-icon btn-clear-filters"
-              [name]="category.key"
-              aria-label="clear filters"
-              [disabled]=true
-              #clearFiltersBtn
-              (click)="$event.stopPropagation();
-              this.uncheckFilters(category.key);
-              this.filtersService.clearFilters(category.key)">
-        <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon>
-      </button>
+        <button type="button"
+                class="btn btn-icon btn-clear-filters"
+                [name]="category.key"
+                title="Clear filters"
+                aria-label="clear filters"
+                [disabled]=true
+                #clearFiltersBtn
+                (click)="$event.stopPropagation();
+                this.uncheckFilters(category.key);
+                this.filtersService.clearFilters(category.key)">
+          <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon>
+        </button>
       {{category.key}}
 
       <clr-vertical-nav-group-children *clrIfExpanded>
@@ -19,6 +20,7 @@
           <clr-checkbox-container>
             <clr-checkbox-wrapper>
               <input type="checkbox" clrCheckbox
+                     id="{{filter.key}}"
                    [formControlName]=filter.key
                    value="{{filter}}"
                    (change)="this.filtersService.getSelectedFilters(category.key, filter.key, $event);

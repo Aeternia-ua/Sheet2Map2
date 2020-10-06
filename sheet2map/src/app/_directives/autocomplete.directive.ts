@@ -1,8 +1,8 @@
 import {Directive, ElementRef, Input, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
 import {AutocompleteComponent} from '../autocomplete/autocomplete.component';
-import {ConnectionPositionPair, Overlay, OverlayRef} from '@angular/cdk/overlay';
-import {NgControl} from '@angular/forms';
-import {fromEvent, Subject} from 'rxjs';
+import {ConnectionPositionPair, FlexibleConnectedPositionStrategy, Overlay, OverlayRef} from '@angular/cdk/overlay';
+import {AbstractControl, NgControl} from '@angular/forms';
+import {fromEvent, Observable, Subject} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {TemplatePortal} from '@angular/cdk/portal';
 
@@ -23,7 +23,7 @@ export class AutocompleteDirective implements OnInit, OnDestroy {
   ) {
   }
 
-  get control() {
+  get control(): AbstractControl {
     return this.ngControl.control;
   }
 
@@ -40,12 +40,12 @@ export class AutocompleteDirective implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  openDropdown() {
+  openDropdown(): void {
     this.overlayRef = this.overlay.create({
       width: this.origin.offsetWidth,
       maxHeight: 40 * 3,
@@ -60,12 +60,14 @@ export class AutocompleteDirective implements OnInit, OnDestroy {
     overlayClickOutside(this.overlayRef, this.origin).subscribe(() => this.close());
   }
 
-  private close() {
-    this.overlayRef.detach();
-    this.overlayRef = null;
+  private close(): void {
+    if (this.overlayRef) {
+      this.overlayRef.detach();
+      this.overlayRef = null;
+    }
   }
 
-  private getOverlayPosition() {
+  private getOverlayPosition(): FlexibleConnectedPositionStrategy {
     const positions = [
       new ConnectionPositionPair(
         { originX: 'start', originY: 'bottom' },
@@ -85,12 +87,12 @@ export class AutocompleteDirective implements OnInit, OnDestroy {
       .withPush(false);
   }
 
-  get origin() {
+  get origin(): HTMLElement {
     return this.host.nativeElement;
   }
 }
 
-export function overlayClickOutside( overlayRef: OverlayRef, origin: HTMLElement ) {
+export function overlayClickOutside(overlayRef: OverlayRef, origin: HTMLElement): Observable<MouseEvent> {
   return fromEvent<MouseEvent>(document, 'click')
     .pipe(
       filter(event => {
