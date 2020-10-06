@@ -66,6 +66,8 @@ export class SearchComponent implements OnInit {
   dismiss(filterCategory: string, filterValue: string): void {
     this.selectedFilters.splice(this.selectedFilters.findIndex(element =>
       element.Key === filterCategory && element.Value === filterValue), 1);
+    this.updateFilters();
+    this.uncheckFilter(filterCategory, filterValue);
   }
 
   updateFilters(): void {

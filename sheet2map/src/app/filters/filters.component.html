@@ -21,10 +21,9 @@
             <clr-checkbox-wrapper>
               <input type="checkbox" clrCheckbox
                      id="{{filter.key}}"
-                   [formControlName]=filter.key
-                   value="{{filter}}"
-                   (change)="this.filtersService.getSelectedFilters(category.key, filter.key, $event);
-                   this.toggleClearFiltersBtn(category.key)"/>
+                     [formControlName]=filter.key
+                     value="{{filter}}"
+                     (change)="this.filtersService.getSelectedFilters(category.key, filter.key, $event)"/>
               <label>{{filter.key}}</label>
             </clr-checkbox-wrapper>
           </clr-checkbox-container>

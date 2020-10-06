@@ -18,12 +18,11 @@
     <app-autocomplete #autocomplete="appAutocomplete">
       <ng-template appAutocompleteContent>
         <ng-container>
-          <span class="label filter-label" appDismissable
+          <div class="label filter-label" appDismissable
                 (click)="$event.stopPropagation();
-                dismiss(filterCategory.Key, filterCategory.Value);
-                this.updateFilters();
-                this.uncheckFilter(filterCategory.Key, filterCategory.Value)"
-                *ngFor="let filterCategory of selectedFilters">{{filterCategory.Value}}</span>
+                dismiss(filterCategory.Key, filterCategory.Value)"
+                *ngFor="let filterCategory of selectedFilters">
+            <span class="filter-label-title" title="{{filterCategory.Value}}">{{filterCategory.Value}}</span></div>
         </ng-container>
         <ng-container *ngIf="searchForm.value.searchField?.length >= 1">
             <app-option *ngFor="let marker of (searchResults | async | keyvalue)" [value]="marker.value.representativeProperty"

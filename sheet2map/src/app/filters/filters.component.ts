@@ -24,6 +24,7 @@ import {Filter} from '../filter.class';
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css']
 })
+
 export class FiltersComponent implements OnInit {
   readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
   private keyValues: object;
@@ -31,7 +32,6 @@ export class FiltersComponent implements OnInit {
   filterForm: FormGroup = new FormGroup({});
   @ViewChildren('clearFiltersBtn') clearFiltersButtons: QueryList<ElementRef>;
   @Input()selectedFilters: Filter[];
-  @Output() btnClick = new EventEmitter();
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
@@ -49,6 +49,7 @@ export class FiltersComponent implements OnInit {
         this.selectedFilters = selectedFilters;
         // TODO: Add toggle clearFiltersBtn check here?
         this.filtersService.updateFilteredMarkers(this.selectedFilters, markers); });
+      this.onChange();
     });
   }
 
@@ -66,17 +67,18 @@ export class FiltersComponent implements OnInit {
     (this.filterForm.get(filterCategory) as FormGroup).reset();
   }
 
-  private toggleClearFiltersBtn(filterCategory): void {
-    const button = this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === filterCategory);
-    const filters = (this.filterForm.get(filterCategory) as FormGroup).controls;
-    const checkboxIsChecked = Object.entries(filters).find(([key, checkbox]) => checkbox.value === true);
-    console.log('checkboxIsChecked ', checkboxIsChecked);
-    if (checkboxIsChecked) { // If at least one checkbox is checked, enable button
-      button.nativeElement.disabled = false;
-    }
-    else {
-      button.nativeElement.disabled = true;
-    }
+  onChange(): void {
+    this.filterForm.valueChanges.subscribe(() => {
+      this.clearFiltersButtons.forEach((categoryBtn, index) => {
+        const categoryFilter = (this.filterForm.get(categoryBtn.nativeElement.name) as FormGroup).controls;
+        const checkboxIsChecked = Object.entries(categoryFilter).find(([key, checkbox]) => checkbox.value === true);
+        if (checkboxIsChecked) { // If at least one checkbox is checked, enable button
+            categoryBtn.nativeElement.disabled = false;
+          } else {
+          categoryBtn.nativeElement.disabled = true;
+          }
+      });
+    });
   }
 
   private disableClearFiltersBtn(filterCategory): void {

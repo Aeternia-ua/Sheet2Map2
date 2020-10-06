@@ -58,9 +58,13 @@
 
 .filter-label {
   cursor: pointer;
-  max-width: 10rem;
-  display:inline-block;
-  justify-content: left;
+  max-width: 8rem;
+}
+
+.filter-label-title {
+  max-width: 8rem;
   overflow: hidden;
+  display: inline-block;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }

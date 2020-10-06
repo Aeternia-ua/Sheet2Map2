@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {Filter} from '../filter.class';
 import {Marker} from '../marker.class';
-import {FormGroup} from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
