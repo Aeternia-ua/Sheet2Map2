@@ -4,7 +4,8 @@
 html, body {
   height: 100%;
 }
-/*Styles required for the right positioning of autocomplete dropdown menu*/
+
+/*Styles required for the correct positioning of the autocomplete dropdown menu*/
 .cdk-overlay-container {
   position:fixed;
   z-index:1000
@@ -22,18 +23,18 @@ html, body {
   box-sizing:border-box;
   z-index:1000
 }
-/* END Styles required for the right positioning of autocomplete dropdown menu*/
+/* END Styles required for the correct positioning of the autocomplete dropdown menu*/
 
-/* Changing filters subnav sections height to fit clearFilter buttons*/
-.nav-group-text, .nav-group-trigger {
+/* ::::::STYLING DYNAMICALLY GENERATED DOM ELEMENTS:::::: */
+/*FILTERS SIDENAV*/
+
+.nav-group-text, .nav-group-trigger { /* Changing filters subnav sections height to fit the clearFilter buttons*/
   height: 2.2rem!important;
 }
 
 .nav-group-text {
   padding-left: 0!important;
 }
-
-/* Override styles of dynamically generated DOM elements*/
 
 /*.header-backdrop {*/
 /*  background-color: rgba(0, 0, 0, 0.1) !important;*/

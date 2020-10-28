@@ -2,18 +2,13 @@ import {
   AfterViewInit,
   Component,
   ComponentFactoryResolver,
-  Input, OnChanges,
-  OnInit, SimpleChanges,
+  Input,
+  OnInit,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
-// import {MatSidenav} from '@angular/material/sidenav';
 import {MarkerInfo} from '../info-sidebar/marker-info.class';
-import {FiltersComponent} from '../filters/filters.component';
-import {InfoSidebarDirective} from '../_directives/info-sidebar.directive';
-import {FiltersDirective} from '../_directives/filters.directive';
 import {InfoSidebar} from '../info-sidebar.class';
 
 @Component({
@@ -26,11 +21,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @Input()mInfo: MarkerInfo;
   @Input()isOpened: boolean;
 
-  constructor(private breakpointObserver: BreakpointObserver,
-              private sharedService: SharedMarkerInfoService,
+  constructor(private sharedService: SharedMarkerInfoService,
               private viewContainerRef: ViewContainerRef,
               private componentFactoryResolver: ComponentFactoryResolver,
-              public infoSidebarToggleService: InfoSidebarToggleService) {}
+              public infoSidebarToggleService: InfoSidebarToggleService) {
+  }
 
   ngAfterViewInit(): void {
   }

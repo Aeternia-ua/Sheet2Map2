@@ -65,7 +65,7 @@ export class SearchComponent implements OnInit {
 
   dismiss(filterCategory: string, filterValue: string): void {
     this.selectedFilters.splice(this.selectedFilters.findIndex(element =>
-      element.Key === filterCategory && element.Value === filterValue), 1);
+      element.Category === filterCategory && element.Value === filterValue), 1);
     this.updateFilters();
     this.uncheckFilter(filterCategory, filterValue);
   }
@@ -76,8 +76,8 @@ export class SearchComponent implements OnInit {
 
   uncheckFilter(filterCategory: string, filterValue: string): void {
     this.filterForm.subscribe(form => {
-      const categoryFilters: FormGroup = (form.get(filterCategory) as FormGroup);
       // Fields with dot in name cannot be retrieved using form.get(). Should use form.get([]) instead
+      const categoryFilters: FormGroup = (form.get([filterCategory]) as FormGroup);
       (categoryFilters.get([filterValue]) as FormControl).setValue(false);
      });
   }

@@ -3,6 +3,7 @@ import {OptionComponent} from './option/option.component';
 import {switchMap} from 'rxjs/operators';
 import {merge} from 'rxjs';
 import {AutocompleteContentDirective} from '../_directives/autocomplete-content.directive';
+import {SearchFiltersContainerDirective} from '../_directives/search-filters-container.directive';
 
 @Component({
   selector: 'app-autocomplete',
@@ -15,6 +16,9 @@ export class AutocompleteComponent implements OnInit {
   @ContentChild(AutocompleteContentDirective)
   content: AutocompleteContentDirective;
   @ContentChildren(OptionComponent) options: QueryList<OptionComponent>;
+
+  @ContentChild(SearchFiltersContainerDirective)
+  searchFiltersContainer: SearchFiltersContainerDirective;
 
   constructor() { }
 

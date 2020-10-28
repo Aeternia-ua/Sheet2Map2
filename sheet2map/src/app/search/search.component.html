@@ -16,22 +16,27 @@
       </button>
     </label>
     <app-autocomplete #autocomplete="appAutocomplete">
-      <ng-template appAutocompleteContent>
-        <ng-container>
-          <div class="label filter-label" appDismissable
-                (click)="$event.stopPropagation();
-                dismiss(filterCategory.Key, filterCategory.Value)"
-                *ngFor="let filterCategory of selectedFilters">
-            <span class="filter-label-title" title="{{filterCategory.Value}}">{{filterCategory.Value}}</span></div>
-        </ng-container>
+      <!-- Search filter labels-->
+      <ng-template appSearchFiltersContainer>
         <ng-container *ngIf="searchForm.value.searchField?.length >= 1">
-            <app-option *ngFor="let marker of (searchResults | async | keyvalue)" [value]="marker.value.representativeProperty"
-            (click)="this.searchService.updateSelectedResult(marker)">
-                <clr-icon shape="map-marker" role="img" aria-label="Marker pin"></clr-icon>
-                {{ marker.value.representativeProperty }}
-            </app-option>
+            <div class="label filter-label" appDismissable
+                  (click)="$event.stopPropagation(); dismiss(selectedFilter.Category, selectedFilter.Value)"
+                  *ngFor="let selectedFilter of selectedFilters">
+              <span class="badge search-filter-count">{{selectedFilter.NumberOfMarkers}}</span>
+              <span class="filter-label-title" title="{{selectedFilter.Value}}">{{selectedFilter.Value}}</span></div>
         </ng-container>
       </ng-template>
+
+      <ng-template appAutocompleteContent>
+          <ng-container *ngIf="searchForm.value.searchField?.length >= 1">
+              <app-option *ngFor="let marker of (searchResults | async | keyvalue)" [value]="marker.value.representativeProperty"
+              (click)="this.searchService.updateSelectedResult(marker)">
+                  <clr-icon shape="map-marker" role="img" aria-label="Marker pin"></clr-icon>
+                  {{ marker.value.representativeProperty }}
+              </app-option>
+          </ng-container>
+      </ng-template>
+
     </app-autocomplete>
   </clr-input-container>
 </form>

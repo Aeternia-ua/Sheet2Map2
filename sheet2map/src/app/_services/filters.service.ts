@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {Filter} from '../filter.class';
 import {Marker} from '../marker.class';
 
@@ -16,37 +16,50 @@ export class FiltersService {
   constructor() {
   }
 
-  generateFilters(markers): object {
-    const filterProperties: any[] = [];
+  getFilterProperties(markers): object {
+    const markerFProps: any[] = [];
     markers.forEach(marker => {
-      const properties = marker.feature.properties;
-      const filterProperty = Object.keys(properties).filter(property => property.includes('o'))
-        .map(key => ({[key]: properties[key]}));
-      filterProperties.push(filterProperty);
+      const props = marker.feature.properties;
+      const fProp = Object.keys(props).filter(prop => prop.includes('o'))
+        .map(key => ({[key]: props[key]}));
+      markerFProps.push(fProp);
     });
 
-    const reduced: any[] = [].concat(...filterProperties).reduce((result, object) => {
+    const reducedMarkerFProps: any[] = [].concat(...markerFProps).reduce((result, object) => {
       Object.entries(object).forEach(([key, value]) => (result[key] = result[key] || []).push(value));
       return result;
     }, Object.create(null));
-    const keyValues: object = {};
-    Object.entries(reduced).forEach(([key, value]) => keyValues[key] = [...new Set(value)]);
-    return keyValues;
+
+    const filterProperties: object = {};
+    Object.entries(reducedMarkerFProps).forEach(([key, value]) => {
+          const fValues = this.buildFilterValues(value); // TODO: rename variable
+          filterProperties[key] = [...new Set(fValues)];
+      }
+    );
+    return filterProperties;
   }
 
-  getSelectedFilters(key, value, event): void {
-    const selectedFilter = new Filter(key, value);
+  // Get unique filter values and count the occurrences of each filter value // TODO: rename method
+  buildFilterValues(array): Map<any, number> {
+    const arrayCount = new Map([...new Set(array)].map(
+        x => [x, array.filter(y => y === x).length]
+    ));
+    return arrayCount;
+  }
+
+  getSelectedFilters(key: string, value: string, numOfMarkers: number, event): void {
+    const selectedFilter = new Filter(key, value, numOfMarkers);
     if (event.target.checked) {
       this.selectedFilters.push(selectedFilter);
     } else {
       this.selectedFilters.splice(this.selectedFilters
-        .findIndex(element => element.Key === selectedFilter.Key && element.Value === selectedFilter.Value), 1);
+        .findIndex(element =>
+          element.Category === selectedFilter.Category && element.Value === selectedFilter.Value), 1);
     }
-    console.log('selected Filters ', this.selectedFilters);
     this.selectedFiltersChange.next(this.selectedFilters); // Pass in new selected filters to BehaviorSubject
   }
 
-  initFilteredMarkers(markers): Observable<Marker[]> { // TODO: Test and rewrite method
+  initFilteredMarkers(markers): Observable<Marker[]> {
     if (this.filteredMarkers.value === null) { // If no filters are selected, return unfiltered markers
       this.filteredMarkers.next(markers);
     }
@@ -62,9 +75,9 @@ export class FiltersService {
     }
     else {
       let filteredMarkers: Marker[] = markers;
-      const categories: any = [...new Set(selectedFilters.map(element => element.key))];
+      const categories: any = [...new Set(selectedFilters.map(element => element.Category))];
       categories.forEach(category => {
-        const selectedValues = selectedFilters.filter(el => el.key === category).map(el => el.value);
+        const selectedValues = selectedFilters.filter(el => el.Category === category).map(el => el.Value);
         filteredMarkers = this.filterByCategory(filteredMarkers, category, selectedValues);
       });
       this.filteredMarkers.next(filteredMarkers);
@@ -79,7 +92,7 @@ export class FiltersService {
   }
 
   clearFilters(category): void {
-    const updatedFilters = this.selectedFilters.filter(element => element.Key !== category);
+    const updatedFilters = this.selectedFilters.filter(element => element.Category !== category);
     this.selectedFiltersChange.next(this.selectedFilters = updatedFilters);
   }
 }

@@ -1,7 +1,26 @@
+/*.autocomplete {*/
+/*  background-color: #fff;*/
+/*  box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.2);*/
+/*  width: 100%;*/
+/*  min-width: 8rem;*/
+/*  display: block;*/
+/*  max-height: 350px;*/
+/*  overflow-y: scroll;*/
+/*}*/
+
 .autocomplete {
   background-color: #fff;
   box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.2);
   width: 100%;
+  min-width: 8rem;
+  display: block;
+  overflow-y: hidden;
+}
+
+.search-options-container {
+  /*background-color: #fff;*/
+  /*box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.2);*/
+  /*width: 100%;*/
   min-width: 8rem;
   display: block;
   max-height: 350px;

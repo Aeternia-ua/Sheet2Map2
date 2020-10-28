@@ -1,5 +1,8 @@
 <ng-template #root>
   <div class="autocomplete">
-    <ng-container *ngTemplateOutlet="content.tpl"></ng-container>
+    <ng-container *ngTemplateOutlet="searchFiltersContainer.templateRef"></ng-container>
+    <div class="search-options-container">
+      <ng-container *ngTemplateOutlet="content.tpl"></ng-container>
+    </div>
   </div>
 </ng-template>

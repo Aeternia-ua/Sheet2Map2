@@ -11,7 +11,7 @@
                 (click)="$event.stopPropagation();
                 this.uncheckFilters(category.key);
                 this.filtersService.clearFilters(category.key)">
-          <clr-icon shape="filter-grid-circle" class="is-solid"></clr-icon>
+          <clr-icon shape="filter-off" class="btn-clear-filters-icon is-solid"></clr-icon>
         </button>
       {{category.key}}
 
@@ -23,7 +23,7 @@
                      id="{{filter.key}}"
                      [formControlName]=filter.key
                      value="{{filter}}"
-                     (change)="this.filtersService.getSelectedFilters(category.key, filter.key, $event)"/>
+                     (change)="this.filtersService.getSelectedFilters(category.key, filter.key, filter.value.numberOfMarkers, $event)"/>
               <label>{{filter.key}}</label>
             </clr-checkbox-wrapper>
           </clr-checkbox-container>

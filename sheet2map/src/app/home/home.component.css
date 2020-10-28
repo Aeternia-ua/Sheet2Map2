@@ -4,7 +4,22 @@
 
 /* HEADER STYLES */
 
+.header .branding .app-logo {
+  background-image: url(../../assets/img/S2M-logo-short.svg);
+  margin-right: .55rem;
+  margin-top: .3rem;
+  min-width: 0;
+  height: 1.8rem;
+  width: 1.8rem;
+  display: inline-block;
+  vertical-align: middle;
+}
 
+/* MAP LINKS */
+
+.map-link:hover {
+  background: hsla(0,0%,100%,.15);
+}
 
 /* LEFT FILTERS NAVBAR STYLES */
 

@@ -27,11 +27,12 @@ import {Filter} from '../filter.class';
 
 export class FiltersComponent implements OnInit {
   readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
-  private keyValues: object;
+  private filterProperties: object;
   public input: string;
   filterForm: FormGroup = new FormGroup({});
   @ViewChildren('clearFiltersBtn') clearFiltersButtons: QueryList<ElementRef>;
   @Input()selectedFilters: Filter[];
+  private filters: Filter[];
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
@@ -41,8 +42,8 @@ export class FiltersComponent implements OnInit {
 
   ngOnInit(): void {
     this.markers.subscribe(markers => { // Subscribe to shared markers data
-      this.keyValues = this.filtersService.generateFilters(markers);
-      this.filterForm = this.buildFilterForm(this.keyValues); // Build reactive FormGroup
+      this.filterProperties = this.filtersService.getFilterProperties(markers);
+      this.filterForm = this.buildFilterForm(this.filterProperties); // Build reactive FormGroup
       this.sharedFilterFormService.nextFilterForm(this.filterForm); // Pass form to the shared service for access in search component
       this.changeDetectorRef.detectChanges();
       this.filtersService.selectedFiltersChange.subscribe(selectedFilters => {
@@ -53,12 +54,22 @@ export class FiltersComponent implements OnInit {
     });
   }
 
-  private buildFilterForm(keyValues: object): FormGroup {
+  private buildFilterForm(filterProperties: object): FormGroup {
     const form: FormGroup = this.formBuilder.group({});
-    Object.entries(keyValues).forEach(([key, values]) => {
+    Object.entries(filterProperties).forEach(([key, values]) => {
       form.setControl(key, this.formBuilder.group({}));
-      values.forEach(value => {(form.get(key) as FormGroup).addControl(value, new FormControl(false)); });
+      values.forEach(value => {
+        const filterValue = value[0];
+        const numberOfMarkers = value[1];
+        // (form.get(key) as FormGroup).addControl(value[0], new FormControl(false));
+        (form.get(key) as FormGroup).addControl(filterValue, new FormControl(false));
+        const control = (form.get(key) as FormGroup).get(filterValue);
+        if (control) {
+          control['numberOfMarkers'] = numberOfMarkers;
+        }
+      });
     });
+    console.log('.controls ', form.controls);
     return form;
   }
 

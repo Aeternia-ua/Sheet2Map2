@@ -1,16 +1,17 @@
 <clr-main-container class=" main-container">
     <clr-header class="header header-6">
         <div class="branding">
-          <clr-icon class="logo" shape="map"></clr-icon>
+          <span class="clr-icon logo app-logo"></span>
           <span class="title">Sheet2Map</span>
+<!--          Doesn't show-->
+          <div class="divider"></div>
         </div>
       <div>
         <app-search></app-search>
       </div>
-          <div class="divider"></div>
         <div class="header-nav header-actions" [clr-nav-level]="2">
-          <a class="nav-link nav-text" routerLink='/googlemaps'>Google map</a>
-          <a class="nav-link nav-text" routerLink='/openstreetmaps'>Leaflet map</a>
+          <a class="map-link nav-link nav-text" routerLink='/googlemaps'>Google map</a>
+          <a class="map-link nav-link nav-text" routerLink='/openstreetmaps'>Leaflet map</a>
       </div>
   </clr-header>
 
@@ -18,7 +19,6 @@
     <clr-vertical-nav [clrVerticalNavCollapsible]="true" [clr-nav-level]="1">
       <app-filters></app-filters>
     </clr-vertical-nav>
-<!--    TODO: Toggle info sidebar 'closed' class by isOpen variable state-->
     <div class="content-area"><router-outlet></router-outlet></div>
     <div id="sidenav-wrapper">
         <nav class="sidenav sidenav-right" #markerInfoSidebar

@@ -36,6 +36,7 @@ import { AgmGeolocationControlComponent } from './agm-geolocation-control/agm-ge
 import {GeolocationControlService} from './_services/geolocation-control.service';
 import { LeafletGeolocationControlComponent } from './leaflet-geolocation-control/leaflet-geolocation-control.component';
 import { DismissableDirective } from './_directives/dismissable.directive';
+import { SearchFiltersContainerDirective } from './_directives/search-filters-container.directive';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -64,6 +65,7 @@ const appRoutes: Routes = [
     AgmGeolocationControlComponent,
     LeafletGeolocationControlComponent,
     DismissableDirective,
+    SearchFiltersContainerDirective,
   ],
   imports: [
     BrowserModule,

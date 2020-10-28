@@ -1,10 +1,15 @@
 .btn-clear-filters {
-/*  max-height: 1.3rem;*/
-  /*max-width: 1.3rem;*/
   transform: scale(0.9);
   margin-left: .2rem;
   margin-top: .2rem;
   margin-bottom: .2rem;
+  border-radius: 50px;
 }
 
-/*.clr-vertical-nav .nav-group .nav-group-text*/
+.clr-form-control {
+  margin-left: .2rem;
+}
+
+.btn-clear-filters-icon {
+  font-size: 35px;
+}
