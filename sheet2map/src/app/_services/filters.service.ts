@@ -41,9 +41,7 @@ export class FiltersService {
 
   // Get unique filter values and count the occurrences of each filter value // TODO: rename method
   buildFilterValues(array): Map<any, number> {
-    const arrayCount = new Map([...new Set(array)].map(
-        x => [x, array.filter(y => y === x).length]
-    ));
+    const arrayCount = new Map([...new Set(array)].map(x => [x, array.filter(y => y === x).length]));
     return arrayCount;
   }
 

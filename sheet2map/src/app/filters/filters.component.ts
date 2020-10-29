@@ -61,15 +61,14 @@ export class FiltersComponent implements OnInit {
       values.forEach(value => {
         const filterValue = value[0];
         const numberOfMarkers = value[1];
-        // (form.get(key) as FormGroup).addControl(value[0], new FormControl(false));
         (form.get(key) as FormGroup).addControl(filterValue, new FormControl(false));
-        const control = (form.get(key) as FormGroup).get(filterValue);
+        // Fields with dot in name cannot be retrieved using form.get(). Should use form.get([]) instead
+        const control = (form.get([key]) as FormGroup).get([filterValue]);
         if (control) {
           control['numberOfMarkers'] = numberOfMarkers;
         }
       });
     });
-    console.log('.controls ', form.controls);
     return form;
   }
 
