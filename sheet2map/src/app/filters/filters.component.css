@@ -1,5 +1,13 @@
+
+
+.filter-group-children {
+  margin-bottom: 1rem;
+}
+
 .btn-clear-filters {
-  transform: scale(0.9);
+  height: 100%;
+  vertical-align: middle;
+  transform: scale(0.8);
   margin-left: .2rem;
   margin-top: .2rem;
   margin-bottom: .2rem;

@@ -1,8 +1,13 @@
 .main-container .content-container .content-area {
-  padding: 0.1rem;
+  padding: 0rem;
 }
 
 /* HEADER STYLES */
+
+.header {
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.42);
+  z-index: 1000;
+}
 
 .header .branding .app-logo {
   background-image: url(../../assets/img/S2M-logo-short.svg);
@@ -23,19 +28,21 @@
 
 /* LEFT FILTERS NAVBAR STYLES */
 
-.clr-vertical-nav {
+.filters-nav {
   width: 15rem;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.42);
+  z-index: 999;
 }
 
 .clr-vertical-nav .nav-trigger, .clr-vertical-nav .nav-group-trigger {
   height: auto;
 }
 
+/* RIGHT INFO SIDEBAR STYLES */
+
 .sidenav {
   max-height: 100%;
 }
-
-/* RIGHT INFO SIDEBAR STYLES */
 
 #sidenav-wrapper {
   position: relative;
@@ -43,6 +50,8 @@
   max-height: 100%;
   min-height: 100%;
   width: min-content;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.42);
+  z-index: 1000;
 }
 
 .sidenav-right.closed {

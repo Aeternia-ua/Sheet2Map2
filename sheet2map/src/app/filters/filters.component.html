@@ -13,10 +13,11 @@
                 this.filtersService.clearFilters(category.key)">
           <clr-icon shape="filter-off" class="btn-clear-filters-icon is-solid"></clr-icon>
         </button>
-      {{category.key}}
+      <span>{{category.key}}</span>
 
-      <clr-vertical-nav-group-children *clrIfExpanded>
-        <ng-container [formGroupName]="category.key" *ngFor="let filter of category.value.controls | keyvalue ">
+      <clr-vertical-nav-group-children class="filter-group-children" *clrIfExpanded>
+        <ng-container [formGroupName]="category.key"
+                      *ngFor="let filter of category.value.controls | keyvalue | slice:0: show; index as i; let last=last">
           <clr-checkbox-container>
             <clr-checkbox-wrapper>
               <input type="checkbox" clrCheckbox
@@ -27,6 +28,9 @@
               <label>{{filter.key}}</label>
             </clr-checkbox-wrapper>
           </clr-checkbox-container>
+          <ng-container *ngIf="last && i+1 >= 10">
+            <btn (click)="expandFilters()">Total Count {{i+1}}</btn>
+          </ng-container>
         </ng-container>
       </clr-vertical-nav-group-children>
 

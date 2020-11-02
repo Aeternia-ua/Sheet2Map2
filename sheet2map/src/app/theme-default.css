@@ -1,0 +1,32 @@
+:root {
+
+  /* :: SECONDARY COLORS :: */
+  --clr-color-action-50: #FFFFFF;
+  --clr-color-action-100: #FEDBD8;
+  --clr-color-action-200: #FBA69D;
+  --clr-color-action-300: #FA8072;
+  --clr-color-action-400: #FA8072;
+  --clr-color-action-500: #FA8072;
+  --clr-color-action-600: #FA8072;
+  --clr-color-action-700: #FA8072;
+  --clr-color-action-800: #FA8072;
+  --clr-color-action-900: #EC1F09;
+  --clr-color-action-1000: #B11806;
+
+}
+
+/* CHECKBOXES */
+
+.clr-checkbox-wrapper input[type=checkbox]:focus+label::before {
+  box-shadow: 0 0 0.1rem 0.1rem var(--clr-color-action-900);
+}
+
+/* FILTER SIDEBAR */
+
+.clr-vertical-nav {
+  background-color: var(--clr-color-action-50);
+}
+
+.clr-vertical-nav .nav-content {
+  background-color: var(--clr-color-action-50);
+}

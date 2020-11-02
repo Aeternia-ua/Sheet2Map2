@@ -2,10 +2,14 @@
 #geolocation-btn {
   width: 25px;
   height: 25px;
-  background-color: #ffff;
+  background-color: #FFFFFF;
   text-align: center;
   cursor: pointer;
   display: block;
+}
+
+#geolocation-btn:hover {
+  background-color: #f4f4f4;
 }
 
 #geolocation-icon {
@@ -15,5 +19,5 @@
 }
 
 #geolocation-icon.geolocation-btn-active {
-  color: darkcyan;
+  color: var(--clr-color-action-500);
 }

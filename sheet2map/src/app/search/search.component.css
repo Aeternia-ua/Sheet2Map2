@@ -8,6 +8,7 @@
 
 #search-input {
   color: #ffffff;
+  border-bottom-color: var(--clr-color-action-500);
   width: 80%;
 }
 
@@ -71,4 +72,5 @@
 
 .search-filter-count {
   margin: 0 .45rem 0 0;
+  background: var(--clr-color-action-500);
 }

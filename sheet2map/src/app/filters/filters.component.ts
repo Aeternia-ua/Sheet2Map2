@@ -33,6 +33,7 @@ export class FiltersComponent implements OnInit {
   @ViewChildren('clearFiltersBtn') clearFiltersButtons: QueryList<ElementRef>;
   @Input()selectedFilters: Filter[];
   private filters: Filter[];
+  show = 10;
 
   constructor(private markerService: MarkerService,
               private filtersService: FiltersService,
@@ -95,4 +96,29 @@ export class FiltersComponent implements OnInit {
     (this.clearFiltersButtons.find((btn, index) => btn.nativeElement.name === filterCategory))
       .nativeElement.disabled = true;
   }
+// This method is not currently used
+ countControls(control: AbstractControl): number {
+  if (control instanceof FormControl) {
+    return 1;
+  }
+  if (control instanceof FormArray) {
+    console.log(control.controls.reduce((acc, curr) => acc + this.countControls(curr), 1));
+
+    return control.controls.reduce((acc, curr) => acc + this.countControls(curr), 1);
+  }
+  if (control instanceof FormGroup) {
+    console.log(Object.keys(control.controls)
+      .map(key => control.controls[key])
+      .reduce((acc, curr) => acc + this.countControls(curr), 1));
+
+    return Object.keys(control.controls)
+      .map(key => control.controls[key])
+      .reduce((acc, curr) => acc + this.countControls(curr), 1);
+  }
+}
+
+  expandFilters(): void {
+   this.show += 10;
+ }
+
 }

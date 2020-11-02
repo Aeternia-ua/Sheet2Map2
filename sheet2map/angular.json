@@ -39,6 +39,7 @@
               "./node_modules/@clr/icons/clr-icons.min.css",
               "./node_modules/@clr/ui/clr-ui.min.css",
               "src/styles.css",
+              "src/app/theme-default.css",
               "./node_modules/leaflet/dist/leaflet.css",
               "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
               "./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
@@ -113,6 +114,7 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/app/theme-default.css",
               "./node_modules/@clr/icons/clr-icons.min.css",
               "./node_modules/@clr/ui/clr-ui.min.css",
               "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",

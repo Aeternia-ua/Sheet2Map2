@@ -22,8 +22,12 @@
             <div class="label filter-label" appDismissable
                   (click)="$event.stopPropagation(); dismiss(selectedFilter.Category, selectedFilter.Value)"
                   *ngFor="let selectedFilter of selectedFilters">
-              <span class="badge search-filter-count">{{selectedFilter.NumberOfMarkers}}</span>
-              <span class="filter-label-title" title="{{selectedFilter.Value}}">{{selectedFilter.Value}}</span></div>
+              <span class="badge search-filter-count" *ngIf="selectedFilter.NumberOfMarkers < 1000">
+                {{selectedFilter.NumberOfMarkers}}
+              </span>
+              <span class="badge search-filter-count" *ngIf="selectedFilter.NumberOfMarkers >= 1000">999+</span>
+              <span class="filter-label-title" title="{{selectedFilter.Value}}">{{selectedFilter.Value}}</span>
+            </div>
         </ng-container>
       </ng-template>
 
