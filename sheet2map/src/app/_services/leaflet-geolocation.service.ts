@@ -11,6 +11,13 @@ export class LeafletGeolocationService {
   private userLocation: L.latLng = null;
   private userLocationRadius: L.circle = null;
 
+  private locationIcon = L.icon({
+    iconUrl: '../../assets/img/location.svg',
+
+    iconSize:     [20, 20], // size of the icon
+    iconAnchor:   [10, 10] // point of the icon which will correspond to marker's location
+});
+
   constructor(private leafletMarkerService: LeafletMarkerService) { }
 
   getUserLocation(map: L.map): void {
@@ -19,9 +26,10 @@ export class LeafletGeolocationService {
       if (location) {
         this.userLocation = new L.latLng([location.latitude, location.longitude]);
         if (this.userLocationMarker === null && this.userLocationRadius === null) {
-          this.userLocationMarker = new L.marker(this.userLocation);
+          this.userLocationMarker = new L.marker(this.userLocation, {icon: this.locationIcon});
           // TODO: Create custom user location marker icon
-          this.leafletMarkerService.setIcon(this.userLocationMarker, this.leafletMarkerService.highlightedColor);
+          // this.leafletMarkerService.setIcon(this.userLocationMarker, this.leafletMarkerService.highlightedColor);
+          // this.leafletMarkerService.setIcon(this.userLocationMarker, this.locationIcon);
           this.userLocationMarker.addTo(map);
           this.userLocationRadius = new L.circle(this.userLocation, location.accuracy).addTo(map);
           map.locate({setView: true});

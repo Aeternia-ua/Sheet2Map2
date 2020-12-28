@@ -1,7 +1,7 @@
-<div class="search-box">
-<form clrForm class="search" clrLayout="vertical" [formGroup]="searchForm">
+<!--<div class="search-box">-->
+<form clrForm id="search-form-wide" clrLayout="vertical" [formGroup]="searchForm">
   <clr-input-container id="search-input-container">
-    <label for="search-input" class="clr-control-label">
+    <label for="search-input" class="clr-control-label" id="search-input-label">
       <input clrInput id="search-input"
              class="control"
              type="search"
@@ -10,6 +10,7 @@
              [appAutocomplete]="autocomplete">
       <button type="button"
               class="btn btn-sm btn-link"
+              id="btn-clear-search"
               title="Clear search"
               (click)="clearSearchField()" *ngIf="searchForm.value.searchField">
         <clr-icon shape="window-close"></clr-icon>
@@ -44,4 +45,4 @@
     </app-autocomplete>
   </clr-input-container>
 </form>
-</div>
+<!--</div>-->

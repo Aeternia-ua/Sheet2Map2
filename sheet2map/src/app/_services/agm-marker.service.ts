@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import MarkerClusterer from '@google/markerclustererplus';
+// import MarkerClusterer from '@google/markerclustererplus';
+import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { Globals } from '../globals';
-// import {AgmMarkerIcon} from '../_interfaces/marker-icon';
 import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {SharedMarkerInfoService} from './shared-marker-info.service';
 import {JsonService} from './json.service';
@@ -54,7 +53,7 @@ export class AGMMarkerService {
           this.select(agmMarker); // First, change the state of marker to 'selected'
           this.selectedMarker = agmMarker; // Then, reassign var to deselect this marker on next marker click
         });
-      })
+      });
 
       this.clusteringOptions = { // Create marker clusterer
         maxZoom: 10,
@@ -62,6 +61,7 @@ export class AGMMarkerService {
       };
       this.markerClusterer = new MarkerClusterer(map, this.agmMarkers, this.clusteringOptions);
       this.clusteredMarkers = this.markerClusterer.getMarkers();
+      this.markerClusterer.fitMapToMarkers(50);
   }
 
   newMarkerInfo(mInfo): void {
@@ -95,19 +95,24 @@ export class AGMMarkerService {
   }
 
   public updateMarkers(filteredMarkers: Marker[]): MarkerClusterer {
-    this.markerClusterer.clearMarkers();
-    if (filteredMarkers.length >= 0) {
-    const filteredClusteredMarkers: any[] = [];
-    filteredMarkers.forEach(marker => {
-      const filteredMarker = this.clusteredMarkers.find(gmarker => gmarker.markerID === marker.MarkerID);
-      filteredClusteredMarkers.push(filteredMarker);
-    });
-    this.markerClusterer.addMarkers(filteredClusteredMarkers);
-    return this.markerClusterer;
-    }
-    else { // If filtered markers undefined
-      this.markerClusterer.addMarkers(this.clusteredMarkers);
+      this.markerClusterer.clearMarkers();
+      const filteredClusteredMarkers: any[] = [];
+      filteredMarkers.forEach(marker => {
+        const filteredMarker = this.clusteredMarkers.find(agmMarker => agmMarker.markerID === marker.MarkerID);
+        filteredClusteredMarkers.push(filteredMarker);
+      });
+      this.markerClusterer.addMarkers(filteredClusteredMarkers);
       return this.markerClusterer;
-    }
   }
+
+  // public updateMarkers(filteredMarkers: Marker[]): MarkerClusterer {
+  //     this.markerClusterer.clearMarkers();
+  //     const filteredClusteredMarkers: any[] = [];
+  //     filteredMarkers.forEach(marker => {
+  //       const filteredMarker = this.clusteredMarkers.find(gmarker => gmarker.markerID === marker.MarkerID);
+  //       filteredClusteredMarkers.push(filteredMarker);
+  //     });
+  //     this.markerClusterer.addMarkers(filteredClusteredMarkers);
+  //     return this.markerClusterer;
+  // }
 }

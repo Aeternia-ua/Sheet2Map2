@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #5fb0de;
+      }
+
+      .cls-1, .cls-3 {
+        opacity: 0.7;
+      }
+
+      .cls-2, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 7px;
+      }
+    </style>
+  </defs>
+  <g id="Page_1" data-name="Page 1">
+    <ellipse class="cls-1" cx="38.5" cy="38" rx="31.5" ry="30"/>
+    <path id="Ellipse_1_copy" data-name="Ellipse 1 copy" class="cls-2" d="M40.5,16.235c13.778,0,24.947,10.64,24.947,23.765S54.278,63.765,40.5,63.765,15.553,53.125,15.553,40,26.722,16.235,40.5,16.235Z" transform="translate(-2 -2)"/>
+    <path id="Ellipse_1_copy_2" data-name="Ellipse 1 copy 2" class="cls-3" d="M39.746,4.046c20.433,0,37,15.776,37,35.236s-16.564,35.236-37,35.236-37-15.776-37-35.236S19.313,4.046,39.746,4.046Z" transform="translate(-2 -2)"/>
+  </g>
+</svg>

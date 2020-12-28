@@ -24,8 +24,6 @@ export class LeafletGeolocationControlService {
     L.Control.GeolocationControl = L.Control.extend({
        onAdd: (map: L.map) => {
          const geolocationDiv = div.nativeElement;
-         // const geolocationDiv = L.DomUtil.create('div', 'leaflet-bar leaflet-geolocation-control');
-        // geolocationDiv.index = 1;
          this.geolocationControlService.btnStateChange.subscribe(isActive => {
            this.geolocationBtnIsActive = isActive;
            geolocationDiv.addEventListener('click', () => {

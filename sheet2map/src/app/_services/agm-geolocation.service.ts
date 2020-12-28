@@ -20,8 +20,15 @@ export class AgmGeolocationService {
       if (location) {
         this.userLocation = new google.maps.LatLng(location.latitude, location.longitude);
         if (this.userLocationMarker === null && this.userLocationRadius === null) {
+          const locationIcon = {
+            url: '../../assets/img/location.svg',
+            scaledSize: new google.maps.Size(20, 20),
+            anchor: new google.maps.Point(10, 10)
+          };
+
           this.userLocationMarker = new google.maps.Marker({position: this.userLocation,
-            map: map
+            map: map,
+            icon: locationIcon
           });
           this.userLocationRadius = new google.maps.Circle({
             center: this.userLocation,
@@ -32,7 +39,7 @@ export class AgmGeolocationService {
             strokeWeight: 3
           });
           // TODO: design custom geolocation marker
-          this.agmMarkerService.setIcon(this.userLocationMarker, this.agmMarkerService.defaultColor);
+          // this.agmMarkerService.setIcon(this.userLocationMarker, this.agmMarkerService.defaultColor);
           map.setCenter(this.userLocation);
         }
       }

@@ -1,26 +1,13 @@
-/*.autocomplete {*/
-/*  background-color: #fff;*/
-/*  box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.2);*/
-/*  width: 100%;*/
-/*  min-width: 8rem;*/
-/*  display: block;*/
-/*  max-height: 350px;*/
-/*  overflow-y: scroll;*/
-/*}*/
-
 .autocomplete {
+  border-radius: 0 0 3px 3px;
   background-color: #fff;
-  box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.2);
-  width: 100%;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.42);
   min-width: 8rem;
   display: block;
   overflow-y: hidden;
 }
 
 .search-options-container {
-  /*background-color: #fff;*/
-  /*box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.2);*/
-  /*width: 100%;*/
   min-width: 8rem;
   display: block;
   max-height: 350px;

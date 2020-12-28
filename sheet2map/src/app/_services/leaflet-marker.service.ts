@@ -36,10 +36,10 @@ export class LeafletMarkerService {
     this.markerClusterGroup = new L.markerClusterGroup();
     markers.forEach(marker => {
       const feature = marker.Feature;
-      const lat = feature.Geometry.coordinates[0];
-      const lng = feature.Geometry.coordinates[1];
-      let lMarker: any;
-      lMarker = new L.marker([lng, lat]);
+      // const lat = feature.Geometry.coordinates[0];
+      // const lng = feature.Geometry.coordinates[1];
+      // let lMarker: any;
+      const lMarker = new L.marker([feature.Geometry.coordinates[1], feature.Geometry.coordinates[0]]);
       lMarker.markerID = marker.MarkerID;
       lMarker.markerInfo = marker.MarkerInfo;
 
@@ -55,10 +55,13 @@ export class LeafletMarkerService {
     });
 
     map.addLayer(this.markerClusterGroup);
-    console.log('this.markerClusterGroup ', this.markerClusterGroup);
     // TODO: You are using only layers[1] to toggle zoom on marker inside marker cluster
     map.eachLayer(layer => this.layers.push(layer));
     this.clusteredMarkers = this.markerClusterGroup.getLayers(); // Get clustered markers
+
+    map.fitBounds(this.markerClusterGroup.getBounds(), { // Adjust map zoom level to fit all markers
+      padding: [50, 50]
+    });
   }
 
   newMarkerInfo(mInfo: MarkerInfo): void {
@@ -84,7 +87,6 @@ export class LeafletMarkerService {
   }
 
   private select(marker: L.marker): void {
-    // console.log('this.selectedMarker ', this.selectedMarker);
     if (this.selectedMarker) { // Set previously selected marker icon back to default
       console.log('this.selectedMarker ', this.selectedMarker);
       this.setIcon(this.selectedMarker, this.defaultColor);

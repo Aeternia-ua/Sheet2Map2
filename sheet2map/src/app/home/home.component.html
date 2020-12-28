@@ -1,16 +1,14 @@
 <clr-main-container class=" main-container">
     <clr-header class="header header-2">
-
         <div class="branding">
+          <a routerlink="/" class="logo-and-title" href="/">
           <span class="clr-icon logo app-logo"></span>
           <span class="title">Sheet2Map</span>
+          </a>
 <!--          Doesn't show-->
           <div class="divider"></div>
         </div>
-
-      <div>
-        <app-search></app-search>
-      </div>
+      <div class="header-search"><app-search></app-search></div>
         <div class="header-nav header-actions" [clr-nav-level]="2">
           <a class="map-link nav-link nav-text" routerLink='/googlemaps'>Google map</a>
           <a class="map-link nav-link nav-text" routerLink='/openstreetmaps'>Leaflet map</a>
@@ -29,4 +27,6 @@
         </nav>
     </div>
   </div>
+
+
 </clr-main-container>

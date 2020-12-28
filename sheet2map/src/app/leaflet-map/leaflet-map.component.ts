@@ -58,11 +58,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
     });
   }
   private initMap(): void {
-    this.mapOptions = {
-      center: Globals.mapCenter,
-      zoom: Globals.mapZoom
-    };
-    this.map = new L.map(this.lMap.nativeElement, this.mapOptions);
+    this.map = new L.map(this.lMap.nativeElement);
     const basemap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: Globals.mapMaxZoom,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',

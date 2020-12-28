@@ -3,15 +3,12 @@ import { Globals } from '../globals';
 import { AGMMarkerService } from '../_services/agm-marker.service';
 import {MapsAPILoader} from '@agm/core';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
-import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {SearchService} from '../_services/search.service';
 import {MarkerService} from '../_services/marker.service';
 import {Observable} from 'rxjs';
 import {Marker} from '../marker.class';
 import {FiltersService} from '../_services/filters.service';
-import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {AgmGeolocationService} from '../_services/agm-geolocation.service';
-import {AgmGeolocationControlComponent} from '../agm-geolocation-control/agm-geolocation-control.component';
 import {GeolocationControlService} from '../_services/geolocation-control.service';
 
 @Component({
@@ -68,8 +65,6 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   private initMap(): void {
     this.coordinates = new google.maps.LatLng(this.lat, this.lng);
     this.mapOptions = { // Google Map options
-      center: this.coordinates,
-      zoom: Globals.mapZoom,
       fullscreenControl: true,
       mapTypeControl: true, // Switch between satellite and terrain map types
       mapTypeControlOptions: {
@@ -86,7 +81,6 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
       },
     };
     this.map = new google.maps.Map(this.gMap.nativeElement, this.mapOptions);
-    // this.agmGeolocationControlService.addGeolocationControl(this.map); // Add user geolocation button
     this.addGeolocationControl(this.map);
 
     this.map.addListener('click', () => {
