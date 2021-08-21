@@ -1,6 +1,7 @@
 import {MarkerInfo} from "./info-sidebar/marker-info.class";
 import {Feature} from "./feature.class";
 import {MarkerInfoComponent} from "./marker-info/marker-info.component";
+import {MarkerModel} from './marker-model';
 
 export class Marker {
   private readonly markerID: string;
@@ -8,12 +9,14 @@ export class Marker {
   private representativeProperty: string;
   private searchProperty: string;
   private readonly feature: Feature;
+  // private readonly markerModel: MarkerModel;
 
   private guid(guid: string): GUID {
     return guid as GUID;
   }
 
   constructor( feature: Feature) {
+    // markerModel: MarkerModel) {
     this.markerID = Guid.newGuid();
     this.feature = feature;
     this.markerInfo = this.MarkerInfo;
@@ -23,6 +26,7 @@ export class Marker {
 
   get RepresentativeProperty(): string {
     return Object.values(this.feature.Properties).join(', ').toString();
+    // return Object.values(this.markerModel).join(', ').toString();
   }
 
   get SearchProperty(): string {

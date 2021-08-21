@@ -37,6 +37,8 @@ import {GeolocationControlService} from './_services/geolocation-control.service
 import { LeafletGeolocationControlComponent } from './leaflet-geolocation-control/leaflet-geolocation-control.component';
 import { DismissableDirective } from './_directives/dismissable.directive';
 import { SearchFiltersContainerDirective } from './_directives/search-filters-container.directive';
+import {GoogleSheetsDbService} from 'ng-google-sheets-db';
+import { GoogleSheetsComponent } from './google-sheets/google-sheets.component';
 
 const appRoutes: Routes = [
   { path: 'info-sidebar', component: InfoSidebarComponent, data: { title: 'Info Sidebar Component' } },
@@ -66,6 +68,7 @@ const appRoutes: Routes = [
     LeafletGeolocationControlComponent,
     DismissableDirective,
     SearchFiltersContainerDirective,
+    GoogleSheetsComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +97,8 @@ const appRoutes: Routes = [
     SharedMarkerInfoService,
     InfoSidebarToggleService,
     SearchService,
-    GeolocationControlService
+    GeolocationControlService,
+    GoogleSheetsDbService
   ],
   entryComponents: [ MarkerInfoComponent, AutocompleteComponent ],
   bootstrap: [AppComponent]

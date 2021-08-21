@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {Globals} from "../globals";
 import {Observable, of} from "rxjs";
-import {MarkerInfo} from "../info-sidebar/marker-info.class";
-import {MarkerInfoComponent} from "../marker-info/marker-info.component";
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +19,14 @@ export class JsonService {
   getJson = (): Observable<Response> => this.json = this.http.get<Response>(this.sourceUrl)
     .pipe(map(response => response))
 
-  // TODO: Return an immutable object
-  getFeatures(): Observable<object> {
-    return this.getJson()
-      .pipe(map(source => {
-        this.features = source['features'];
-        return this.features;
-    }));
-  }
+  // // TODO: Return an immutable object
+  // getFeatures(): Observable<object> {
+  //   return this.getJson()
+  //     .pipe(map(source => {
+  //       this.features = source['features'];
+  //       return this.features;
+  //   }));
+  // }
 
 }
 

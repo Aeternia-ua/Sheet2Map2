@@ -10,6 +10,8 @@ import {SharedMarkerInfoService} from '../_services/shared-marker-info.service';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 import {MarkerInfo} from '../info-sidebar/marker-info.class';
 import {InfoSidebar} from '../info-sidebar.class';
+import {GoogleSheetsService} from '../_services/google-sheets.service';
+import {MarkerService} from '../_services/marker.service';
 
 @Component({
   selector: 'app-home',
@@ -24,13 +26,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private sharedService: SharedMarkerInfoService,
               private viewContainerRef: ViewContainerRef,
               private componentFactoryResolver: ComponentFactoryResolver,
-              public infoSidebarToggleService: InfoSidebarToggleService) {
+              public infoSidebarToggleService: InfoSidebarToggleService,
+              private markerService: MarkerService,
+              private googleSheetsService: GoogleSheetsService) {
   }
 
   ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
+    // const test = this.markerService.createMarkers();
     this.infoSidebarToggleService.setMarkerInfoSidebar(this.markerInfoSidebar = new InfoSidebar());
 
     this.infoSidebarToggleService.sharedInfoSidebarState.subscribe(isOpened => {
