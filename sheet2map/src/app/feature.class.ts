@@ -1,11 +1,13 @@
+import {Sheet} from './marker-model';
+
 export class Feature {
 
   constructor(
-    private geometry: any,
-    private properties: object,
-    private type: string) {
+      private geometry: any,
+      private properties: object,
+      private type: string,
+      private sheet: (string | string[])[]) {
   }
-
   get Properties(): object {
     return this.properties;
   }
@@ -28,6 +30,14 @@ export class Feature {
 
   set Type(type: string) {
     this.type = type;
+  }
+
+  get Sheet(): Sheet {
+    return this.sheet;
+  }
+
+  set Sheet(sheet: Sheet) {
+    this.sheet = sheet;
   }
 
 }

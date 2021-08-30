@@ -10,6 +10,7 @@ import {InfoSidebarComponent} from '../info-sidebar/info-sidebar.component';
 import {SharedMarkerInfoService} from './shared-marker-info.service';
 import {MarkerService} from './marker.service';
 import {Marker} from '../marker.class';
+import {Feature} from "../feature.class";
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +37,6 @@ export class LeafletMarkerService {
     this.markerClusterGroup = new L.markerClusterGroup();
     markers.forEach(marker => {
       const feature = marker.Feature;
-      // const lat = feature.Geometry.coordinates[0];
-      // const lng = feature.Geometry.coordinates[1];
-      // let lMarker: any;
       const lMarker = new L.marker([feature.Geometry.coordinates[1], feature.Geometry.coordinates[0]]);
       lMarker.markerID = marker.MarkerID;
       lMarker.markerInfo = marker.MarkerInfo;
@@ -58,7 +56,7 @@ export class LeafletMarkerService {
     // TODO: You are using only layers[1] to toggle zoom on marker inside marker cluster
     map.eachLayer(layer => this.layers.push(layer));
     this.clusteredMarkers = this.markerClusterGroup.getLayers(); // Get clustered markers
-
+    // console.log("cluster this.clusteredMarkers ", this.clusteredMarkers);
     map.fitBounds(this.markerClusterGroup.getBounds(), { // Adjust map zoom level to fit all markers
       padding: [50, 50]
     });

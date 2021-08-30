@@ -1,9 +1,15 @@
+export interface Sheet {
+  url: string;
+  title: string;
+  headers: string[];
+}
+
 export class MarkerModel {
 
   constructor(
-    private coordinates: number[],
-    private properties: object,
-    private spreadsheetTabProperties: string[]) {
+      private coordinates: number[],
+      private properties: object,
+      private sheet: (string | string[])[]) {
   }
 
   get Coordinates(): number[] {
@@ -22,12 +28,12 @@ export class MarkerModel {
     this.properties = properties;
   }
 
-  get SpreadsheetTabProperties(): string[] {
-    return this.spreadsheetTabProperties;
+  get Sheet(): Sheet {
+    return this.sheet;
   }
 
-  set SpreadsheetTabProperties(spreadsheetTabProperties: string[]) {
-    this.spreadsheetTabProperties = spreadsheetTabProperties;
+  set Sheet(sheet: Sheet) {
+    this.sheet = sheet;
   }
 
 }

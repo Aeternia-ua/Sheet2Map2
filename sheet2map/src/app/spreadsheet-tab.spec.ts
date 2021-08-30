@@ -1,7 +1,7 @@
-import { SpreadsheetTab } from './spreadsheet-tab';
+import { Sheet } from './sheet';
 
 describe('SpreadsheetTab', () => {
   it('should create an instance', () => {
-    expect(new SpreadsheetTab()).toBeTruthy();
+    expect(new Sheet()).toBeTruthy();
   });
 });

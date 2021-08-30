@@ -45,6 +45,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.markers.subscribe(markers => {
+      // console.log("leaflet markers ", markers);
       this.leafletMarkerService.createMarkers(this.map, markers);
       this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
         this.filteredMarkers = filteredMarkers;
@@ -57,6 +58,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
       });
     });
   }
+
   private initMap(): void {
     this.map = new L.map(this.lMap.nativeElement);
     const basemap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

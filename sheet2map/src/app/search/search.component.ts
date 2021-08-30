@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import {SearchService} from '../_services/search.service';
 import {Form, FormBuilder, FormControl, FormGroup, NgControl} from '@angular/forms';
 import {MarkerService} from '../_services/marker.service';
@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
 
   public randomPlaceholder: any;
   private selectedResult: any;
-  readonly markers: Observable<any[]> = this.markerService.getMarkers();
+  readonly markers: Observable<Marker[]> = this.markerService.getMarkers();
   searchResults: Observable<any[]>;
   searchForm: FormGroup;
   searchField: FormControl;
@@ -47,6 +47,7 @@ export class SearchComponent implements OnInit {
     });
 
     this.searchForm = this.formBuilder.group({searchField: [this.searchField]});
+
     this.markers.subscribe(markers => {
       this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
         this.filteredMarkers = filteredMarkers;

@@ -1,18 +1,9 @@
-export class SpreadsheetTab {
+export class Sheet {
 
-  constructor(private id: string,
-              private title: string,
+  constructor(private title: string,
               private url: string,
-              private data: any[],
+              private values: any[],
               private headers: string[]){
-  }
-
-  get Id(): string {
-    return this.id;
-  }
-
-  set Id(id: string) {
-    this.id = id;
   }
 
   get Title(): string {
@@ -31,12 +22,12 @@ export class SpreadsheetTab {
     this.url = url;
   }
 
-  get Data(): any[] {
-    return this.data;
+  get Values(): any[] {
+    return this.values;
   }
 
-  set Data(data: any[]) {
-    this.Data = data;
+  set Values(values: any[]) {
+    this.values = values;
   }
 
   get Headers(): string[] {
@@ -44,6 +35,6 @@ export class SpreadsheetTab {
   }
 
   set Headers(headers: string[]) {
-    this.Headers = headers;
+    this.headers = headers;
   }
 }

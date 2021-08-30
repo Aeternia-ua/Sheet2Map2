@@ -33,6 +33,7 @@ export class AGMMarkerService {
       this.agmMarkers = [];
       markers.forEach(marker => {
         const feature = marker.Feature;
+        console.log("AGM feature", feature);
         const LatLng = new google.maps.LatLng(feature.Geometry.coordinates[1], feature.Geometry.coordinates[0]);
         let agmMarker: any;
         agmMarker = new google.maps.Marker({

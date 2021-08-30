@@ -53,6 +53,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
     this.mapsApiLoader.load().then(() => {
        this.initMap();
        this.markers.subscribe(markers => { // Subscribe to shared markers data
+         console.log("AGM marker data ", markers);
          this.agmMarkerService.createMarkers(this.map, markers);
          this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
            this.filteredMarkers = filteredMarkers;

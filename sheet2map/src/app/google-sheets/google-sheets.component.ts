@@ -3,7 +3,7 @@ import { GoogleSheetsDbService } from 'ng-google-sheets-db';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
-import {SpreadsheetTab} from '../spreadsheet-tab';
+import {Sheet} from '../sheet';
 
 class Spreadsheet {
 }
@@ -22,8 +22,8 @@ export class GoogleSheetsComponent implements OnInit {
   spreadsheetId = '1V4ebNbFS0ee0RkESJB_KZLkOG5mJlXglNx3LSSz16kc';
   spreadsheetUrl: string;
   json;
-  spreadsheetTab: SpreadsheetTab;
-  spreadsheetTabs: SpreadsheetTab[] = [];
+  spreadsheetTab: Sheet;
+  spreadsheetTabs: Sheet[] = [];
   spreadsheetTabData;
 
   getJson = (): Observable<Response> => {
@@ -47,27 +47,29 @@ export class GoogleSheetsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.spreadsheetUrl = this.getSpreadsheetUrl(this.spreadsheetId);
+    // this.spreadsheetUrl = this.getSpreadsheetUrl(this.spreadsheetId);
     this.getJson();
-    this.json.subscribe(json => {
-      const entry = json.feed.entry;
-      entry.forEach(tab => {
-        this.spreadsheetTab = tab;
-        this.spreadsheetTab.Title = tab.title.$t;
-        const tabLink = tab.id.$t.split('/');
-        this.spreadsheetTab.Id = tabLink[tabLink.length - 1];
-        this.spreadsheetTab.Url = this.getTabUrl(this.spreadsheetId, this.spreadsheetTab.Id);
-        this.spreadsheetTabs.push(this.spreadsheetTab);
-      });
 
-      this.spreadsheetTabs.forEach(tab => {
-        this.getSpreadsheetTabData(tab.Url);
-        this.spreadsheetTabData.subscribe(data => {
-          tab.Data = data.feed.entry;
-        });
-      });
-      console.log('spreadsheetTabs ', this.spreadsheetTabs);
-    });
+    // this.json.subscribe(json => {
+    //   const entry = json.feed.entry;
+    //   entry.forEach(tab => {
+    //     this.spreadsheetTab = tab;
+    //     this.spreadsheetTab.Title = tab.title.$t;
+    //     const tabLink = tab.id.$t.split('/');
+    //     this.spreadsheetTab.Id = tabLink[tabLink.length - 1];
+    //     this.spreadsheetTab.Url = this.getTabUrl(this.spreadsheetId, this.spreadsheetTab.Id);
+    //     this.spreadsheetTabs.push(this.spreadsheetTab);
+    //   });
+    //
+    //   this.spreadsheetTabs.forEach(tab => {
+    //     this.getSpreadsheetTabData(tab.Url);
+    //     this.spreadsheetTabData.subscribe(data => {
+    //       tab.Data = data.feed.entry;
+    //     });
+    //   });
+    //   console.log('spreadsheetTabs ', this.spreadsheetTabs);
+    // });
+
+
   }
 }
