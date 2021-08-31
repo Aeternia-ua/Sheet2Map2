@@ -37,6 +37,12 @@ export class SearchComponent implements OnInit {
               private sharedFilterFormService: SharedFilterFormService) {
   }
 
+  // ngAfterViewInit(): void {
+  //       this.markers.subscribe(markers => {
+  //         console.log("search component markers ", markers);
+  //       });
+  //   }
+
   ngOnInit(): void {
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;
@@ -47,17 +53,18 @@ export class SearchComponent implements OnInit {
     });
 
     this.searchForm = this.formBuilder.group({searchField: [this.searchField]});
-
-    this.markers.subscribe(markers => {
-      this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
-        this.filteredMarkers = filteredMarkers;
-        this.searchResults = this.searchForm.get('searchField').valueChanges
-          .pipe(
-            debounceTime(300),
-            switchMap(input => this.searchService.searchMarkers(this.filteredMarkers, input))
-          );
-      });
-    });
+    //
+    // this.markers.subscribe(markers => {
+    //
+    //   this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
+    //     this.filteredMarkers = filteredMarkers;
+    //     this.searchResults = this.searchForm.get('searchField').valueChanges
+    //       .pipe(
+    //         debounceTime(300),
+    //         switchMap(input => this.searchService.searchMarkers(this.filteredMarkers, input))
+    //       );
+    //   });
+    // });
   }
 
   clearSearchField(): void {

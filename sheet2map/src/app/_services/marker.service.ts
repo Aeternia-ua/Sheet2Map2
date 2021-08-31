@@ -50,69 +50,62 @@ export class MarkerService {
   //   }), share()); // Make an observable shareable between different components
   // }
 
-  // public fetchMarkers(): any {
-  //   return this.jsonService.getJson().pipe(map(json => {
-  //     this.markerProviderService.MarkersCache = [];
-  //     const features = json['features'];
-  //     // console.log(' fetchMarkers features ', features);
-  //     features.forEach(feature => {
-  //       const newFeature = new Feature(feature.geometry, feature.properties, feature.type);
-  //       const marker = new Marker(newFeature);
-  //       this.markerProviderService.MarkersCache.push(marker);
-  //     })
-  //     return this.markerProviderService.MarkersCache;
-  //   }), share()); // Make an observable shareable between different components
-  // }
+  public fetchMarkers2(): any {
+    return this.jsonService.getJson().pipe(map(json => {
+      this.markerProviderService.MarkersCache = [];
+      const features = json['features'];
+      features.forEach(feature => {
+        const newFeature = new Feature(feature.geometry, feature.properties, feature.type, null);
+        const marker = new Marker(newFeature);
+        this.markerProviderService.MarkersCache.push(marker);
+      })
+      return this.markerProviderService.MarkersCache;
+    }), share()); // Make an observable shareable between different components
+  }
 
   public fetchMarkers(): any {
     this.markerProviderService.MarkersCache = [];
     const sheetArray: Sheet[] = [];
     const obsOfObservables = this.googleSheetsService.getJson()
         .pipe(
-            map(data => data['sheets'].map(sheet => (
-                    this.googleSheetsService.getSheetUrl(this.worksheetId, sheet.properties.title, this.apiKey)
+            map(data => data['sheets'].map(sheetRef => (
+                    this.googleSheetsService.getSheetUrl(this.worksheetId, sheetRef.properties.title, this.apiKey)
                 ))),
             // map(data => data['sheets'].map(sheet => ({
             //         title: sheet.properties.title,
             //         url: this.getSheetUrl(this.worksheetId, sheet.properties.title, this.apiKey),
             //     }),
             //     )),
-            map(sheet => sheet.map(sData => this.googleSheetsService.getSheetData(sData)))
+            map(sheetRef => sheetRef.map(sData => this.googleSheetsService.getSheetData(sData)))
         ).pipe(
        switchMap(observables => forkJoin(observables))
     );
-    obsOfObservables.subscribe(
-       sheetsData => { // do stuff with result
+    return obsOfObservables.subscribe(
+       sheetsData => { // Create array of sheets
            sheetsData.forEach(sheetData => {
-             const [, ...values] = sheetData['values']; // Get all the rows except header row
+             const [, ...values] = sheetData['values']; // Get all rows except header row
              const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-             const sheet = new Sheet("[Add]", "sheetUrl", nonEmptyValues, sheetData['values'][0]);
+             const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
              sheetArray.push(sheet);
            });
-           this.createMarkers(sheetArray);
-           // this.markerProviderService.MarkersCache.push(markerArray);
-           // console.log("fetchMarkers2 markerProviderService.MarkersCache ", this.markerProviderService.MarkersCache);
-           }
-    ),
-  share(); // Make an observable shareable between different components
+           return this.markerProviderService.MarkersCache = this.createMarkers(sheetArray);
+           }, share()); // Make an observable shareable between different components
   }
 
   public createMarkers(sheets: Sheet[]): Marker[] {
-    const markerArr: Marker[] = [];
-    this.sheets = sheets;
+    const markers: Marker[] = [];
     sheets.forEach(sheet => {
       if (sheet.Title.includes('[Add]')) { // If sheet should be added to map
         const props = this.getMarkerProperties(sheet.Headers, sheet.Values);
-        props.forEach(featureProps => {
-          const feature: Feature = new Feature([featureProps.Lat, featureProps.Lon],
-              featureProps, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
+        props.forEach(prop => {
+          const feature: Feature = new Feature([prop.Lat, prop.Lon],
+              prop, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
           const marker = new Marker(feature);
-          this.markerProviderService.MarkersCache.push(marker);
-          markerArr.push(marker);
+          markers.push(marker);
         });
       }
     });
-    return markerArr;
+    return markers;
   }
 
 
@@ -141,19 +134,16 @@ export class MarkerService {
   }
 
   getMarkers(): Observable<Marker[]> {
-    // Data available
-    if (this.markerProviderService.MarkersCache) {
-      // console.log("Data available ");
+    if (this.markerProviderService.MarkersCache) { // Data available
+      console.log("Data available ");
       return of(this.markerProviderService.MarkersCache);
     }
-    // Request pending
-    else if (this.markerProviderService.ObservableCache) {
-      // console.log("Request pending ");
+    else if (this.markerProviderService.ObservableCache) { // Request pending
+      console.log("Request pending ");
       return this.markerProviderService.ObservableCache;
     }
-    // New request needed
-    else {
-      // console.log("New request needed ");
+    else { // New request needed
+      console.log("New request needed ");
       // this.markerProviderService.ObservableCache = this.prepareMarkerData();
       // this.markerProviderService.ObservableCache = this.createMarkers();
       this.markerProviderService.ObservableCache = this.fetchMarkers();
@@ -163,7 +153,6 @@ export class MarkerService {
     // this.markerProviderService.ObservableCache.subscribe(test => {
     //     console.log("this.markerProviderService.ObservableCache ", test);
     //   });
-    console.log("of (this.markerProviderService.ObservableCache) ", of (this.markerProviderService.ObservableCache));
     return this.markerProviderService.ObservableCache; // Return cashed markers
   }
 }
