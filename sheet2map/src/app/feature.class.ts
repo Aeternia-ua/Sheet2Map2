@@ -6,7 +6,7 @@ export class Feature {
       private geometry: any,
       private properties: object,
       private type: string,
-      private sheet: (string | string[])[]) {
+      private sheet: any) {
   }
   get Properties(): object {
     return this.properties;
@@ -32,11 +32,11 @@ export class Feature {
     this.type = type;
   }
 
-  get Sheet(): Sheet {
+  get Sheet(): any {
     return this.sheet;
   }
 
-  set Sheet(sheet: Sheet) {
+  set Sheet(sheet: any) {
     this.sheet = sheet;
   }
 

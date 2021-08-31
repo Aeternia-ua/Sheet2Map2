@@ -45,7 +45,7 @@ export class LeafletMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.markers.subscribe(markers => {
-      // console.log("leaflet markers ", markers);
+      console.log("leaflet markers length ", markers.length);
       this.leafletMarkerService.createMarkers(this.map, markers);
       this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
         this.filteredMarkers = filteredMarkers;

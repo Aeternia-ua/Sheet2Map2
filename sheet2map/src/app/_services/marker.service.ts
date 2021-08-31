@@ -51,22 +51,22 @@ export class MarkerService {
   // }
 
   public fetchMarkers2(): any {
-    return this.jsonService.getJson().pipe(map(json => {
-      this.markerProviderService.MarkersCache = [];
-      const features = json['features'];
-      features.forEach(feature => {
-        const newFeature = new Feature(feature.geometry, feature.properties, feature.type, null);
-        const marker = new Marker(newFeature);
-        this.markerProviderService.MarkersCache.push(marker);
-      })
-      return this.markerProviderService.MarkersCache;
-    }), share()); // Make an observable shareable between different components
+    return this.jsonService.getJson().pipe(
+        map(json => {
+          this.markerProviderService.MarkersCache = [];
+          const features = json['features'];
+          features.forEach(feature => {
+            const newFeature = new Feature(feature.geometry, feature.properties, feature.type, null);
+            const marker = new Marker(newFeature);
+            this.markerProviderService.MarkersCache.push(marker);
+          })
+          return this.markerProviderService.MarkersCache;
+        }), share()); // Make an observable shareable between different components
   }
 
   public fetchMarkers(): any {
-    this.markerProviderService.MarkersCache = [];
-    const sheetArray: Sheet[] = [];
-    const obsOfObservables = this.googleSheetsService.getJson()
+    const sheets: Sheet[] = [];
+    return this.googleSheetsService.getJson()
         .pipe(
             map(data => data['sheets'].map(sheetRef => (
                     this.googleSheetsService.getSheetUrl(this.worksheetId, sheetRef.properties.title, this.apiKey)
@@ -79,20 +79,29 @@ export class MarkerService {
             map(sheetRef => sheetRef.map(sData => this.googleSheetsService.getSheetData(sData)))
         ).pipe(
        switchMap(observables => forkJoin(observables))
-    );
-    return obsOfObservables.subscribe(
-       sheetsData => { // Create array of sheets
-           sheetsData.forEach(sheetData => {
-             const [, ...values] = sheetData['values']; // Get all rows except header row
-             const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-             const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
-             sheetArray.push(sheet);
-           });
-           return this.markerProviderService.MarkersCache = this.createMarkers(sheetArray);
-           }, share()); // Make an observable shareable between different components
+    ).pipe(map(sheetsData => {
+        this.markerProviderService.MarkersCache = [];
+        sheetsData.forEach(sheetData => {
+            const [, ...values] = sheetData['values']; // Get all rows except header row
+            const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
+            const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
+            sheets.push(sheet);
+        });
+        return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
+    }), share());
+    // obsOfObservables.subscribe(sheetsData => { // Create array of sheets
+    //      this.markerProviderService.MarkersCache = [];
+    //      sheetsData.forEach(sheetData => {
+    //          const [, ...values] = sheetData['values']; // Get all rows except header row
+    //          const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
+    //          const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
+    //          sheets.push(sheet);
+    //      });
+    //      return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
+    //      }, share()); // Make an observable shareable between different components
   }
 
-  public createMarkers(sheets: Sheet[]): Marker[] {
+  private createMarkers(sheets: Sheet[]): Marker[] {
     const markers: Marker[] = [];
     sheets.forEach(sheet => {
       if (sheet.Title.includes('[Add]')) { // If sheet should be added to map
@@ -144,15 +153,9 @@ export class MarkerService {
     }
     else { // New request needed
       console.log("New request needed ");
-      // this.markerProviderService.ObservableCache = this.prepareMarkerData();
-      // this.markerProviderService.ObservableCache = this.createMarkers();
       this.markerProviderService.ObservableCache = this.fetchMarkers();
-      // this.createMarkers();
 
     }
-    // this.markerProviderService.ObservableCache.subscribe(test => {
-    //     console.log("this.markerProviderService.ObservableCache ", test);
-    //   });
     return this.markerProviderService.ObservableCache; // Return cashed markers
   }
 }
