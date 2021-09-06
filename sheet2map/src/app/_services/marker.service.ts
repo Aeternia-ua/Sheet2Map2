@@ -7,7 +7,6 @@ import {Feature} from '../feature.class';
 import {MarkerProviderService} from './marker-provider.service';
 import {GoogleSheetsService} from './google-sheets.service';
 import {Sheet} from '../sheet';
-import {MarkerModel} from '../marker-model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,51 +17,10 @@ export class MarkerService {
               private googleSheetsService: GoogleSheetsService,
               private markerProviderService: MarkerProviderService) {
   }
-
-  // markers = [];
   sheets: Sheet[];
-
-  // public fetchMarkers2(): any {
-  //   this.markerProviderService.MarkersCache = [];
-  //   return this.googleSheetsService.getSheets()
-  //       .pipe(map(sheets => {
-  //           console.log("!!!fetchMarkers2 sheets ", sheets);
-  //           console.log("!!!fetchMarkers2 sheets.length ", sheets.lenght);
-            // const markers = this.createMarkers(sheets);
-          // return this.markerProviderService.MarkersCache;
-    // }), share()); // Make an observable shareable between different components
-  // }
 
   private apiKey = 'AIzaSyA7Mvrt-40TlYzCdkfYIdgLbeBIbd0RKSM';
   private worksheetId = '193xVYQlUK5GxJFk12o-K7DnM98Y1j-sf6CjD6G6tP_Y';
-
-  // public fetchMarkers(): any {
-  //   return this.googleSheetsService.getJson().pipe(map(json => {
-  //     this.markerProviderService.MarkersCache = [];
-  //     const features = json['features'];
-  //     console.log(' fetchMarkers features ', features);
-  //     features.forEach(feature => {
-  //       const newFeature = new Feature(feature.geometry, feature.properties, feature.type);
-  //       const marker = new Marker(newFeature);
-  //       this.markerProviderService.MarkersCache.push(marker);
-  //     })
-  //     return this.markerProviderService.MarkersCache;
-  //   }), share()); // Make an observable shareable between different components
-  // }
-
-  public fetchMarkers2(): any {
-    return this.jsonService.getJson().pipe(
-        map(json => {
-          this.markerProviderService.MarkersCache = [];
-          const features = json['features'];
-          features.forEach(feature => {
-            const newFeature = new Feature(feature.geometry, feature.properties, feature.type, null);
-            const marker = new Marker(newFeature);
-            this.markerProviderService.MarkersCache.push(marker);
-          })
-          return this.markerProviderService.MarkersCache;
-        }), share()); // Make an observable shareable between different components
-  }
 
   public fetchMarkers(): any {
     const sheets: Sheet[] = [];
@@ -85,51 +43,14 @@ export class MarkerService {
             const sheet = new Sheet(sheetObject['title'], sheetObject['url'], nonEmptyValues, sheetObject['data']['values'][0]);
             sheets.push(sheet);
         });
-        console.log("sheets ", sheets);
         return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
-    }), share());
-
-    //     .pipe(
-    //    switchMap(observables => forkJoin(observables))
-    //         ).pipe(map(sheetsData => {
-    //     this.markerProviderService.MarkersCache = [];
-    //     console.log("sheetsData ", sheetsData);
-    //     sheetsData.forEach(sheetData => {
-    //         const [, ...values] = sheetData['values']; // Get all rows except header row
-    //         const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-    //         const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
-    //         sheets.push(sheet);
-    //     });
-    //     return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
-    // }), share());
-
-    // ).pipe(map(sheetsData => {
-    //     this.markerProviderService.MarkersCache = [];
-    //     sheetsData.forEach(sheetData => {
-    //         console.log("sheetsData ", sheetsData);
-    //         const [, ...values] = sheetData['values']; // Get all rows except header row
-    //         const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-    //         const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
-    //         sheets.push(sheet);
-    //     });
-    //     return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
-    // }), share());
-    // obsOfObservables.subscribe(sheetsData => { // Create array of sheets
-    //      this.markerProviderService.MarkersCache = [];
-    //      sheetsData.forEach(sheetData => {
-    //          const [, ...values] = sheetData['values']; // Get all rows except header row
-    //          const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-    //          const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
-    //          sheets.push(sheet);
-    //      });
-    //      return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
-    //      }, share()); // Make an observable shareable between different components
+    }), share()); // Make an observable shareable between components
   }
 
   private createMarkers(sheets: Sheet[]): Marker[] {
     const markers: Marker[] = [];
     sheets.forEach(sheet => {
-      if (sheet.Title.includes('[Add]')) { // If sheet should be added to map
+      if (sheet.Title.startsWith('[Add]')) { // If sheet should be added to map
         const properties = this.getMarkerProperties(sheet.Headers, sheet.Values);
         properties.forEach(propertySet => {
             const latLon = {coordinates: {lat: propertySet.Lat, lng: propertySet.Lon}};
@@ -142,21 +63,6 @@ export class MarkerService {
     });
     return markers;
   }
-
-
-  // public prepareMarkerData(): Subscription {
-  //   return this.googleSheetsService.getJson()
-  //     // .pipe(map(data => this.googleSheetsService.getSheets(data, () => {
-  //     //     this.createMarkers()))) // TODO: Fix callback issue
-  //       .pipe(map(data => this.googleSheetsService.getSheets(data, () => {
-  //         console.log("prepareMarkerData data", data);
-  //           }
-  //       )));
-  //     // .subscribe((sheets) => {
-  //     //   this.sheets = sheets;
-  //
-  //     // });
-  // }
 
   private getMarkerProperties(keys, values): any[] {
     const mappedArr = [];

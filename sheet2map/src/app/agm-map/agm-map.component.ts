@@ -43,7 +43,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // Subscribe to selected search result to find marker on the map
+    // Subscribe to selected search result to locate marker on the map
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;
       this.findMarker(this.selectedResult, this.agmMarkerService.clusteredMarkers);
@@ -53,29 +53,6 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.mapsApiLoader.load().then(() => {
        this.initMap();
-       // this.markers.pipe(
-       //     map(markers => {
-       //       this.agmMarkerService.createMarkers(this.map, markers);
-       //       console.log("markers ", markers);
-       //     }),
-       //     map(filteredMarkers => {
-       //       this.filteredMarkers = this.filtersService.initFilteredMarkers(filteredMarkers);
-       //       console.log("filteredMarkers ", filteredMarkers);
-       //     }
-       //     )).pipe(
-       // switchMap(observables => forkJoin(observables)))
-       //     .pipe(map(res => {
-       //       console.log("res ", res);
-       //       return this.agmMarkerService.updateMarkers(this.filteredMarkers);
-       //     }));
-       // this.markers.subscribe(markers => { // Subscribe to shared markers data
-       //   this.agmMarkerService.createMarkers(this.map, markers);
-       //   this.filtersService.initFilteredMarkers(markers).pipe(map(filteredMarkers => {
-       //     this.filteredMarkers = filteredMarkers;
-       //     console.log("this.filteredMarkers ", this.filteredMarkers);
-       //     this.agmMarkerService.updateMarkers(this.filteredMarkers);
-       //   }));
-       // });
        this.markers.subscribe(markers => { // Subscribe to shared markers data
          this.agmMarkerService.createMarkers(this.map, markers);
          this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
@@ -122,7 +99,6 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
       this.map.setZoom(13);
       new google.maps.event.trigger( foundMarker, 'click' );
     } catch (error) {
-      console.log('Google map search input is undefined');
     }
   }
 
