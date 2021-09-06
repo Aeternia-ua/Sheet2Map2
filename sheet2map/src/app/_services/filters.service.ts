@@ -59,11 +59,14 @@ export class FiltersService {
 
   initFilteredMarkers(markers): Observable<Marker[]> {
     if (this.filteredMarkers.value === null) { // If no filters are selected, return unfiltered markers
+      console.log("initFilteredMarkers filteredMarkers ", this.filteredMarkers );
       this.filteredMarkers.next(markers);
     }
     else {
+      console.log("initFilteredMarkers filteredMarkers ", this.filteredMarkers );
       return this.filteredMarkers;
     }
+    console.log("initFilteredMarkers filteredMarkers ", this.filteredMarkers );
     return this.filteredMarkers;
   }
 

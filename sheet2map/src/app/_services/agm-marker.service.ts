@@ -29,31 +29,32 @@ export class AGMMarkerService {
               private markerService: MarkerService,
               private sharedService: SharedMarkerInfoService) { }
 
-  createMarkers(map: google.maps.Map, markers: Marker[]): void {
+  createMarkers(map: google.maps.Map, markers: Marker[]): any[] {
       this.agmMarkers = [];
       markers.forEach(marker => {
         const feature = marker.Feature;
-        console.log("AGM feature", feature);
-        const LatLng = new google.maps.LatLng(feature.Geometry.coordinates[1], feature.Geometry.coordinates[0]);
-        let agmMarker: any;
-        agmMarker = new google.maps.Marker({
-          position: LatLng,
-          animation: null,
-          optimized: true // Unoptimized markers exist as img elements inside the markerLayer mapPane
-        });
-        agmMarker.markerID = marker.MarkerID;
-        agmMarker.properties = marker.Feature.Properties;
-        agmMarker.searchProperty = marker.SearchProperty;
-        agmMarker.representativeProperty = marker.RepresentativeProperty;
-        agmMarker.markerInfo = marker.MarkerInfo;
-        this.setIcon(agmMarker, this.defaultColor);
-        this.agmMarkers.push(agmMarker);
+        if (feature.Geometry.coordinates.lat && feature.Geometry.coordinates.lng) { // If marker has coordinates
+          const LatLng = new google.maps.LatLng(feature.Geometry.coordinates.lat, feature.Geometry.coordinates.lng);
+          let agmMarker: any;
+          agmMarker = new google.maps.Marker({
+            position: LatLng,
+            animation: null,
+            optimized: true // Unoptimized markers exist as img elements inside the markerLayer mapPane
+          });
+          agmMarker.markerID = marker.MarkerID;
+          agmMarker.properties = marker.Feature.Properties;
+          agmMarker.searchProperty = marker.SearchProperty;
+          agmMarker.representativeProperty = marker.RepresentativeProperty;
+          agmMarker.markerInfo = marker.MarkerInfo;
+          this.setIcon(agmMarker, this.defaultColor);
+          this.agmMarkers.push(agmMarker);
 
-        agmMarker.addListener('click', () => {
-          this.newMarkerInfo(agmMarker.markerInfo); // Get marker info on click
-          this.select(agmMarker); // First, change the state of marker to 'selected'
-          this.selectedMarker = agmMarker; // Then, reassign var to deselect this marker on next marker click
-        });
+          agmMarker.addListener('click', () => {
+            this.newMarkerInfo(agmMarker.markerInfo); // Get marker info on click
+            this.select(agmMarker); // First, change the state of marker to 'selected'
+            this.selectedMarker = agmMarker; // Then, reassign var to deselect this marker on next marker click
+          });
+        }
       });
 
       this.clusteringOptions = { // Create marker clusterer
@@ -63,6 +64,7 @@ export class AGMMarkerService {
       this.markerClusterer = new MarkerClusterer(map, this.agmMarkers, this.clusteringOptions);
       this.clusteredMarkers = this.markerClusterer.getMarkers();
       this.markerClusterer.fitMapToMarkers(50);
+      return this.agmMarkers;
   }
 
   newMarkerInfo(mInfo): void {
@@ -96,14 +98,14 @@ export class AGMMarkerService {
   }
 
   public updateMarkers(filteredMarkers: Marker[]): MarkerClusterer {
-      this.markerClusterer.clearMarkers();
-      const filteredClusteredMarkers: any[] = [];
-      filteredMarkers.forEach(marker => {
+    this.markerClusterer.clearMarkers();
+    const filteredClusteredMarkers: any[] = [];
+    filteredMarkers.forEach(marker => {
         const filteredMarker = this.clusteredMarkers.find(agmMarker => agmMarker.markerID === marker.MarkerID);
         filteredClusteredMarkers.push(filteredMarker);
-      });
-      this.markerClusterer.addMarkers(filteredClusteredMarkers);
-      return this.markerClusterer;
+    });
+    this.markerClusterer.addMarkers(filteredClusteredMarkers);
+    return this.markerClusterer;
   }
 
   // public updateMarkers(filteredMarkers: Marker[]): MarkerClusterer {

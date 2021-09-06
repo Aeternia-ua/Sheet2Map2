@@ -62,35 +62,34 @@ export class GoogleSheetsService {
   //   console.log("sheetArray length", sheetArray.length);
   //   return of (sheetArray);
   //   }
-  private testGetMarkerProperties(keys, values): any[] {
-    const mappedArr = [];
-    values.forEach(value => {
-      const localArr = [];
-      keys.map((key, i) => { localArr[key] = value[i]; });
-      mappedArr.push(localArr);
-    });
-    return mappedArr;
-  }
-
-  private testCreateMarkers(sheets: Sheet[]): Marker[] {
-    console.log("test createMarkers  sheets length", sheets.length);
-    const markerArr: Marker[] = [];
-    sheets.forEach(sheet => {
-      if (sheet.Title.includes('[Add]')) { // If sheet should be added to map
-        const props = this.testGetMarkerProperties(sheet.Headers, sheet.Values);
-        console.log("test createMarkers props ", props);
-        props.forEach(featureProps => {
-          const feature: Feature = new Feature([featureProps.Lat, featureProps.Lon],
-              featureProps, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
-          const marker = new Marker(feature);
-          // this.markerProviderService.MarkersCache.push(marker);
-          markerArr.push(marker);
-        });
-      }
-    });
-    console.log("test markerArr ", markerArr);
-    return markerArr;
-  }
+  // private testGetMarkerProperties(keys, values): any[] {
+  //   const mappedArr = [];
+  //   values.forEach(value => {
+  //     const localArr = [];
+  //     keys.map((key, i) => { localArr[key] = value[i]; });
+  //     mappedArr.push(localArr);
+  //   });
+  //   return mappedArr;
+  // }
+  //
+  // private testCreateMarkers(sheets: Sheet[]): Marker[] {
+  //   console.log("test createMarkers  sheets length", sheets.length);
+  //   const markerArr: Marker[] = [];
+  //   sheets.forEach(sheet => {
+  //     if (sheet.Title.includes('[Add]')) { // If sheet should be added to map
+  //       const props = this.testGetMarkerProperties(sheet.Headers, sheet.Values);
+  //       console.log("test createMarkers props ", props);
+  //       props.forEach(featureProps => {
+  //         const feature: Feature = new Feature([featureProps.Lat, featureProps.Lon], featureProps, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
+  //         const marker = new Marker(feature);
+  //         // this.markerProviderService.MarkersCache.push(marker);
+  //         markerArr.push(marker);
+  //       });
+  //     }
+  //   });
+  //   console.log("test markerArr ", markerArr);
+  //   return markerArr;
+  // }
 
   public getSheets(): Observable<Sheet[]> {
     const sheetArray: Sheet[] = [];

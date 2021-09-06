@@ -37,7 +37,8 @@ export class LeafletMarkerService {
     this.markerClusterGroup = new L.markerClusterGroup();
     markers.forEach(marker => {
       const feature = marker.Feature;
-      const lMarker = new L.marker([feature.Geometry.coordinates[1], feature.Geometry.coordinates[0]]);
+      if (feature.Geometry.coordinates.lat && feature.Geometry.coordinates.lng) { // If marker has coordinates
+      const lMarker = new L.marker([feature.Geometry.coordinates.lat, feature.Geometry.coordinates.lng]);
       lMarker.markerID = marker.MarkerID;
       lMarker.markerInfo = marker.MarkerInfo;
 
@@ -50,6 +51,8 @@ export class LeafletMarkerService {
 
       this.setIcon(lMarker, this.defaultColor);
       this.markerClusterGroup.addLayer(lMarker);
+      }
+
     });
 
     map.addLayer(this.markerClusterGroup);

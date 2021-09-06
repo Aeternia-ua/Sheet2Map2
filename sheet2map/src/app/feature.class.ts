@@ -1,9 +1,7 @@
-import {Sheet} from './marker-model';
-
 export class Feature {
 
   constructor(
-      private geometry: any,
+      private geometry: { coordinates: { lat: number; lng: number } },
       private properties: object,
       private type: string,
       private sheet: any) {

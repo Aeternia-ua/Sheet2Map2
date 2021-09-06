@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {JsonService} from './json.service';
 import {Marker} from '../marker.class';
 import {forkJoin, Observable, of, Subscription} from 'rxjs';
-import {concatMap, debounceTime, map, share, switchMap, tap} from 'rxjs/operators';
+import {concatMap, debounceTime, map, mergeMap, share, switchMap, tap} from 'rxjs/operators';
 import {Feature} from '../feature.class';
 import {MarkerProviderService} from './marker-provider.service';
 import {GoogleSheetsService} from './google-sheets.service';
@@ -68,27 +68,52 @@ export class MarkerService {
     const sheets: Sheet[] = [];
     return this.googleSheetsService.getJson()
         .pipe(
-            map(data => data['sheets'].map(sheetRef => (
-                    this.googleSheetsService.getSheetUrl(this.worksheetId, sheetRef.properties.title, this.apiKey)
-                ))),
-            // map(data => data['sheets'].map(sheet => ({
-            //         title: sheet.properties.title,
-            //         url: this.getSheetUrl(this.worksheetId, sheet.properties.title, this.apiKey),
-            //     }),
-            //     )),
-            map(sheetRef => sheetRef.map(sData => this.googleSheetsService.getSheetData(sData)))
+            map(data => data['sheets'].map(sheetRef => ({
+                    title: sheetRef.properties.title,
+                    url: this.googleSheetsService.getSheetUrl(this.worksheetId, sheetRef.properties.title, this.apiKey),
+            }))),
+            map(sheetRef => sheetRef.map(sheet => (
+                this.googleSheetsService.getSheetData(sheet.url)
+                    .pipe(map(response => { sheet.data = response; return sheet; } ))
+            ))),
         ).pipe(
-       switchMap(observables => forkJoin(observables))
-    ).pipe(map(sheetsData => {
+       switchMap(observables => forkJoin(observables))).pipe(map(sheetObjects => {
         this.markerProviderService.MarkersCache = [];
-        sheetsData.forEach(sheetData => {
-            const [, ...values] = sheetData['values']; // Get all rows except header row
+        sheetObjects.forEach(sheetObject => {
+            const [, ...values] = sheetObject['data']['values']; // Get all rows except header row
             const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-            const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
+            const sheet = new Sheet(sheetObject['title'], sheetObject['url'], nonEmptyValues, sheetObject['data']['values'][0]);
             sheets.push(sheet);
         });
+        console.log("sheets ", sheets);
         return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
     }), share());
+
+    //     .pipe(
+    //    switchMap(observables => forkJoin(observables))
+    //         ).pipe(map(sheetsData => {
+    //     this.markerProviderService.MarkersCache = [];
+    //     console.log("sheetsData ", sheetsData);
+    //     sheetsData.forEach(sheetData => {
+    //         const [, ...values] = sheetData['values']; // Get all rows except header row
+    //         const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
+    //         const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
+    //         sheets.push(sheet);
+    //     });
+    //     return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
+    // }), share());
+
+    // ).pipe(map(sheetsData => {
+    //     this.markerProviderService.MarkersCache = [];
+    //     sheetsData.forEach(sheetData => {
+    //         console.log("sheetsData ", sheetsData);
+    //         const [, ...values] = sheetData['values']; // Get all rows except header row
+    //         const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
+    //         const sheet = new Sheet('[Add]', 'sheetUrl', nonEmptyValues, sheetData['values'][0]);
+    //         sheets.push(sheet);
+    //     });
+    //     return this.markerProviderService.MarkersCache = this.createMarkers(sheets);
+    // }), share());
     // obsOfObservables.subscribe(sheetsData => { // Create array of sheets
     //      this.markerProviderService.MarkersCache = [];
     //      sheetsData.forEach(sheetData => {
@@ -105,12 +130,13 @@ export class MarkerService {
     const markers: Marker[] = [];
     sheets.forEach(sheet => {
       if (sheet.Title.includes('[Add]')) { // If sheet should be added to map
-        const props = this.getMarkerProperties(sheet.Headers, sheet.Values);
-        props.forEach(prop => {
-          const feature: Feature = new Feature([prop.Lat, prop.Lon],
-              prop, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
-          const marker = new Marker(feature);
-          markers.push(marker);
+        const properties = this.getMarkerProperties(sheet.Headers, sheet.Values);
+        properties.forEach(propertySet => {
+            const latLon = {coordinates: {lat: propertySet.Lat, lng: propertySet.Lon}};
+            const feature: Feature = new Feature(latLon,
+              propertySet, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
+            const marker = new Marker(feature);
+            markers.push(marker);
         });
       }
     });

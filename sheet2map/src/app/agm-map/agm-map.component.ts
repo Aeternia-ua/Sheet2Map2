@@ -5,12 +5,12 @@ import {MapsAPILoader} from '@agm/core';
 import {InfoSidebarToggleService} from '../_services/info-sidebar-toggle.service';
 import {SearchService} from '../_services/search.service';
 import {MarkerService} from '../_services/marker.service';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
 import {Marker} from '../marker.class';
 import {FiltersService} from '../_services/filters.service';
 import {AgmGeolocationService} from '../_services/agm-geolocation.service';
 import {GeolocationControlService} from '../_services/geolocation-control.service';
-import {map} from "rxjs/operators";
+import {map, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-agm-map',
@@ -51,26 +51,40 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let markersTest: Marker[] = [];
     this.mapsApiLoader.load().then(() => {
        this.initMap();
        // this.markers.pipe(
-       //      // map(markers => this.agmMarkerService.createMarkers(this.map, markers)
        //     map(markers => {
-       //       markersTest = markers;
-       //       console.log("AGM marker data ", markersTest.length);
-       //     },
-       //     console.log('AGM marker data ', markersTest.length)
-       //  ));
+       //       this.agmMarkerService.createMarkers(this.map, markers);
+       //       console.log("markers ", markers);
+       //     }),
+       //     map(filteredMarkers => {
+       //       this.filteredMarkers = this.filtersService.initFilteredMarkers(filteredMarkers);
+       //       console.log("filteredMarkers ", filteredMarkers);
+       //     }
+       //     )).pipe(
+       // switchMap(observables => forkJoin(observables)))
+       //     .pipe(map(res => {
+       //       console.log("res ", res);
+       //       return this.agmMarkerService.updateMarkers(this.filteredMarkers);
+       //     }));
+       // this.markers.subscribe(markers => { // Subscribe to shared markers data
+       //   this.agmMarkerService.createMarkers(this.map, markers);
+       //   this.filtersService.initFilteredMarkers(markers).pipe(map(filteredMarkers => {
+       //     this.filteredMarkers = filteredMarkers;
+       //     console.log("this.filteredMarkers ", this.filteredMarkers);
+       //     this.agmMarkerService.updateMarkers(this.filteredMarkers);
+       //   }));
+       // });
        this.markers.subscribe(markers => { // Subscribe to shared markers data
-         console.log("AGM marker data ", markers.length);
          this.agmMarkerService.createMarkers(this.map, markers);
          this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
            this.filteredMarkers = filteredMarkers;
+           console.log("this.filteredMarkers ", this.filteredMarkers);
            this.agmMarkerService.updateMarkers(this.filteredMarkers);
          });
        });
-    });
+     });
   }
 
   private initMap(): void {
