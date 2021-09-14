@@ -7,15 +7,17 @@ export class Marker {
   private markerInfo: MarkerInfo;
   private representativeProperty: string;
   private searchProperty: string;
+  private filterProperty: string[];
   private readonly feature: Feature;
 
   private guid(guid: string): GUID {
     return guid as GUID;
   }
 
-  constructor( feature: Feature) {
+  constructor( feature: Feature, filterProperty: string[]) {
     this.markerID = Guid.newGuid();
     this.feature = feature;
+    this.filterProperty = filterProperty;
     this.markerInfo = this.MarkerInfo;
     this.representativeProperty = this.RepresentativeProperty;
     this.searchProperty = this.SearchProperty;
@@ -40,6 +42,14 @@ export class Marker {
   get MarkerID(): string {
     return this.markerID;
   }
+
+  get FilterProperty(): string[] {
+    return this.filterProperty;
+  }
+
+  // set FilterProperty(filterProperty: string[]) {
+  //   this.filterProperty = filterProperty;
+  // }
 }
 
 export type GUID = string & {

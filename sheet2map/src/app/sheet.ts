@@ -3,7 +3,8 @@ export class Sheet {
   constructor(private title: string,
               private url: string,
               private values: any[],
-              private headers: string[]){
+              private headers: string[],
+              private userFilters: string[]){
   }
 
   get Title(): string {
@@ -36,5 +37,13 @@ export class Sheet {
 
   set Headers(headers: string[]) {
     this.headers = headers;
+  }
+
+  get UserFilters(): string[] {
+    return this.userFilters;
+  }
+
+  set UserFilters(userFilters: string[]) {
+    this.userFilters = userFilters;
   }
 }

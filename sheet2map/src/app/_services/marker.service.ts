@@ -44,10 +44,9 @@ export class MarkerService {
         // TODO: Catch exception
         const userConfigSheet = sheetObjects.find(sheetObject =>  sheetObject['title'] === 'Map Config');
         const userFilters = this.userConfigService.getUserFilters(userConfigSheet);
-        console.log("userFilters ", userFilters);
+        const userMarkerFilters = userFilters.find(userFilter => userFilter.Type === 'User Filters');
         //  Get sheets that user selected to add to the map
         const userSheetsFilter = userFilters.find(userFilter => userFilter.Type === 'User Sheets');
-        // const filteredSheetObjects = [];
         userSheetsFilter.Values.forEach(userSheet => {
             console.log("user sheet  ", userSheet);
             // Find sheetObject by name that matches sheet that user selected to add to the map
@@ -55,7 +54,8 @@ export class MarkerService {
             console.log("filteredSheetObject  ", filteredSheetObject);
             const [, ...values] = filteredSheetObject['data']['values']; // Get all rows except header row
             const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
-            const sheet = new Sheet(filteredSheetObject['title'], filteredSheetObject['url'], nonEmptyValues, filteredSheetObject['data']['values'][0]);
+            const sheet = new Sheet(filteredSheetObject['title'], filteredSheetObject['url'], nonEmptyValues, filteredSheetObject['data']['values'][0], userMarkerFilters.Values);
+            console.log("sheets  ", sheets);
             sheets.push(sheet);
         });
 
@@ -86,7 +86,7 @@ export class MarkerService {
                 const latLon = {coordinates: {lat: propertySet.Lat, lng: propertySet.Lon}};
                 const feature: Feature = new Feature(latLon,
                 propertySet, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
-                const marker = new Marker(feature);
+                const marker = new Marker(feature, sheet.UserFilters);
                 markers.push(marker);
             }
         });

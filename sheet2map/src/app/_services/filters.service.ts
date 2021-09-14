@@ -18,10 +18,13 @@ export class FiltersService {
   getFilterProperties(markers): object {
     const markerFProps: any[] = [];
     markers.forEach(marker => {
+      const userFilters = marker.filterProperty;
+      // const props = marker.feature.properties;
       const props = marker.feature.properties;
       const fProp = Object.keys(props).filter(prop => prop.includes('o'))
         .map(key => ({[key]: props[key]}));
       markerFProps.push(fProp);
+      // console.log("markerFProps ", markerFProps);
     });
 
     const reducedMarkerFProps: any[] = [].concat(...markerFProps).reduce((result, object) => {
