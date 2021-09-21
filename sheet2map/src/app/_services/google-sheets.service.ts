@@ -10,7 +10,6 @@ import {map} from 'rxjs/operators';
 export class GoogleSheetsService {
   private apiKey = 'AIzaSyA7Mvrt-40TlYzCdkfYIdgLbeBIbd0RKSM'; /// TODO: Separate API key and sheet IDs to config file
   private worksheetId = '1_wtBSqbGEP1BuL-3-jmrQaIkrM9uX4yOA3qoK_6LaG0';
-  // private worksheetId = '193xVYQlUK5GxJFk12o-K7DnM98Y1j-sf6CjD6G6tP_Y';
   private worksheetUrl: string;
   private json;
   private sheetData;
@@ -21,7 +20,7 @@ export class GoogleSheetsService {
   getJson = (): Observable<Response> => {
     this.worksheetUrl = this.getWorksheetUrl(this.worksheetId, this.apiKey);
     return this.json = this.http.get<Response>(this.worksheetUrl)
-      .pipe(map(response => { return response; }));
+      .pipe(map(response => response));
   }
 
   getSheetData = (url): Observable<Response> => {

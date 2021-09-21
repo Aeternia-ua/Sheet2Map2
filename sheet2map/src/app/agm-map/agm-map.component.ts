@@ -57,7 +57,6 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
          this.agmMarkerService.createMarkers(this.map, markers);
          this.filtersService.initFilteredMarkers(markers).subscribe(filteredMarkers => {
            this.filteredMarkers = filteredMarkers;
-           console.log("this.filteredMarkers ", this.filteredMarkers);
            this.agmMarkerService.updateMarkers(this.filteredMarkers);
          });
        });
@@ -68,6 +67,7 @@ export class AgmMapComponent implements OnInit, AfterViewInit {
     this.coordinates = new google.maps.LatLng(this.lat, this.lng);
     this.mapOptions = { // Google Map options
       fullscreenControl: true,
+      // styles: Globals.agmStyles,
       mapTypeControl: true, // Switch between satellite and terrain map types
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,

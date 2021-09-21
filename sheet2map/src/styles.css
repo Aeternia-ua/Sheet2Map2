@@ -37,10 +37,16 @@ html, body {
 }
 
 .nav-group-text {
+  display: flex;
   padding-left: 0!important;
-  margin-bottom: .4rem;
   align-items: center;
 }
+
+.clr-control-container {
+    display: contents;
+    /* width: 100%; */
+}
+
 
 /*.header-backdrop {*/
 /*  background-color: rgba(0, 0, 0, 0.1) !important;*/

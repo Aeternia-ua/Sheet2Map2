@@ -1,23 +1,25 @@
-
-
 .filter-group-children {
   margin-bottom: 1rem;
 }
 
 .btn-clear-filters {
-  height: 100%;
-  vertical-align: middle;
-  transform: scale(0.8);
-  margin-left: .2rem;
-  margin-top: .2rem;
-  margin-bottom: .2rem;
-  border-radius: 50px;
+    height: 42px;
+    width: 42px;
+    transform: scale(0.8);
+    border-radius: 50%;
 }
 
 .clr-form-control {
-  margin-left: .2rem;
+    margin-left: .2rem;
 }
 
 .btn-clear-filters-icon {
   font-size: 35px;
+}
+
+.filter-child {
+    display: flex;
+    justify-content: left;
+    align-items: baseline;
+    column-gap: .9rem;
 }

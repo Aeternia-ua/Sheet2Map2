@@ -18,7 +18,8 @@
       <clr-vertical-nav-group-children class="filter-group-children" *clrIfExpanded>
         <ng-container [formGroupName]="category.key"
                       *ngFor="let filter of category.value.controls | keyvalue | slice:0: show; index as i; let last=last">
-          <clr-checkbox-container>
+          <div class="filter-child">
+          <clr-checkbox-container class="filter-checkbox-container">
             <clr-checkbox-wrapper>
               <input type="checkbox" clrCheckbox
                      id="{{filter.key}}"
@@ -28,6 +29,10 @@
               <label>{{filter.key}}</label>
             </clr-checkbox-wrapper>
           </clr-checkbox-container>
+            <!--              Marker count badge-->
+            <span class="badge">{{filter.value.numberOfMarkers}}</span>
+            <!--              END Marker count badge-->
+          </div>
           <ng-container *ngIf="last && i+1 >= 10">
             <btn (click)="expandFilters()">Total Count {{i+1}}</btn>
           </ng-container>

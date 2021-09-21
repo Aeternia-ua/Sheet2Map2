@@ -48,14 +48,11 @@ export class MarkerService {
         //  Get sheets that user selected to add to the map
         const userSheetsFilter = userFilters.find(userFilter => userFilter.Type === 'User Sheets');
         userSheetsFilter.Values.forEach(userSheet => {
-            console.log("user sheet  ", userSheet);
             // Find sheetObject by name that matches sheet that user selected to add to the map
             const filteredSheetObject = sheetObjects.find(sheetObject => sheetObject['title'] === userSheet);
-            console.log("filteredSheetObject  ", filteredSheetObject);
             const [, ...values] = filteredSheetObject['data']['values']; // Get all rows except header row
             const nonEmptyValues = values.filter(e => e.length !== 0); // Remove empty rows
             const sheet = new Sheet(filteredSheetObject['title'], filteredSheetObject['url'], nonEmptyValues, filteredSheetObject['data']['values'][0], userMarkerFilters.Values);
-            console.log("sheets  ", sheets);
             sheets.push(sheet);
         });
 
@@ -79,17 +76,28 @@ export class MarkerService {
   private createMarkers(sheets: Sheet[]): Marker[] {
     const markers: Marker[] = [];
     sheets.forEach(sheet => {
-        const properties = this.getMarkerProperties(sheet.Headers, sheet.Values);
-        properties.forEach(propertySet => {
-            // If marker coordinates exist and marker should be shown on map
-            if (propertySet['Show on map'] === 'TRUE' && propertySet.Lat && propertySet.Lon) {
-                const latLon = {coordinates: {lat: propertySet.Lat, lng: propertySet.Lon}};
+        const propertySets = this.getMarkerProperties(sheet.Headers, sheet.Values);
+        const displayPropertiesSets = propertySets.filter(propertySet => (propertySet['Show on map'] === 'TRUE' && propertySet.Lat && propertySet.Lon));
+        displayPropertiesSets.forEach(displayPropertiesSet => {
+                const latLon = {coordinates: {lat: displayPropertiesSet.Lat, lng: displayPropertiesSet.Lon}};
+                // Exclude properties from the list of visible marker properties
+                const {['Show on map']: _, Lat, Lon, ...markerProps} = displayPropertiesSet;
                 const feature: Feature = new Feature(latLon,
-                propertySet, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
+                markerProps, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
                 const marker = new Marker(feature, sheet.UserFilters);
                 markers.push(marker);
-            }
-        });
+            });
+        // propertySets.filter(propertySet => {
+        //     // If marker coordinates exist and marker should be shown on map
+        //     if (propertySet['Show on map'] === 'TRUE' && propertySet.Lat && propertySet.Lon) {
+        //         const latLon = {coordinates: {lat: propertySet.Lat, lng: propertySet.Lon}};
+        //         const {Lat, Lon, ...markerProps} = propertySet;
+        //         const feature: Feature = new Feature(latLon,
+        //         markerProps, 'marker', [sheet.Url, sheet.Title, sheet.Headers]);
+        //         const marker = new Marker(feature, sheet.UserFilters);
+        //         markers.push(marker);
+        //     }
+        // });
     });
     return markers;
   }
@@ -98,7 +106,7 @@ export class MarkerService {
     const mappedArr = [];
     values.forEach(value => {
       const localArr = [];
-      keys.map((key, i) => { localArr[key] = value[i]; });
+      keys.map((key, i) => { localArr[key] = value[i]; }); // Transform sheet header and cell value into key value pair
       mappedArr.push(localArr);
     });
     return mappedArr;
@@ -106,15 +114,12 @@ export class MarkerService {
 
   getMarkers(): Observable<Marker[]> {
     if (this.markerProviderService.MarkersCache) { // Data available
-      console.log("Data available ");
       return of(this.markerProviderService.MarkersCache);
     }
     else if (this.markerProviderService.ObservableCache) { // Request pending
-      console.log("Request pending ");
       return this.markerProviderService.ObservableCache;
     }
     else { // New request needed
-      console.log("New request needed ");
       this.markerProviderService.ObservableCache = this.fetchMarkers();
 
     }

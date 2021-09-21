@@ -37,12 +37,6 @@ export class SearchComponent implements OnInit {
               private sharedFilterFormService: SharedFilterFormService) {
   }
 
-  // ngAfterViewInit(): void {
-  //       this.markers.subscribe(markers => {
-  //         console.log("search component markers ", markers);
-  //       });
-  //   }
-
   ngOnInit(): void {
     this.searchService.sharedSelectedResult.subscribe(selectedResult => {
       this.selectedResult = selectedResult;

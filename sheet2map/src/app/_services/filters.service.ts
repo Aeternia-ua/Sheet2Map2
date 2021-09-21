@@ -19,12 +19,12 @@ export class FiltersService {
     const markerFProps: any[] = [];
     markers.forEach(marker => {
       const userFilters = marker.filterProperty;
-      // const props = marker.feature.properties;
-      const props = marker.feature.properties;
-      const fProp = Object.keys(props).filter(prop => prop.includes('o'))
-        .map(key => ({[key]: props[key]}));
-      markerFProps.push(fProp);
-      // console.log("markerFProps ", markerFProps);
+      const markerProperties = marker.feature.properties;
+      userFilters.forEach(userFilter => { // Filter marker properties by key which is user filter name
+        const fProperties = Object.keys(markerProperties).filter(markerProperty => markerProperty === userFilter)
+        .map(key => ({[key]: markerProperties[key]}));
+        markerFProps.push(fProperties);
+      });
     });
 
     const reducedMarkerFProps: any[] = [].concat(...markerFProps).reduce((result, object) => {
@@ -38,8 +38,37 @@ export class FiltersService {
           filterProperties[key] = [...new Set(fValues)];
       }
     );
+    // console.log("filterProperties ", filterProperties);
     return filterProperties;
   }
+
+  // getFilterProperties(markers): object {
+  //   const markerFProps: any[] = [];
+  //   markers.forEach(marker => {
+  //     const userFilters = marker.filterProperty;
+  //     console.log("getFilterProperties userFilters ", userFilters);
+  //     // const props = marker.feature.properties;
+  //     const props = marker.feature.properties;
+  //     console.log("getFilterProperties props ", props);
+  //     const fProp = Object.keys(props).filter(prop => prop.includes('o'))
+  //       .map(key => ({[key]: props[key]}));
+  //     markerFProps.push(fProp);
+  //     // console.log("markerFProps ", markerFProps);
+  //   });
+  //
+  //   const reducedMarkerFProps: any[] = [].concat(...markerFProps).reduce((result, object) => {
+  //     Object.entries(object).forEach(([key, value]) => (result[key] = result[key] || []).push(value));
+  //     return result;
+  //   }, Object.create(null));
+  //
+  //   const filterProperties: object = {};
+  //   Object.entries(reducedMarkerFProps).forEach(([key, value]) => {
+  //         const fValues = this.buildFilterValues(value); // TODO: rename variable
+  //         filterProperties[key] = [...new Set(fValues)];
+  //     }
+  //   );
+  //   return filterProperties;
+  // }
 
   // Get unique filter values and count the occurrences of each filter value // TODO: rename method
   buildFilterValues(array): Map<any, number> {
